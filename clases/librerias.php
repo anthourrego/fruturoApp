@@ -20,7 +20,7 @@
 
     public function __construct(){
       $this->cadena_libreria='';
-      $this->ruta_libreria= RUTA_RAIZ .'lib/';
+      $this->ruta_libreria= RUTA_RAIZ .'librerias/';
       $this->ruta_iconos= RUTA_RAIZ  .'assets/img/';
     }
 
@@ -49,7 +49,16 @@
       return($this->cadena_libreria);
     }
 
-    public function jqueryValidate(){
+    public function jqueryUI(){
+      $this->cadena_libreria = '
+      <script src="'.$this->ruta_libreria.'jquery-ui/jquery-ui.min.js"></script>
+			<script src="'.$this->ruta_libreria.'jquery-ui/jquery-ui-es.js"></script>
+			<link rel="stylesheet" href="'.$this->ruta_libreria.'jquery-ui/jquery-ui.min.css" />';
+      return($this->cadena_libreria);
+      
+    }
+
+    public function jqueryValidate($validar = 1, $element = "form-group"){
       $this->cadena_libreria = '
   <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/jquery.validate.min.js"></script>
   <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/localization/messages_es.min.js"></script>
@@ -60,7 +69,7 @@
         errorElement: "em",
         errorPlacement: function (error, element) {
           error.addClass("invalid-feedback");
-          element.closest(".form-group").append(error);
+          element.closest(".' . $element .'").append(error);
         },
         highlight: function (element, errorClass, validClass) {
           $(element).addClass("is-invalid");
@@ -70,8 +79,11 @@
           $(element).removeClass("is-invalid");
           $(element).addClass("is-valid");
         }
-      });
-      $("form").validate();
+      });';
+  if ($validar == 1) {
+    $this->cadena_libreria .= '$("form").validate();';
+  }
+  $this->cadena_libreria .= '
     });
   </script>';
       return($this->cadena_libreria); 
@@ -108,19 +120,13 @@
       return($this->cadena_libreria); 
     }
 
-    public function fontAwesome4(){
-      $this->cadena_libreria = '
-    <!-- ================ Iconos de Font Awesome 4 ========================== -->
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />';
-      return($this->cadena_libreria);
-    }
-
     public function bootstrapTempusDominus(){
       $this->cadena_libreria = '
+      <!-- ================ Iconos de Font Awesome 4 ========================== -->
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
     <!-- ==================== Bootstrap Tempus Dominus ===================== -->
     <link rel="stylesheet" href="' . $this->ruta_libreria . 'tempus-dominus/css/tempusdominus-bootstrap-4.min.css"/>
-    <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/moment.min.js"></script>
-    <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/es.js"></script>
+    
     <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/underscore-min.js"></script>';
     return $this->cadena_libreria;
@@ -142,36 +148,6 @@
       <!-- Intranet -->
       <link rel="stylesheet" href="' . $this->ruta_libreria . 'proyecto/proyecto.css"/>
       <script type="text/javascript" src="' . $this->ruta_libreria . 'proyecto/proyecto.js"></script>';
-      return $this->cadena_libreria;
-    }
-
-    public function slideNavCSS(){
-      $this->cadena_libreria = '
-      <!-- Slide Nav -->
-      <link rel="stylesheet" href="' . $this->ruta_libreria . 'slideNav/css/slideNav.css"/>';
-      return $this->cadena_libreria;
-    }
-
-    public function slideNavJS(){
-      $this->cadena_libreria = '
-      <!-- Slide Nav JS -->
-      <script type="text/javascript" src="' . $this->ruta_libreria . 'jquery-easing/jquery.easing.min.js"></script>
-      <script type="text/javascript" src="' . $this->ruta_libreria . 'slideNav/js/slideNav.min.js"></script>';
-      return $this->cadena_libreria;
-    }
-
-    public function slideNav2CSS(){
-      $this->cadena_libreria = '
-      <!-- Slide Nav -->
-      <link rel="stylesheet" href="' . $this->ruta_libreria . 'slideNav2/css/slideNav.css"/>';
-      return $this->cadena_libreria;
-    }
-
-    public function slideNav2JS(){
-      $this->cadena_libreria = '
-      <!-- Slide Nav JS -->
-      <script type="text/javascript" src="' . $this->ruta_libreria . 'jquery-easing/jquery.easing.min.js"></script>
-      <script type="text/javascript" src="' . $this->ruta_libreria . 'slideNav2/js/slideNav.min.js"></script>';
       return $this->cadena_libreria;
     }
 
@@ -222,6 +198,39 @@
       <script type="text/javascript" src="'. $this->ruta_libreria .'bootstrap-treeview/js/bootstrap-treeview.js?0"></script>';
       return($this->cadena_libreria);
     }
+
+    public function sweetAlert2(){
+      $this->cadena_libreria = '
+      <!-- Sweet Alert 2 -->
+      <script type="text/javascript" src="'. $this->ruta_libreria .'sweetAlert2/js/sweetalert2.js"></script>
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'sweetAlert2/css/sweetalert2.css"/>';
+      return($this->cadena_libreria);
+    }
+
+    public function moment(){ 
+      $this->cadena_libreria = '
+      <!-- Moment -->
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'moment/moment.js"></script>
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'moment/es.js"></script>';
+      return($this->cadena_libreria);
+    }
+
+    public function adminLTE(){
+      $this->cadena_libreria = '
+      <!-- adminLTE -->
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'adminLTE/css/adminlte.css"/>
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'adminLTE/js/adminlte.js"></script>';
+      return($this->cadena_libreria);
+    }
+
+    public function overlayScrollbars(){
+      $this->cadena_libreria = '
+      <!-- overlayScrollbars -->
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'overlayScrollbars/css/OverlayScrollbars.min.css"/>
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>';
+      return($this->cadena_libreria);
+    }
+
 
     public function cambioPantalla(){
       $this->cadena_libreria = '
