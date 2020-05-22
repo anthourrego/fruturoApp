@@ -155,7 +155,7 @@
     </div>
   </div>
 
-  <!-- Modal Crear Usuario -->
+  <!-- Modal Editar Usuario -->
   <div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -580,7 +580,7 @@
                         <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
                         <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
                         <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-id="${oData.id}" data-usuario="${oData.usuario}" title="Permisos"><i class="fas fa-user-lock"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" data-toggle="tooltip" title="Eliminar"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
                       </div>`;
             }
           }
