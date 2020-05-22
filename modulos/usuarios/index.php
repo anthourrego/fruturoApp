@@ -32,6 +32,8 @@
   <title></title>
   <?php  
     echo $lib->jquery();
+    echo $lib->jqueryUI();
+    echo $lib->moment();
     echo $lib->adminLTE();
     echo $lib->bootstrap();
     echo $lib->fontAwesome();
@@ -69,10 +71,10 @@
             <thead class="thead-light">
               <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Usuario</th>
+                <th scope="col">Correo</th>
                 <th scope="col">Nombres</th>
                 <th scope="col">Apellidos</th>
-                <th scope="col">Correo</th>
+                <th scope="col">Fecha Nacimineto</th>
                 <th scope="col">Teléfono</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -97,7 +99,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="correo">Correo <span class="text-danger">*</span></label>
-              <input type="text" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
+              <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="nombre">Nombres <span class="text-danger">*</span></label>
@@ -108,9 +110,23 @@
               <input type="text" name="apellidos" class="form-control" placeholder="Escriba los apellidos" required autocomplete="off">
             </div>
             <div class="form-group">
-              <label for="correo">Correo</label>
-              <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" autocomplete="off">
+              <label for="fecha_nacimiento">Fecha Nacimiento <span class="text-danger">*</span></label>
+              <input type="date" name="fecha_nacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
             </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+              <input type="tel" name="telefono" class="form-control" placeholder="Escriba un teléfono" required autocomplete="off" onKeyPress="return soloNumeros(event)">
+            </div>
+            <div class="form-group">
+              <label for="perfil">Perfil <span class="text-danger">*</span></label>
+              <select name="perfil" required class="custom-select">
+                <option value="0" selected disabled>Seleccione una opción</option>
+                <option value="1">Administrador</option>
+                <option value="2">Productor</option>
+                <option value="3">Comercializador</option>
+              </select>
+            </div>
+            
             <label for="pass">Contraseña <span class="text-danger">*</span></label>
             <div class="form-group input-group mb-3">
               <input type="password" id="pass" name="pass" class="form-control" placeholder="Escriba una contraseña" required autocomplete="off">
@@ -151,8 +167,8 @@
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
-              <label for="usuario">Usuario <span class="text-danger">*</span></label>
-              <input type="text" name="usuario" class="form-control" readonly autocomplete="off">
+              <label for="correo">Correo <span class="text-danger">*</span></label>
+              <input type="text" name="correo" class="form-control" readonly autocomplete="off">
             </div>
             <div class="form-group">
               <label for="nombre">Nombres <span class="text-danger">*</span></label>
@@ -163,8 +179,20 @@
               <input type="text" name="apellidos" class="form-control" placeholder="Escriba los apellidos" required autocomplete="off">
             </div>
             <div class="form-group">
-              <label for="correo">Correo</label>
-              <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" autocomplete="off">
+              <label for="fecha_nacimiento">Fecha nacimiento <span class="text-danger">*</span></label>
+              <input type="text" name="fecha_nacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+              <input type="tel" name="telefono" class="form-control" placeholder="Escriba un número de teléfono" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="perfil">Perfil</label>
+              <select class="custom-select" name="perfil" required>
+                <option value="1">Administrador</option>
+                <option value="2">Productor</option>
+                <option value="3">Comercializador</option>
+              </select>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -188,8 +216,8 @@
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
-              <label for="usuario">Usuario</label>
-              <input type="text" name="usuario" class="form-control" value="Usuario" readonly>
+              <label for="correo">Correo</label>
+              <input type="text" name="correo" class="form-control" value="Correo" readonly>
             </div>
             <label for="pass">Contraseña <span class="text-danger">*</span></label>
             <div class="form-group input-group mb-3">
@@ -247,6 +275,8 @@
 ?>
 <script>
   $(function(){
+    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+    $("#fecha").val(moment().format("YYYY-MM-DD"));
     $('[data-toggle="tooltip"]').tooltip();
 
     //Se abre la modal para crear usuarios
@@ -256,18 +286,16 @@
 
     //Editar Usuario
     $(document).on("click", ".btnEditarUsuario", function(){
-      let id = $(this).data("id");
       let usuario = $(this).data("usuario");
-      let nombres = $(this).data("nombres");
-      let apellidos = $(this).data("apellidos");
-      let correo = $(this).data("correo");
       $("#formEditarUsuario :input").removeClass("is-valid");
       $("#formEditarUsuario :input").removeClass("is-invalid");
-      $("#formEditarUsuario :input[name='id']").val(id);
-      $("#formEditarUsuario :input[name='usuario']").val(usuario);
-      $("#formEditarUsuario :input[name='nombres']").val(nombres);
-      $("#formEditarUsuario :input[name='apellidos']").val(apellidos);
-      $("#formEditarUsuario :input[name='correo']").val(correo);
+      $("#formEditarUsuario :input[name='id']").val(usuario['id']);
+      $("#formEditarUsuario :input[name='correo']").val(usuario['correo']);
+      $("#formEditarUsuario :input[name='nombres']").val(usuario['nombres']);
+      $("#formEditarUsuario :input[name='apellidos']").val(usuario['apellidos']);
+      $("#formEditarUsuario :input[name='fecha_nacimiento']").val(usuario['fecha_nacimiento']);
+      $("#formEditarUsuario :input[name='telefono']").val(usuario['telefono']);
+      $("#formEditarUsuario :input[name='perfil']").val(usuario['fk_perfil']);
       $("#modalEditarUsuario").modal("show");
     });
 
@@ -336,12 +364,11 @@
 
     //Cambiar Contraseña
     $(document).on("click", ".btnCambioPass", function(){
-      let id = $(this).data('id');
       let usuario = $(this).data("usuario");
       $("#formCambiarPass :input").removeClass("is-valid");
       $("#formCambiarPass :input").removeClass("is-invalid");
-      $("#formCambiarPass :input[name='id']").val(id);
-      $("#formCambiarPass :input[name='usuario']").val(usuario);
+      $("#formCambiarPass :input[name='id']").val(usuario['id']);
+      $("#formCambiarPass :input[name='correo']").val(usuario['correo']);
       $("#formCambiarPass :input[name='cambioPass']").val();
       $("#formCambiarPass :input[name='cambioRePass']").val();
       $("#modalCambiarPass").modal("show");
@@ -435,6 +462,10 @@
     //Validamos el formulario de crear usuario
     $("#formCrearUsuario").validate({
       rules: {
+        correo: {
+          required: true,
+          email: true
+        },
         pass: "required",
         rePass: {
           equalTo: "#pass"
@@ -545,10 +576,9 @@
           },
           {
             "render": function (nTd, sData, oData, iRow, iCol) {
-              console.log(oData);
               return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-id="${oData.id}" data-usuario="${oData.usuario}" data-nombres="${oData.nombres}" data-apellidos="${oData.apellidos}" data-correo="${oData.correo}"><i class="fas fa-user-edit"></i></button>
-                        <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-id="${oData.id}" data-usuario="${oData.usuario}" title="Cambiar contraseña"><i class="fas fa-key"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
+                        <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
                         <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-id="${oData.id}" data-usuario="${oData.usuario}" title="Permisos"><i class="fas fa-user-lock"></i></button>
                         <button type="button" class="btn btn-danger btn-sm mx-1" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" data-toggle="tooltip" title="Eliminar"></i></button>
                       </div>`;
@@ -591,7 +621,6 @@
         idUsuario: idUsuario
       },
       success: function(datos){
-        console.log(datos);
         var initSelectableTree = function() {
           return $('#tree').treeview({
             data: datos,

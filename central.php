@@ -49,53 +49,52 @@
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="<?php if($usuario["perfil"] == 1){ echo('main-header');}?> navbar navbar-expand navbar-white navbar-light elevation-1"> 
-        <?php 
-          if($usuario["perfil"] != 1){
-        ?>
-        <div class="container">
-          <a class="navbar-brand brand-link" href="<?php echo RUTA_RAIZ ?>modulos/cursos/cursos">
-            <img src="<?php echo $ruta_raiz; ?>assets/img/logo.png" class="brand-image">
-          </a>
-        <?php
-          }else{
-        ?>
-        <!-- Left navbar links -->
-        <ul class="navbar-nav d-block d-lg-none">
-          <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-          </li>
-        </ul>
-        <?php
-          }
-        ?>
-        <!-- Right navbar links -->
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img class="rounded-circle" width="30px" src="<?php echo(RUTA_ALMACENAMIENTO . "usuarios/0.png"); ?>">
-            </a>  
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <span class="dropdown-item-text text-center"><?php echo $usuario['nombre'] ?></span>
-              <a class="dropdown-item modal-link" href="<?php echo RUTA_RAIZ ?>modulos/configuracion/usuarios/editar_perfil"><i class="fas fa-user-edit"></i> Perfil</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" onclick="top.cerrarSesion();"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-            </div>
-          </li>
-        </ul>
-        <?php 
-          if($usuario["perfil"] != 1){
-        ?>
+      <?php 
+        if($usuario["perfil"] != 1){
+      ?>
+      <div class="container">
+        <a class="navbar-brand brand-link" href="<?php echo RUTA_RAIZ ?>modulos/cursos/cursos">
+          <img src="<?php echo $ruta_raiz; ?>assets/img/logo.png" class="brand-image">
+        </a>
+      <?php
+        }else{
+      ?>
+      <!-- Left navbar links -->
+      <ul class="navbar-nav d-block d-lg-none">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+      </ul>
+      <?php
+        }
+      ?>
+      <!-- Right navbar links -->
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img class="rounded-circle" width="30px" src="<?php echo(RUTA_ALMACENAMIENTO . "usuarios/0.png"); ?>">
+          </a>  
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <span class="dropdown-item-text text-center"><?php echo $usuario['nombre'] ?></span>
+            <a class="dropdown-item modal-link" href="<?php echo RUTA_RAIZ ?>modulos/configuracion/usuarios/editar_perfil"><i class="fas fa-user-edit"></i> Perfil</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" onclick="top.cerrarSesion();"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
           </div>
-        <?php
-          }
-        ?>
-      
+        </li>
+      </ul>
+      <?php 
+        if($usuario["perfil"] != 1){
+      ?>
+        </div>
+      <?php
+        }
+      ?>
     </nav>
     <!-- /.navbar -->
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="<?php if($usuario["perfil"] == 1){ echo('content-wrapper');}?>">
-      <object type="text/html" id="object-contenido" name="object-contenido" data="" class="w-100 vh-100 border-0"></object>
+    <div class="<?php if($usuario["perfil"] == 1){ echo('content-wrapper');}?>" style="height: calc(100vh - 57px);">
+      <object type="text/html" id="object-contenido" name="object-contenido" data="" style="height: calc(100vh - 57px);" class="w-100 border-0"></object>
     </div>
     <!-- /.content-wrapper -->
   </div>
