@@ -94,13 +94,14 @@ function listaUsuarios(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => 'id',                  'dt' => 'id',                 'field' => 'id' ),
-              array( 'db' => 'correo',              'dt' => 'correo',             'field' => 'correo' ),
-              array( 'db' => 'nombres',             'dt' => 'nombres',            'field' => 'nombres' ),
-              array( 'db' => 'apellidos',           'dt' => 'apellidos',          'field' => 'apellidos' ),
-              array( 'db' => 'fecha_nacimiento',    'dt' => 'fecha_nacimiento',   'field' => 'fecha_nacimiento' ),
-              array( 'db' => 'telefono',            'dt' => 'telefono',           'field' => 'telefono' ),
-              array( 'db' => 'fk_perfil',           'dt' => 'fk_perfil',          'field' => 'fk_perfil' )
+              array( 'db' => 'u.id',                  'dt' => 'id',                 'field' => 'id' ),
+              array( 'db' => 'u.correo',              'dt' => 'correo',             'field' => 'correo' ),
+              array( 'db' => 'u.nombres',             'dt' => 'nombres',            'field' => 'nombres' ),
+              array( 'db' => 'u.apellidos',           'dt' => 'apellidos',          'field' => 'apellidos' ),
+              array( 'db' => 'u.fecha_nacimiento',    'dt' => 'fecha_nacimiento',   'field' => 'fecha_nacimiento' ),
+              array( 'db' => 'u.telefono',            'dt' => 'telefono',           'field' => 'telefono' ),
+              array( 'db' => 'u.fk_perfil',           'dt' => 'fk_perfil',          'field' => 'fk_perfil' ),
+              array( 'db' => 'p.nombre',              'dt' => 'perfil',             'field' => 'perfil',      'as' => 'perfil'),
             );
     
   $sql_details = array(
@@ -110,7 +111,7 @@ function listaUsuarios(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM usuarios";
+  $joinQuery = "FROM usuarios AS u INNER JOIN perfiles AS p ON u.fk_perfil = p.id";
   $extraWhere= "`estado` = 1";
   $groupBy = "";
   $having = "";

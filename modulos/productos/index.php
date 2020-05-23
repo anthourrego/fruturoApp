@@ -122,6 +122,7 @@
       $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear producto`);
       $("#formCrear :input[name='accion']").val('crear');
       $("#modalCrear").modal("show");
+      $("#formCrear :input[name='producto']").focus();
     });
 
     //Editar Usuario

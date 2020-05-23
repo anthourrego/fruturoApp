@@ -136,7 +136,7 @@ function editar(){
         $db->insertLogs("productos", $_POST["id"], "Se edita el producto {$_POST['producto']}", $usuario["id"]);
     
         $resp["success"] = true;
-        $resp["msj"] = "El producto se ha actualiza correctamente";
+        $resp["msj"] = "El producto se ha actualizado correctamente";
       } else {
         $resp["success"] = false;
         $resp["msj"] = "Por favor realize algún cambio";

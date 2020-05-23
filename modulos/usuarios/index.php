@@ -76,6 +76,7 @@
                 <th scope="col">Apellidos</th>
                 <th scope="col">Fecha Nacimineto</th>
                 <th scope="col">Teléfono</th>
+                <th scope="col">Tipo usuario</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -575,11 +576,14 @@
             data: "telefono"
           },
           {
+            data: "perfil"
+          },
+          {
             "render": function (nTd, sData, oData, iRow, iCol) {
               return `<div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
                         <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
-                        <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-id="${oData.id}" data-usuario="${oData.usuario}" title="Permisos"><i class="fas fa-user-lock"></i></button>
+                        <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Permisos"><i class="fas fa-user-lock"></i></button>
                         <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
                       </div>`;
             }
@@ -604,9 +608,10 @@
     //Permisos de usuario
     // accion boton para abrir arbol y asiganar permisos
     $(document).on("click",".btnPermisos",function(){
-      var idUsuario = $(this).data("id");
-      $("#modalPermisoUsuarioTitulo").html($(this).data("usuario"));
-      cargarArbol(idUsuario);
+      var usuario = $(this).data("usuario");
+      console.log(usuario);
+      $("#modalPermisoUsuarioTitulo").html(usuario['correo']);
+      cargarArbol(usuario['id']);
     });
   });
 
