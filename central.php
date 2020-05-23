@@ -196,6 +196,14 @@
         data = JSON.parse(data);
         if (data.success) {
           $("#modulos").empty();
+          $("#modulos").append(`
+            <li class="nav-item has-treeview">
+              <a href="<?php $ruta_raiz ?>modulos/ofertar" data-modulopadre="0" data-modulo="Ofertar" target="object-contenido" class="nav-link link moduloOfertar">
+                <i class="nav-icon fas fa-receipt"></i>
+                <p>Ofertar</p>
+              </a>
+            </li>
+          `);
           cargarMenu(data.msj);
         }
       },

@@ -20,7 +20,7 @@
 
   $usuario = $session->get("usuario");
 
-  if ($permisos->validarPermiso($usuario['id'], 'productos') == 0) {
+  if ($permisos->validarPermiso($usuario['id'], 'certificados') == 0) {
     header('Location: ' . $ruta_raiz . 'modulos/');
   }
 
@@ -51,7 +51,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12">
-          <h1 class="m-0 text-dark">Productos</h1>
+          <h1 class="m-0 text-dark">Certificados</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -72,6 +72,7 @@
               <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
                 <th scope="col">Creador</th>
                 <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
@@ -97,8 +98,12 @@
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
-              <label for="producto">Producto <span class="text-danger">*</span></label>
-              <input type="text" name="producto" class="form-control" placeholder="Escriba el nombre de un producto" required autocomplete="off">
+              <label for="certificado">Certificado <span class="text-danger">*</span></label>
+              <input type="text" name="certificado" class="form-control" placeholder="Escriba el nombre del certificado" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="descripcion">Descripción</label>
+              <textarea class="form-control" name="descripcion" rows="3" placeholder="Escrina una descripción"></textarea>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -119,21 +124,22 @@
 
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){
-      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear producto`);
+      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear certificado`);
       $("#formCrear :input[name='accion']").val('crear');
       $("#modalCrear").modal("show");
     });
 
     //Editar Usuario
     $(document).on("click", ".btnEditar", function(){
-      let producto = $(this).data("producto");
-      $("#tituloModal").html(`<i class="fas fa-edit"></i> Editar producto | ` + producto['nombre']);
+      let datos = $(this).data("datos");
+      $("#tituloModal").html(`<i class="fas fa-edit"></i> Editar certificado | ` + datos ['nombre']);
       $("#formCrear :input").removeClass("is-valid");
       $("#formCrear :input").removeClass("is-invalid");
 
       $("#formCrear :input[name='accion']").val('editar');
-      $("#formCrear :input[name='id']").val(producto['id']);
-      $("#formCrear :input[name='producto']").val(producto['nombre']);
+      $("#formCrear :input[name='id']").val(datos['id']);
+      $("#formCrear :input[name='certificado']").val(datos['nombre']);
+      $("#formCrear :input[name='descripcion']").val(datos['descripcion']);
 
       $("#modalCrear").modal("show");
     });
@@ -236,6 +242,9 @@
             data: "nombre"
           },
           {
+            data: "descripcion"
+          },
+          {
             data: "creador"
           },
           {
@@ -244,7 +253,7 @@
           {
             "render": function (nTd, sData, oData, iRow, iCol) {
               return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-producto='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
                         <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                       </div>`;
             }
@@ -267,9 +276,9 @@
     });
   });
 
-  function eliminar(producto){
+  function eliminar(datos){
     Swal.fire({
-      title: "¿Estas seguro de eliminar el producto " + producto['nombre'] + "?",
+      title: "¿Estas seguro de eliminar el certificado " + datos['nombre'] + "?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -284,8 +293,8 @@
           dataType: 'json',
           data: {
             accion: "eliminar", 
-            id: producto['id'],
-            nombre: producto['nombre']
+            id: datos['id'],
+            nombre: datos['nombre']
           },
           success: function(data){
             if (data == 1) {
@@ -294,14 +303,14 @@
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha eliminado el producto " + producto['nombre'],
+                title: "Se ha eliminado el certificado " + datos['nombre'],
                 showConfirmButton: false,
                 timer: 5000
               });
             }else{
               Swal.fire({
                 icon: 'warning',
-                html: "Error al eliminar el producto " + producto['nombre']
+                html: "Error al eliminar el certificado " + datos['nombre']
               })
             }
           },
