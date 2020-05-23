@@ -103,7 +103,7 @@
             </div>
             <div class="form-group">
               <label for="descripcion">Descripción</label>
-              <textarea class="form-control" name="descripcion" rows="3" placeholder="Escrina una descripción"></textarea>
+              <textarea class="form-control" name="descripcion" rows="3" placeholder="Escriba una descripción"></textarea>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">

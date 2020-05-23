@@ -60,9 +60,9 @@ function crear(){
     $datos = array(
       ":nombre" => cadena_db_insertar($_POST["certificado"]),
       ":descripcion" => cadena_db_insertar(@$_POST['descripcion']),
-      "fecha_creacion" => date('Y-m-d H:i:s'),
-      "fk_creador" => $usuario["id"],
-      "estado" => 1
+      ":fecha_creacion" => date('Y-m-d H:i:s'),
+      ":fk_creador" => $usuario["id"],
+      ":estado" => 1
     );
 
     $id_registro = $db->sentencia("INSERT INTO certificaciones (nombre, descripcion, fecha_creacion, fk_creador, estado) VALUES (:nombre, :descripcion, :fecha_creacion, :fk_creador, :estado)", $datos);
