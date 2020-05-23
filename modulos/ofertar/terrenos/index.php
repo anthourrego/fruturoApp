@@ -44,7 +44,7 @@
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="fas fa-mountain"></i> Terrenos</h1>
@@ -56,7 +56,7 @@
 
   <!-- Main content -->
   <section class="content">
-    <div class="container-fluid">
+    <div class="container">
       <div class="card">
         <div class="card-header d-flex justify-content-end">
           <button class="btn btn-success btnCrear" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>

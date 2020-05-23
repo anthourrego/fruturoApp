@@ -16,6 +16,12 @@
   $usuario = $session->get("usuario");
   
   $lib = new Libreria;
+
+  $ruta_inical = 'modulos/';
+
+  if ($usuario["perfil"] != 1) {
+    $ruta_inical = 'modulos/ofertar';
+  }
 ?>
 
 <!doctype html>
@@ -53,7 +59,7 @@
         if($usuario["perfil"] != 1){
       ?>
       <div class="container">
-        <a class="navbar-brand brand-link" href="<?php echo RUTA_RAIZ ?>modulos/cursos/cursos">
+        <a class="navbar-brand brand-link" href="<?php echo RUTA_RAIZ ?>modulos/ofertar">
           <img src="<?php echo $ruta_raiz; ?>assets/img/logo.png" class="brand-image">
         </a>
       <?php
@@ -144,7 +150,7 @@
     modulosUsuarios();
     
     if (localStorage.url<?php echo(PROYECTO) ?> == null) {
-      $("#object-contenido").attr("data", "modulos/");
+      $("#object-contenido").attr("data", '<?php echo($ruta_inical); ?>');
     }else{
       $("#object-contenido").attr("data", localStorage.url<?php echo(PROYECTO) ?>);
     }

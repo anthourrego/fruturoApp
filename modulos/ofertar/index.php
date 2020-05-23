@@ -34,7 +34,7 @@
 </head>
 <body>
   <section class="content mt-5">
-    <div class="container-fluid">
+    <div class="container">
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-lg-3 col-6">
