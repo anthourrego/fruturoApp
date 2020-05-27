@@ -36,7 +36,7 @@
       echo $lib->bootstrap();
       echo $lib->jqueryUI();
       echo $lib->moment();
-      echo $lib->jqueryValidate('form-label-group');
+      echo $lib->jqueryValidate(0, 'form-label-group');
       echo $lib->alertify();
       echo $lib->sweetAlert2();
       echo $lib->proyecto();
@@ -135,7 +135,7 @@
           <div class="login d-flex align-items-center py-5">
             <div class="container">
               <div class="row">
-                <div id="contentLogin" class="col-12 col-md-6 mx-auto">
+                <div id="contentLogin" class="col-12 col-md-10 col-xl-7 mx-auto">
                   <div class="text-center">
                     <img class="w-50 mb-5" src="assets/img/logo.svg">
                   </div>
@@ -163,53 +163,92 @@
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
                 </div>
 
-                <div id="contentRegistro" class="col-12 col-lg-11 col-xl-9 mx-auto">
+                <!-- Formulario de registro -->
+                <div id="contentRegistro" class="col-12 col-lg-11 col-xl-10 mx-auto">
                   <div class="text-center">
                     <img class="w-30 mb-5" src="assets/img/logo.svg">
                   </div>
                   <form id="formRegistro" class="form-row" autocomplete="off">
                     <input type="hidden" name="accion" value="registrarse">
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="text" id="nombres" name="nombres" class="form-control" placeholder="Nombres" autocomplete="off" required>
-                      <label for="nombres">Nombres<span class="text-danger">*</span></label>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <select class="custom-select" name="tipo_documento" id="tipo_documento" required>
+                          <option value="0" selected disabled>Tipo de identificación</option>
+                        </select>
+                      </div>
                     </div>
 
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="text" id="apellidos" name="apellidos" class="form-control" placeholder="Apellidos" autocomplete="off" required>
-                      <label for="apellidos">Apellidos<span class="text-danger">*</span></label>
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="text" minlength="7" id="nro_documento" name="nro_documento" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
+                        <label for="nro_documento">Nro de identificación<span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <select class="custom-select" name="tipo_persona" id="tipo_persona" required>
+                          <option value="0" selected disabled>Tipo de persona</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <select class="custom-select" name="perfil" id="perfil" required>
+                          <option value="0" selected disabled>Tipo de perfil</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="text" id="nombres" name="nombres" class="form-control" placeholder="Nombres" autocomplete="off" required>
+                        <label for="nombres">Nombres<span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="text" id="apellidos" name="apellidos" class="form-control" placeholder="Apellidos" autocomplete="off" required>
+                        <label for="apellidos">Apellidos<span class="text-danger">*</span></label>
+                      </div>
                     </div>
                     
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="text" id="fecha" name="fecha" class="form-control datepicker" placeholder="Fecha Nacimiento" autocomplete="off" required>
-                      <label for="fecha">Fecha Nacimiento<span class="text-danger">*</span></label>
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="text" id="fecha" name="fecha" class="form-control datepicker" placeholder="Fecha Nacimiento" autocomplete="off" required>
+                        <label for="fecha">Fecha Nacimiento<span class="text-danger">*</span></label>
+                      </div>
                     </div>
                     
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="tel" id="tel" name="tel" class="form-control" placeholder="Teléfono" autocomplete="off" required onKeyPress="return soloNumeros(event)">
-                      <label for="tel">Teléfono<span class="text-danger">*</span></label>
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="tel" minlength="7" id="tel" name="tel" class="form-control" placeholder="Teléfono" autocomplete="off" required onKeyPress="return soloNumeros(event)">
+                        <label for="tel">Teléfono<span class="text-danger">*</span></label>
+                      </div>
                     </div>
 
-                    <div class="form-label-group col-12 col-lg-6">
-                      <select class="custom-select" name="perfil" id="perfil" required>
-                        <option value="0" selected disabled>Seleccione un tipo de perfil</option>
-                        <option value="2">Productor</option>
-                        <option value="3">Comercializador</option>
-                      </select>
+                    <div class="col-12">
+                      <div class="form-label-group">
+                        <input type="email" id="reCorreo" name="reCorreo" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
+                        <label for="reCorreo">Correo electrónico<span class="text-danger">*</span></label>
+                      </div>
                     </div>
 
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="email" id="reCorreo" name="reCorreo" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
-                      <label for="reCorreo">Correo electrónico<span class="text-danger">*</span></label>
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="password" id="rePassword" name="rePassword" class="form-control" placeholder="Contraseña" required autocomplete="new-password">
+                        <label for="rePassword">Contraseña<span class="text-danger">*</span></label>
+                      </div>
                     </div>
 
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="password" id="rePassword" name="rePassword" class="form-control" placeholder="Contraseña" required autocomplete="new-password">
-                      <label for="rePassword">Contraseña<span class="text-danger">*</span></label>
-                    </div>
-
-                    <div class="form-label-group col-12 col-lg-6">
-                      <input type="password" id="rerePassword" name="rerePassword" class="form-control" placeholder="Confirmar Contraseña" required autocomplete="new-password">
-                      <label for="rerePassword">Confirmar Contraseña<span class="text-danger">*</span></label>
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="password" id="rerePassword" name="rerePassword" class="form-control" placeholder="Confirmar Contraseña" required autocomplete="new-password">
+                        <label for="rerePassword">Confirmar contraseña<span class="text-danger">*</span></label>
+                      </div>
                     </div>
 
                     <div class="col-12 col-lg-6 mx-auto text-center">
@@ -233,17 +272,21 @@
 
 <script type="text/javascript">
   $(function(){
-    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-    $("#fecha").val(moment().format("YYYY-MM-DD"));
-
     $("#contentRegistro, #contentLogin").hide();
     if (getUrl('reg') == 1) {
+      TiposDocumentos();
+      TipoPersonas();
+      TiposPerfiles();
+      $(".datepicker").datepicker({ dateFormat: "yy-mm-dd", maxDate: "-18Y" });
+      $("#fecha").val(moment().subtract(18, 'years').format("YYYY-MM-DD"));
       $("#contentRegistro").show(1000);
-      $("#re-correo").focus();
+      $("#nro_documento").focus();
     }else{
       $("#contentLogin").show(1000);
       $("#correo").focus();
     }
+
+    $("#formLogin").validate();
 
     $("#formLogin").submit(function(event){
       event.preventDefault();
@@ -349,5 +392,74 @@
       }
     });
   });
+
+  function TiposDocumentos(){
+    $.ajax({
+      url: "acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaTipoDocumento",
+      },
+      success: function(datos){
+        $('#tipo_documento').empty();
+        $('#tipo_documento').append(`<option value="0" selected disabled>Tipo de identificación</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $("#tipo_documento").append(`<option value="${datos.msj[i].id}">${datos.msj[i].abreviacion} - ${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  }
+
+  function TipoPersonas(){
+    $.ajax({
+      url: "acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaTipoPersona",
+      },
+      success: function(datos){
+        $('#tipo_persona').empty();
+        $('#tipo_persona').append(`<option value="0" selected disabled>Tipo de persona</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $("#tipo_persona").append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  }
+
+  function TiposPerfiles(){
+    $.ajax({
+      url: "acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaPerfiles",
+      },
+      success: function(datos){
+        $('#perfil').empty();
+        $('#perfil').append(`<option value="0" selected disabled>Tipo de perfil</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $("#perfil").append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+      }
+    });
+  }
 </script>
 </html>

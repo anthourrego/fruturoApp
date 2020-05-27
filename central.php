@@ -59,9 +59,14 @@
         if($usuario["perfil"] != 1){
       ?>
       <div class="container">
-        <a class="navbar-brand brand-link" href="<?php echo RUTA_RAIZ ?>modulos/ofertar">
+        <a class="navbar-brand brand-link" style="width: 50px !important" target="object-contenido" href="<?php echo RUTA_RAIZ ?>modulos/ofertar">
           <img src="<?php echo $ruta_raiz; ?>assets/img/logo.png" class="brand-image">
         </a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a target="object-contenido" href="<?php echo RUTA_RAIZ ?>modulos/ofertar" class="nav-link">Inicio</a>
+          </li>
+        </ul>
       <?php
         }else{
       ?>
@@ -84,7 +89,7 @@
             <span class="dropdown-item-text text-center"><?php echo $usuario['nombre'] ?></span>
             <a class="dropdown-item modal-link" href="<?php echo RUTA_RAIZ ?>modulos/configuracion/usuarios/editar_perfil"><i class="fas fa-user-edit"></i> Perfil</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" onclick="top.cerrarSesion();"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            <a class="dropdown-item" href="javascript:cerrarSesion();"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
           </div>
         </li>
       </ul>

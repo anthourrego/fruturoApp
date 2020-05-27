@@ -80,17 +80,24 @@ function registrarse(){
     if ($password == $repassword) {
       $password = encriptarPass($password);
 
-      $id_registro = $db->sentencia("INSERT INTO usuarios (correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", array(":correo" => $_POST["reCorreo"], 
-                          ":nombres" => $_POST["nombres"], 
-                          ":apellidos" => $_POST["apellidos"], 
-                          ":password" => $password, 
-                          ":fecha_nacimiento" => date("Y-m-d", strtotime($_REQUEST["fecha"])), 
-                          ":telefono" => $_POST["tel"], 
-                          ":fk_perfil" => $_POST["perfil"], 
-                          ":estado" => 1, 
-                          ":fecha_creacion" => date('Y-m-d H:i:s'),
-                           ":confirmado" => 1, 
-                           ":fk_creador" => 0));
+      $datos = array(
+        ":fk_tipo_documento" => $_POST["tipo_documento"],
+        ":nro_documento" => $_POST["nro_documento"],
+        ":fk_tipo_persona" => $_POST["tipo_persona"],
+        ":correo" => $_POST["reCorreo"],
+        ":nombres" => $_POST["nombres"],
+        ":apellidos" => $_POST["apellidos"],
+        ":password" => $password,
+        ":fecha_nacimiento" => date("Y-m-d", strtotime($_REQUEST["fecha"])),
+        ":telefono" => $_POST["tel"],
+        ":fk_perfil" => $_POST["perfil"],
+        ":estado" => 1,
+        ":fecha_creacion" => date('Y-m-d H:i:s'),
+        ":confirmado" => 1,
+        ":fk_creador" => 0
+      );
+
+      $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
 
       if ($id_registro > 0) {
         $resp['success'] = true;
@@ -129,6 +136,63 @@ function validarCorreo($correo){
   $db->desconectar();
   
   return $resp;
+}
+
+function listaPerfiles(){
+  $db = new Bd();
+  $db->conectar();
+  $resp['success'] = false;
+
+  $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  } else {
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function listaTipoDocumento(){
+  $db = new Bd();
+  $db->conectar();
+  $resp['success'] = false;
+
+  $datos = $db->consulta("SELECT * FROM tipo_documento WHERE estado = 1");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  } else {
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function listaTipoPersona(){
+  $db = new Bd();
+  $db->conectar();
+  $resp['success'] = false;
+
+  $datos = $db->consulta("SELECT * FROM tipo_persona WHERE estado = 1");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  } else {
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
 }
 
 if(@$_REQUEST['accion']){

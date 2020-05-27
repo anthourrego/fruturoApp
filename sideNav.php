@@ -23,7 +23,7 @@ $usuario = $session->get("usuario");
 <aside class="main-sidebar sidebar-dark-success elevation-4">
   <!-- Brand Logo -->
   <div class="d-flex justify-content-between">
-    <a href="index3.html" class="brand-link">
+    <a target="object-contenido" href="<?php echo RUTA_RAIZ ?>modulos/" class="brand-link">
       <img src="assets/img/logo.png" alt="Fruturo Logo" class="brand-image">
       <span class="brand-text font-weight-light">Fruturo</span>
     </a>
