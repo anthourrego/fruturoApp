@@ -181,7 +181,7 @@
 
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
-                        <input type="text" minlength="7" id="nro_documento" name="nro_documento" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
+                        <input type="text" minlength="7" id="nro_documento" name="nro_documento" class="form-control" placeholder="Nro de identificación" autocomplete="off" required>
                         <label for="nro_documento">Nro de identificación<span class="text-danger">*</span></label>
                       </div>
                     </div>
@@ -395,7 +395,7 @@
 
   function TiposDocumentos(){
     $.ajax({
-      url: "acciones",
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_documento/acciones",
       type: "POST",
       dataType: "json",
       data: {
@@ -418,7 +418,7 @@
 
   function TipoPersonas(){
     $.ajax({
-      url: "acciones",
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_persona/acciones",
       type: "POST",
       dataType: "json",
       data: {
@@ -441,7 +441,7 @@
 
   function TiposPerfiles(){
     $.ajax({
-      url: "acciones",
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/perfiles/acciones",
       type: "POST",
       dataType: "json",
       data: {

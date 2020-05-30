@@ -168,6 +168,26 @@ function inhabilitar(){
   return json_encode(1);
 }
 
+function listaPerfiles(){
+  $db = new Bd();
+  $db->conectar();
+  $resp['success'] = false;
+
+  $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  } else {
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){
     echo($_REQUEST['accion']());
