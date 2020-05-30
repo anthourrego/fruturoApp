@@ -323,7 +323,7 @@ function arbolModulosUsuario($mod = 0){
                 "text" => $modulos[$i]["tag"],
                 "nombre" => $modulos[$i]["nombre"],
                 "tags" => [$hijos['cantidad_registros']],
-                "nodes" => arbolModulos($modulos[$i]["id"]),
+                "nodes" => arbolModulosUsuario($modulos[$i]["id"]),
                 "state" => array("checked" => $chekcPermiso)
               );
     }else {
