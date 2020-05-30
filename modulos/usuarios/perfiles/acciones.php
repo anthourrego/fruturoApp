@@ -168,12 +168,20 @@ function inhabilitar(){
   return json_encode(1);
 }
 
-function listaPerfiles(){
+function listaPerfiles($admin = 0){
   $db = new Bd();
   $db->conectar();
   $resp['success'] = false;
 
-  $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
+  if (@$_POST['admin']) {
+    $admin = 1;
+  }
+
+  if ($admin == 0) {
+    $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
+  }else{
+    $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1");
+  }
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;
