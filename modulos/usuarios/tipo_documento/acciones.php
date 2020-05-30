@@ -76,7 +76,7 @@ function crear(){
       }
   
     }else{
-      $resp['msj'] = 'El nombre <b>' . $_REQUEST["producto"] . '</b> ya se encuentra en uso.';
+      $resp['msj'] = 'El nombre <b>' . $_REQUEST["nombre"] . '</b> ya se encuentra en uso.';
     }
   } else {
     $resp['msj'] = 'El abreviación <b>' . $_REQUEST["abreviacion"] . '</b> ya se encuentra en uso.';
@@ -151,7 +151,7 @@ function editar(){
           $db->insertLogs("tipo_documento", $_POST["id"], "Se edita el tipo documento {$_POST['nombre']}", $usuario["id"]);
       
           $resp["success"] = true;
-          $resp["msj"] = "El tipo de documento {$_POST['nombre']}  se ha actualizado correctamente";
+          $resp["msj"] = "El tipo de documento {$_POST['nombre']} se ha actualizado correctamente";
         } else {
           $resp["success"] = false;
           $resp["msj"] = "Por favor realize algún cambio";

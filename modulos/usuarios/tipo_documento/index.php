@@ -93,7 +93,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear producto</h5>
+          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear tipo documento</h5>
         </div>
         <form id="formCrear" autocomplete="off">
           <input type="hidden" name="accion" value="crear">
@@ -215,14 +215,7 @@
       }
     });
 
-    $(".btnEstado").on("click", function(){
-      estado = $(this).data('estado');
-      titulo = $(this).data('titulo');
-      $("#titulo").html(titulo);
-      listaTabla(estado);
-    });
-
-    listaTabla(1);
+    listaTabla();
   });
 
   function inhabilitar(datos){
