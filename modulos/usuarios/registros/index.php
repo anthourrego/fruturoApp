@@ -71,6 +71,9 @@
             <thead class="thead-light">
               <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Tipo documento</th>
+                <th scope="col">Nro documento</th>
+                <th scope="col">Tipo persona</th>
                 <th scope="col">Correo</th>
                 <th scope="col">Nombres</th>
                 <th scope="col">Apellidos</th>
@@ -99,6 +102,22 @@
           <input type="hidden" name="accion" value="crearUsuario">
           <div class="modal-body">
             <div class="form-group">
+              <label for="tipo_persona">Tipo persona <span class="text-danger">*</span></label>
+              <select name="tipo_persona" required class="custom-select">
+                <option value="0" selected disabled>Seleccione una opción</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tipo_documento">Tipo documento <span class="text-danger">*</span></label>
+              <select name="tipo_documento" required class="custom-select">
+                <option value="0" selected disabled>Seleccione una opción</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nro_documento">Nro documento <span class="text-danger">*</span></label>
+              <input type="text" minlength="7" name="nro_documento" class="form-control" placeholder="Escriba un número de documento" required autocomplete="off">
+            </div>
+            <div class="form-group">
               <label for="correo">Correo <span class="text-danger">*</span></label>
               <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
             </div>
@@ -112,7 +131,7 @@
             </div>
             <div class="form-group">
               <label for="fecha_nacimiento">Fecha Nacimiento <span class="text-danger">*</span></label>
-              <input type="date" name="fecha_nacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
+              <input type="text" name="fecha_nacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="telefono">Teléfono <span class="text-danger">*</span></label>
@@ -122,9 +141,6 @@
               <label for="perfil">Perfil <span class="text-danger">*</span></label>
               <select name="perfil" required class="custom-select">
                 <option value="0" selected disabled>Seleccione una opción</option>
-                <option value="1">Administrador</option>
-                <option value="2">Productor</option>
-                <option value="3">Comercializador</option>
               </select>
             </div>
             
@@ -168,8 +184,24 @@
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
+              <label for="tipo_persona">Tipo persona <span class="text-danger">*</span></label>
+              <select name="tipo_persona" required class="custom-select">
+                <option value="0" selected disabled>Seleccione una opción</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tipo_documento">Tipo documento <span class="text-danger">*</span></label>
+              <select name="tipo_documento" required class="custom-select">
+                <option value="0" selected disabled>Seleccione una opción</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nro_documento">Nro documento <span class="text-danger">*</span></label>
+              <input type="text" minlength="7" name="nro_documento" class="form-control" placeholder="Escriba un número de documento" required autocomplete="off">
+            </div>
+            <div class="form-group">
               <label for="correo">Correo <span class="text-danger">*</span></label>
-              <input type="text" name="correo" class="form-control" readonly autocomplete="off">
+              <input type="text" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="nombre">Nombres <span class="text-danger">*</span></label>
@@ -189,11 +221,7 @@
             </div>
             <div class="form-group">
               <label for="perfil">Perfil</label>
-              <select class="custom-select" name="perfil" required>
-                <option value="1">Administrador</option>
-                <option value="2">Productor</option>
-                <option value="3">Comercializador</option>
-              </select>
+              <select class="custom-select" name="perfil" required></select>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -276,8 +304,8 @@
 ?>
 <script>
   $(function(){
-    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-    $("#fecha").val(moment().format("YYYY-MM-DD"));
+    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd", maxDate: "-18Y" });
+    $("#fecha").val(moment().subtract(18, 'years').format("YYYY-MM-DD"));
     $('[data-toggle="tooltip"]').tooltip();
 
     //Se abre la modal para crear usuarios
@@ -288,9 +316,13 @@
     //Editar Usuario
     $(document).on("click", ".btnEditarUsuario", function(){
       let usuario = $(this).data("usuario");
+      console.log(usuario);
       $("#formEditarUsuario :input").removeClass("is-valid");
       $("#formEditarUsuario :input").removeClass("is-invalid");
       $("#formEditarUsuario :input[name='id']").val(usuario['id']);
+      $("#formEditarUsuario :input[name='tipo_persona']").val(usuario['fk_tipo_persona']);
+      $("#formEditarUsuario :input[name='nro_documento']").val(usuario['nro_documento']);
+      $("#formEditarUsuario :input[name='tipo_documento']").val(usuario['fk_tipo_documento']);
       $("#formEditarUsuario :input[name='correo']").val(usuario['correo']);
       $("#formEditarUsuario :input[name='nombres']").val(usuario['nombres']);
       $("#formEditarUsuario :input[name='apellidos']").val(usuario['apellidos']);
@@ -534,82 +566,16 @@
       }
     });
 
-    $("#tablaUsuarios").DataTable({
-      stateSave: true,
-      responsive: true,
-      processing: true,
-      serverSide: true,
-      pageLength: 25,
-      language: {
-        url: "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-      },
-      ajax: {
-          url: "acciones",
-          type: "GET",
-          dataType: "json",
-          data: {
-            accion: 'listaUsuarios'
-          },
-          complete: function(){
-            $('[data-toggle="tooltip"]').tooltip('hide');
-            $('[data-toggle="tooltip"]').tooltip();
-            cerrarCargando();
-          }
-      },
-      columns: [
-          {
-            data: "id"
-          },
-          {
-            data: "correo"
-          },
-          {
-            data: "nombres"
-          },
-          {
-            data: "apellidos"
-          },
-          {
-            data: "fecha_nacimiento"
-          },
-          {
-            data: "telefono"
-          },
-          {
-            data: "perfil"
-          },
-          {
-            "render": function (nTd, sData, oData, iRow, iCol) {
-              return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
-                        <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
-                        <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Permisos"><i class="fas fa-user-lock"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
-                      </div>`;
-            }
-          }
-      ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
-        }
-      ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
-    });
+    //Se cargan todas las listas
+    lista();
+    TiposPerfiles();
+    TipoPersonas();
+    TiposDocumentos();
 
     //Permisos de usuario
     // accion boton para abrir arbol y asiganar permisos
     $(document).on("click",".btnPermisos",function(){
       var usuario = $(this).data("usuario");
-      console.log(usuario);
       $("#modalPermisoUsuarioTitulo").html(usuario['correo']);
       cargarArbol(usuario['id']);
     });
@@ -757,5 +723,150 @@
       }
     });
   }
+
+  function lista(){
+    $("#tablaUsuarios").DataTable({
+      stateSave: true,
+      responsive: true,
+      processing: true,
+      serverSide: true,
+      pageLength: 25,
+      language: {
+        url: "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+      },
+      ajax: {
+          url: "acciones",
+          type: "GET",
+          dataType: "json",
+          data: {
+            accion: 'listaUsuarios'
+          },
+          complete: function(){
+            $('[data-toggle="tooltip"]').tooltip('hide');
+            $('[data-toggle="tooltip"]').tooltip();
+            cerrarCargando();
+          }
+      },
+      columns: [
+        { data: "id" },
+        { data: "tipo_documento" },
+        { data: "nro_documento" },
+        { data: "tipo_persona" },
+        { data: "correo" },
+        { data: "nombres" },
+        { data: "apellidos" },
+        { data: "fecha_nacimiento" },
+        { data: "telefono" },
+        { data: "perfil" },
+        {
+          "render": function (nTd, sData, oData, iRow, iCol) {
+            return `<div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
+                      <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
+                      <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Permisos"><i class="fas fa-user-lock"></i></button>
+                      <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
+                    </div>`;
+          }
+        }
+      ],
+      columnDefs: [
+        {
+          className: "dt-center",
+          targets: "_all"
+        },
+        {
+          targets: [0],
+          visible: false
+        }
+      ],
+      lengthChange: true,
+      order: [
+        [0, "asc"]
+      ], //Ordenar (columna,orden)
+    });
+  }
+
+  function TiposPerfiles(){
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/perfiles/acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaPerfiles",
+        admin: 1
+      },
+      success: function(datos){
+        $('#formCrearUsuario :input[name="perfil"], #formEditarUsuario :input[name="perfil"]').empty();
+        $('#formCrearUsuario :input[name="perfil"], #formEditarUsuario :input[name="perfil"]').append(`<option value="0" selected disabled>Seleccione una opción</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $('#formCrearUsuario :input[name="perfil"], #formEditarUsuario :input[name="perfil"]').append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+        Swal.fire({
+          icon: 'error',
+          html: 'Error al cargar los datos de perfiles'
+        })
+      }
+    });
+  }
+
+  function TipoPersonas(){
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_persona/acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaTipoPersona",
+      },
+      success: function(datos){
+        $('#formCrearUsuario :input[name="tipo_persona"], #formEditarUsuario :input[name="tipo_persona"]').empty();
+        $('#formCrearUsuario :input[name="tipo_persona"], #formEditarUsuario :input[name="tipo_persona"]').append(`<option value="0" selected disabled>Seleccione una opción</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $('#formCrearUsuario :input[name="tipo_persona"], #formEditarUsuario :input[name="tipo_persona"]').append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+        Swal.fire({
+          icon: 'error',
+          html: 'Error al cargar los datos de tipo persona'
+        })
+      }
+    });
+  }
+
+  function TiposDocumentos(){
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_documento/acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaTipoDocumento",
+      },
+      success: function(datos){
+        $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').empty();
+        $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').append(`<option value="0" selected disabled>Seleccione una opción</option>`);
+        if (datos.msj['cantidad_registros'] > 0) {
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').append(`<option value="${datos.msj[i].id}">${datos.msj[i].abreviacion} - ${datos.msj[i].nombre}</option>`);
+          }
+        }
+      },
+      error: function(e){
+        console.log(e);
+        Swal.fire({
+          icon: 'error',
+          html: 'Error al cargar los datos de tipo documento'
+        });
+      }
+    });
+  }
+  
 </script>
 </html>

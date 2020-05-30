@@ -33,9 +33,10 @@ function crearUsuario(){
 
     if ($password == $repassword) {
       $password = encriptarPass($password);
-
-      $id_registro = $db->sentencia("INSERT INTO usuarios (correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", 
-      array(
+      $datos = array(
+        ":fk_tipo_documento" => $_POST["tipo_documento"], 
+        ":nro_documento" => cadena_db_insertar($_POST["nro_documento"]), 
+        ":fk_tipo_persona" => $_POST["tipo_persona"],
         ":correo" => cadena_db_insertar($_POST["correo"]), 
         ":nombres" => cadena_db_insertar($_POST["nombre"]), 
         ":apellidos" => cadena_db_insertar($_POST["apellidos"]), 
@@ -47,7 +48,9 @@ function crearUsuario(){
         ":fecha_creacion" => date('Y-m-d H:i:s'), 
         ":confirmado" => 1, 
         ":fk_creador" => $usuario["id"]
-      ));
+      );
+
+      $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
 
       if ($id_registro > 0) {
         $db->insertLogs("usuarios", $id_registro, "Se crea el usuario {$_POST['correo']}", $usuario["id"]);
@@ -95,13 +98,18 @@ function listaUsuarios(){
   // indexes
   $columns = array(
               array( 'db' => 'u.id',                  'dt' => 'id',                 'field' => 'id' ),
+              array( 'db' => 'u.fk_tipo_documento',   'dt' => 'fk_tipo_documento',  'field' => 'fk_tipo_documento'),
+              array( 'db' => 'td.nombre',             'dt' => 'tipo_documento',     'field' => 'tipo_documento',     'as' => 'tipo_documento'),
+              array( 'db' => 'u.nro_documento',       'dt' => 'nro_documento',      'field' => 'nro_documento' ),
+              array( 'db' => 'u.fk_tipo_persona',     'dt' => 'fk_tipo_persona',    'field' => 'fk_tipo_persona'),
+              array( 'db' => 'tp.nombre',             'dt' => 'tipo_persona',       'field' => 'tipo_persona',       'as' => 'tipo_persona'),
               array( 'db' => 'u.correo',              'dt' => 'correo',             'field' => 'correo' ),
               array( 'db' => 'u.nombres',             'dt' => 'nombres',            'field' => 'nombres' ),
               array( 'db' => 'u.apellidos',           'dt' => 'apellidos',          'field' => 'apellidos' ),
               array( 'db' => 'u.fecha_nacimiento',    'dt' => 'fecha_nacimiento',   'field' => 'fecha_nacimiento' ),
               array( 'db' => 'u.telefono',            'dt' => 'telefono',           'field' => 'telefono' ),
               array( 'db' => 'u.fk_perfil',           'dt' => 'fk_perfil',          'field' => 'fk_perfil' ),
-              array( 'db' => 'p.nombre',              'dt' => 'perfil',             'field' => 'perfil',      'as' => 'perfil'),
+              array( 'db' => 'p.nombre',              'dt' => 'perfil',             'field' => 'perfil',             'as' => 'perfil'),
             );
     
   $sql_details = array(
@@ -111,7 +119,7 @@ function listaUsuarios(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM usuarios AS u INNER JOIN perfiles AS p ON u.fk_perfil = p.id";
+  $joinQuery = "FROM {$table} AS u INNER JOIN perfiles AS p ON u.fk_perfil = p.id INNER JOIN tipo_documento AS td ON u.fk_tipo_documento = td.id INNER JOIN tipo_persona AS tp ON u.fk_tipo_persona = tp.id";
   $extraWhere= "`u`.`estado` = 1";
   $groupBy = "";
   $having = "";
@@ -165,18 +173,21 @@ function editarUsuario(){
 
   if ($datosUsuario != 0) {
 
-    if ($_POST["nombres"] != $datosUsuario['nombres'] || $_POST["apellidos"] != $datosUsuario['apellidos'] || strtotime($_POST["fecha_nacimiento"]) != strtotime($datosUsuario['fecha_nacimiento']) || $_POST["telefono"] != $datosUsuario['telefono'] || $_POST["perfil"] != $datosUsuario['fk_perfil']) {
+    if ($_POST["tipo_persona"] != $datosUsuario['fk_tipo_persona'] || $_POST["tipo_documento"] != $datosUsuario['fk_tipo_documento'] || $_POST["nro_documento"] != $datosUsuario['nro_documento'] || $_POST["correo"] != $datosUsuario['correo'] || $_POST["nombres"] != $datosUsuario['nombres'] || $_POST["apellidos"] != $datosUsuario['apellidos'] || strtotime($_POST["fecha_nacimiento"]) != strtotime($datosUsuario['fecha_nacimiento']) || $_POST["telefono"] != $datosUsuario['telefono'] || $_POST["perfil"] != $datosUsuario['fk_perfil']) {
 
       $datosSQL = array(
-                    ":nombres" => $_POST["nombres"], 
-                    ":apellidos" => $_POST["apellidos"],
-                    ":fecha_nacimiento" => date("Y-m-d", strtotime($_POST["fecha_nacimiento"])),
-                    ":telefono" => $_POST['telefono'],
-                    ":fk_perfil" => $_POST['perfil'],
-                    ":id" => $_POST["id"]
-                  );
+        ":fk_tipo_documento" => $_POST["tipo_documento"],
+        ":nro_documento" => $_POST["nro_documento"],
+        ":fk_tipo_persona" => $_POST["tipo_persona"],
+        ":nombres" => $_POST["nombres"], 
+        ":apellidos" => $_POST["apellidos"],
+        ":fecha_nacimiento" => date("Y-m-d", strtotime($_POST["fecha_nacimiento"])),
+        ":telefono" => $_POST['telefono'],
+        ":fk_perfil" => $_POST['perfil'],
+        ":id" => $_POST["id"]
+      );
 
-      $db->sentencia("UPDATE usuarios SET nombres = :nombres, apellidos = :apellidos, fecha_nacimiento = :fecha_nacimiento, telefono = :telefono, fk_perfil = :fk_perfil WHERE id = :id", $datosSQL);
+      $db->sentencia("UPDATE usuarios SET fk_tipo_documento = :fk_tipo_documento, nro_documento = :nro_documento, fk_tipo_persona = :fk_tipo_persona, nombres = :nombres, apellidos = :apellidos, fecha_nacimiento = :fecha_nacimiento, telefono = :telefono, fk_perfil = :fk_perfil WHERE id = :id", $datosSQL);
   
       $db->insertLogs("usuarios", $_POST["id"], "Se edita el usuario {$_POST['correo']}", $usuario["id"]);
   
