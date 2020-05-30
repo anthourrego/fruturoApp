@@ -68,9 +68,11 @@ function lista(){
   $columns = array(
               array( 'db' => '`c`.`id`',                    'dt' => 'id',              'field' => 'id' ),
               array( 'db' => '`p`.`nombre`',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => '`t`.`nombre`',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => '`c`.`hectareas`',             'dt' => 'hectareas',       'field' => 'hectareas' ),
+              array( 'db' => '`f`.`nombre`',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
+              array( 'db' => '`c`.`volumen_total`',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
               array( 'db' => '`c`.`precio`',                'dt' => 'precio',          'field' => 'precio'),
+              array( 'db' => '`c`.`fecha_inicio`',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
+              array( 'db' => '`c`.`fecha_final`',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
               array( 'db' => '`c`.`fecha_creacion`',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
             );
     
@@ -81,7 +83,7 @@ function lista(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM `{$table}` AS `c` INNER JOIN `productos` AS `p` ON `c`.`fk_producto` = `p`.id INNER JOIN `terrenos` AS `t` ON `c`.`fk_finca` = `t`.`id`";
+  $joinQuery = "FROM `{$table}` AS `c` INNER JOIN `productos` AS `p` ON `c`.`fk_producto` = `p`.id INNER JOIN `fincas` AS `f` ON `c`.`fk_finca` = `f`.`id`";
   $extraWhere= "`c`.`estado` = 1 AND `c`.`fk_creador` = " . $usuario["id"];
   $groupBy = "";
   $having = "";
@@ -98,15 +100,17 @@ function crear(){
   $datos = array(
     ":fk_producto" => $_POST["producto"],
     ":fk_finca" => $_POST['terreno'],
-    ":hectareas" => $_POST["hectareas"],
+    ":volumen_total" => $_POST["volumen_total"],
     ":precio" => $_POST["precio"],
+    ":fecha_inicio" => date("Y-m-d", strtotime($_POST["fecha_inicio"])),
+    ":fecha_final" => date("Y-m-d", strtotime($_POST["fecha_fin"])),
     ":estado" => 1,
     ":fecha_creacion" => date('Y-m-d H:i:s'),
     ":fk_creador" => $usuario['id']
 
   );
 
-  $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_finca, hectareas, precio, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_finca, :hectareas, :precio, :estado, :fecha_creacion, :fk_creador)", $datos);
+  $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_finca, volumen_total, precio, fecha_inicio, fecha_final, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_finca, :volumen_total, :precio, :fecha_inicio, :fecha_final, :estado, :fecha_creacion, :fk_creador)", $datos);
 
   if ($id_registro > 0) {
     $db->insertLogs("cosechas", $id_registro, "Se crea la cosecha", $usuario["id"]);

@@ -44,10 +44,10 @@
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12">
-          <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Cosechas</h1>
+          <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Ofertar Cosechas</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -56,10 +56,10 @@
 
   <!-- Main content -->
   <section class="content">
-    <div class="container">
+    <div class="container-fluid">
       <div class="card">
         <div class="card-header d-flex justify-content-end">
-          <button class="btn btn-success btnCrear" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
+          <button class="btn btn-success btnCrear" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i> Crear oferta</button>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -69,8 +69,10 @@
                 <th scope="col">Id</th>
                 <th scope="col">Producto</th>
                 <th scope="col">Finca</th>
-                <th scope="col">Hectareas</th>
+                <th scope="col">Volumen total</th>
                 <th scope="col">Precio</th>
+                <th scope="col">Inicio cosecha</th>
+                <th scope="col">Fin cosecha</th>
                 <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -96,23 +98,31 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="producto">Producto <span class="text-danger">*</span></label>
-              <select class="custom-select" name="producto">
+              <select class="custom-select" required name="producto">
                 <option value="0" disabled selected>Seleccion un opción</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="terreno">Finca o terreno <span class="text-danger">*</span></label>
-              <select class="custom-select" name="terreno">
+              <label for="terreno">Finca <span class="text-danger">*</span></label>
+              <select class="custom-select" required name="terreno">
                 <option value="0" disabled selected>Seleccion un opción</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="hectareas">Hectareas <span class="text-danger">*</span></label>
-              <input type="tel" name="hectareas" class="form-control" placeholder="Escriba el número de hectareas" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+              <label for="fecha_inicio">Fecha de inicio de la cosacha <span class="text-danger">*</span></label>
+              <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
             </div>
             <div class="form-group">
-              <label for="precio">Precio <span class="text-danger">*</span></label>
-              <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+              <label for="fecha_fin">Fecha de fin de la cosacha <span class="text-danger">*</span></label>
+              <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="volumen_total">Volumen total en Kilogramos <span class="text-danger">*</span></label>
+              <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="precio">Precio por kilogramos <span class="text-danger">*</span></label>
+              <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -129,7 +139,9 @@
 ?>
 <script>
   $(function(){
-    $('[data-toggle="tooltip"]').tooltip();
+    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd"});
+    $("#formCrear :input[name='fecha_inicio']").val(moment().format("YYYY-MM-DD"));
+    $("#formCrear :input[name='fecha_fin']").val(moment().format("YYYY-MM-DD"));
 
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){
@@ -141,7 +153,7 @@
 
     //Se cargan los departamentos
     $.ajax({
-      url: '../../productos/acciones',
+      url: '<?php echo($ruta_raiz) ?>modulos/productos/acciones',
       type: 'POST',
       dataType: 'json',
       data: {
@@ -173,7 +185,7 @@
 
     //Se cargan los terrenos
     $.ajax({
-      url: '../terrenos/acciones',
+      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
       type: 'POST',
       dataType: 'json',
       data: {
@@ -281,34 +293,22 @@
             accion: 'lista'
           },
           complete: function(){
-            $('[data-toggle="tooltip"]').tooltip('hide');
-            $('[data-toggle="tooltip"]').tooltip();
             cerrarCargando();
           }
       },
       columns: [
-          {
-            data: "id"
-          },
-          {
-            data: "producto"
-          },
-          {
-            data: "finca"
-          },
-          {
-            data: "hectareas"
-          },
-          {
-            data: "precio"
-          },
-          {
-            data: "fecha_creacion"
-          },
+          { data: "id" },
+          { data: "producto" },
+          { data: "finca" },
+          { data: "volumen_total" },
+          { data: "precio" },
+          { data: "fecha_inicio" },
+          { data: "fecha_final" },
+          { data: "fecha_creacion" },
           {
             "render": function (nTd, sData, oData, iRow, iCol) {
               return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Cancelar"><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
                       </div>`;
             }
           }
@@ -332,7 +332,7 @@
 
   function eliminar(datos){
     Swal.fire({
-      title: "¿Estas seguro de eliminar la oferta?",
+      title: "¿Estas seguro de cancelar la oferta?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -356,14 +356,14 @@
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha eliminado",
+                title: "Se ha cancelado",
                 showConfirmButton: false,
                 timer: 5000
               });
             }else{
               Swal.fire({
                 icon: 'warning',
-                html: "Error al eliminar"
+                html: "Error al cancelar"
               })
             }
           },
