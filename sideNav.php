@@ -34,7 +34,7 @@ $usuario = $session->get("usuario");
   <div class="sidebar">
     <!-- Sidebar Menu -->
     <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" id="modulos" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" id="modulos" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
       </ul>

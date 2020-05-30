@@ -163,7 +163,7 @@
     if (localStorage.moduloActual<?php echo(PROYECTO) ?> != null) {
       $(".link").removeClass("active");
       $('.modulo' + localStorage.moduloActual<?php echo(PROYECTO) ?>).addClass("active");
-      /* $(".modulo" + $('.modulo' + localStorage.moduloActual<?php echo(PROYECTO) ?>).data("modulopadre")).addClass("active"); */
+      $(".modulo" + $('.modulo' + localStorage.moduloActual<?php echo(PROYECTO) ?>).data("modulopadre")).addClass("active");
       $('#tituloPagina').html(localStorage.moduloActual<?php echo(PROYECTO) ?> + ' | LavaSecoExprex');
     }
 
