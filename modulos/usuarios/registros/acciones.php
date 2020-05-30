@@ -188,7 +188,7 @@ function editarUsuario(){
     }
   }else{
     $resp["success"] = false;
-    $resp["msj"] = "El usuario no es valido";
+    $resp["msj"] = "El usuario no es válido";
   }
 
 

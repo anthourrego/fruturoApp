@@ -109,7 +109,6 @@ function editar(){
 
   if ($datosActuales != 0) {
     if (validarNombre(cadena_db_insertar($_POST['nombre']), $_POST["id"]) == 0) {
-      # code...
       if ($_POST["nombre"] != $datosActuales['nombre']) {
   
         $datosSQL = array(
@@ -132,7 +131,7 @@ function editar(){
     }
   }else{
     $resp["success"] = false;
-    $resp["msj"] = "El usuario no es valido";
+    $resp["msj"] = "El tipo persona no es válido";
   }
 
 

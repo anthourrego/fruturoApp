@@ -166,7 +166,7 @@ function editar(){
 
   }else{
     $resp["success"] = false;
-    $resp["msj"] = "El usuario no es valido";
+    $resp["msj"] = "El tipo de documento no es válido";
   }
 
 

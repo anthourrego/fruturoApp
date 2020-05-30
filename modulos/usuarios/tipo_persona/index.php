@@ -239,7 +239,7 @@
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha inhabilitar el tipo documento " + datos['nombre'],
+                title: "Se ha inhabilitado el tipo documento " + datos['nombre'],
                 showConfirmButton: false,
                 timer: 5000
               });
