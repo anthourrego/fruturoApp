@@ -37,11 +37,11 @@
     <div class="container">
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        <div class="col-lg-3 col-6">
+        <div class="col-12 col-md-6 col-lg-4">
           <!-- small box -->
-          <a class="small-box bg-info d-flex align-items-center" style="min-height: 110px" href="terrenos">
+          <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="fincas">
             <div class="inner">
-              <h3>Terrenos</h3>
+              <h4>Registrar finca</h4>
             </div>
             <div class="icon">
               <i class="fas fa-mountain"></i>
@@ -49,14 +49,26 @@
           </a>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-6">
+        <div class=" col-12 col-md-6 col-lg-4">
           <!-- small box -->
-          <a class="small-box bg-success d-flex align-items-center" style="min-height: 110px" href="cosechas">
+          <a class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="cosechas">
             <div class="inner">
-              <h3>Cosechas</h3>
+              <h4>Ofertar Cosecha</h4>
             </div>
             <div class="icon">
               <i class="far fa-lemon"></i>
+            </div>
+          </a>
+        </div>
+        <!-- ./col -->
+        <div class=" col-12 col-md-6 col-lg-4">
+          <!-- small box -->
+          <a class="small-box bg-danger d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="javascript:top.cerrarSesion();">
+            <div class="inner">
+              <h4>Cerrar Sesión</h4>
+            </div>
+            <div class="icon">
+            <i class="fas fa-sign-in-alt"></i>
             </div>
           </a>
         </div>
