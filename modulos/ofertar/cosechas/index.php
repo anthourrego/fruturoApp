@@ -228,7 +228,7 @@
       serverSide: true,
       pageLength: 25,
       language: {
-        url: "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
       ajax: {
           url: "acciones",

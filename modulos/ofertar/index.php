@@ -35,6 +35,9 @@
 <body>
   <section class="content mt-5">
     <div class="container">
+      <div class="alert alert-warning" role="alert">
+        Para poder ofertar tu cosecha primero debes de crear una finca
+      </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">

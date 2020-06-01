@@ -105,16 +105,31 @@
             <div class="form-group">
               <label for="municipio">Municipio <span class="text-danger">*</span></label>
               <select class="custom-select" name="municipio" required>
-                <option value="0" selected disabled>Seleccione un opción</option>
+                <option value="" selected disabled>Seleccione un opción</option>
               </select>
+            </div>
+            <div class="form-group">
+              <label for="hectareas">Hectáreas Sembradas <span class="text-danger">*</span></label>
+              <input type="number" min="1" name="hectareas" class="form-control" placeholder="Número de hectáreas sembradas" required autocomplete="off" onKeyPress="return soloNumeros(event)">
+            </div>
+            <div class="form-group">
+              <label for="direccion">Predio exportador <span class="text-danger">*</span></label> <br>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="predio_exportador" name="predio_exportador" value="1" required class="custom-control-input">
+                <label class="custom-control-label" for="predio_exportador">Si</label>
+              </div>
+              <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="predio_exportador2" name="predio_exportador" value="0" required class="custom-control-input">
+                <label class="custom-control-label" for="predio_exportador2">No</label>
+              </div>
+            </div>
+            <div class="form-group d-none" id="registro_ica">
+              <label for="nombre">Registro ICA <span class="text-danger">*</span></label>
+              <input type="text" name="registro_ica" class="form-control" placeholder="Escriba el registro del ICA" disabled required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="direccion">Dirección <span class="text-danger">*</span></label>
               <textarea class="form-control" required name="direccion" rows="3" placeholder="Escriba una dirección"></textarea>
-            </div>
-            <div class="form-group">
-              <label for="hectareas">Hectareas Sembradas <span class="text-danger">*</span></label>
-              <input type="text" name="hectareas" class="form-control" placeholder="Número de hectareas sembradas" required autocomplete="off" onKeyPress="return soloNumeros(event)">
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -138,6 +153,17 @@
       $("#modalCrear").modal("show");
     });
 
+    //Validamos el check del predio exportador para habilitar el campo del registro
+    $("#formCrear :input[name='predio_exportador']").on("click", function(){
+      let predio_exportado = $(this).val();
+      if (predio_exportado == 1) {
+        $("#registro_ica").removeClass("d-none");
+        $("#formCrear :input[name='registro_ica']").removeAttr("disabled");
+      } else {
+        $("#registro_ica").addClass("d-none");
+        $("#formCrear :input[name='registro_ica']").attr("disabled", true);
+      }
+    });
 
     //Se cargan los departamentos
     $.ajax({
@@ -173,38 +199,40 @@
 
     $(document).on("change", "#formCrear :input[name='departamento']", function(){
       $("#formCrear :input[name='municipio']").attr("disabled", false);
-      $.ajax({
-        url: 'acciones',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          accion: "municipios",
-          departamento: $(this).val()
-        },
-        success: function(data){
-          console.log(data);
-          if (data.success) {
-            $("#formCrear :input[name='municipio']").empty();
-            $("#formCrear :input[name='municipio']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
-            for (let i = 0; i < data.msj.cantidad_registros; i++) {
-              $("#formCrear :input[name='municipio']").append(`
-                <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
-              `);
+      $("#formCrear :input[name='municipio']").empty();
+      $("#formCrear :input[name='municipio']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+
+      if ($(this).val() != 0) {  
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "municipios",
+            departamento: $(this).val()
+          },
+          success: function(data){
+            if (data.success) {
+              for (let i = 0; i < data.msj.cantidad_registros; i++) {
+                $("#formCrear :input[name='municipio']").append(`
+                  <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+                `);
+              }
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: data.msj
+              })
             }
-          }else{
+          },
+          error: function(){
             Swal.fire({
-              icon: 'warning',
-              html: data.msj
+              icon: 'error',
+              html: 'No se han enviado los datos'
             })
           }
-        },
-        error: function(){
-          Swal.fire({
-            icon: 'error',
-            html: 'No se han enviado los datos'
-          })
-        }
-      });
+        });
+      }
     });
 
     $("#formCrear").submit(function(event){
@@ -228,6 +256,10 @@
             if (data.success) {
               $("#tabla").DataTable().ajax.reload();
               $("#formCrear")[0].reset();
+              $("#formCrear :input[name='departamento']")[0].selectedIndex = 0;
+              $("#formCrear :input[name='municipio']")[0].selectedIndex = 0;
+              $("#registro_ica").addClass("d-none");
+              $("#formCrear :input[name='registro_ica']").attr("disabled", true);
               $("#formCrear :input").removeClass("is-valid");
               $("#formCrear :input").removeClass("is-invalid");
               $("#modalCrear").modal("hide");
@@ -275,7 +307,7 @@
       serverSide: true,
       pageLength: 25,
       language: {
-        url: "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+        url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
       ajax: {
           url: "acciones",

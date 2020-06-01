@@ -96,25 +96,37 @@ function crear(){
   $resp['success'] = false;
 
   if (validarNombre(cadena_db_insertar($_POST["nombre"])) == 0) {
-    $datos = array(
-      ":nombre" => cadena_db_insertar($_POST["nombre"]),
-      ":fk_municipio" => $_POST['municipio'],
-      ":direccion" => cadena_db_insertar($_POST["direccion"]),
-      ":fk_usuario" => $usuario["id"],
-      ":fecha_creacion" => date('Y-m-d H:i:s'),
-      ":estado" => 1
-    );
+    if ($_POST['hectareas'] > 0) {
+      $registro_ica = NULL;
 
-    $id_registro = $db->sentencia("INSERT INTO fincas (nombre, fk_municipio, direccion, fk_usuario, fecha_creacion, estado) VALUES (:nombre, :fk_municipio, :direccion, :fk_usuario, :fecha_creacion, :estado)", $datos);
+      if (@$_POST['registro_ica']) {
+        $registro_ica = $_POST['registro_ica'];
+      }
 
-    if ($id_registro > 0) {
-      $db->insertLogs("fincas", $id_registro, "Se crea la finca {$_POST['nombre']}", $usuario["id"]);
-      $resp['success'] = true;
-      $resp['msj'] = 'Se ha creado correctamente.';
+      $datos = array(
+        ":nombre" => cadena_db_insertar($_POST["nombre"]),
+        ":fk_municipio" => $_POST['municipio'],
+        ":direccion" => cadena_db_insertar($_POST["direccion"]),
+        ":fk_usuario" => $usuario["id"],
+        ":fecha_creacion" => date('Y-m-d H:i:s'),
+        ":estado" => 1,
+        ":predio_exportador" => $_POST["predio_exportador"],
+        ":registro_ica" => $registro_ica,
+        ":hectareas" => $_POST['hectareas']
+      );
+  
+      $id_registro = $db->sentencia("INSERT INTO fincas (nombre, fk_municipio, direccion, hectareas, fk_usuario, fecha_creacion, estado, predio_exportador, registro_ica) VALUES (:nombre, :fk_municipio, :direccion, :hectareas, :fk_usuario, :fecha_creacion, :estado, :predio_exportador, :registro_ica)", $datos);
+  
+      if ($id_registro > 0) {
+        $db->insertLogs("fincas", $id_registro, "Se crea la finca {$_POST['nombre']}", $usuario["id"]);
+        $resp['success'] = true;
+        $resp['msj'] = 'Se ha creado correctamente.';
+      } else {
+        $resp['msj'] = 'Error al realizar el registro.';
+      }
     } else {
-      $resp['msj'] = 'Error al realizar el registro.';
+      $resp["msj"] = "La hectáreas deben ser mayor a 0";
     }
-
   }else{
     $resp['msj'] = 'El nombre <b>' . $_REQUEST["nombre"] . '</b> ya se encuentra en uso.';
   }
@@ -203,17 +215,15 @@ function editar(){
   $datos = datos($_POST["id"]);
 
   if ($datos != 0) {
-
     if (validarNombre(cadena_db_insertar($_POST['certificado']), $_POST["id"]) == 0) {
-      # code...
       if ($_POST["certificado"] != $datos['nombre'] || @$_POST['descripcion'] != $datos['descripcion']) {
   
         $datosSQL = array(
-                      ":nombre" => $_POST["certificado"],
-                      ":descripcion" => @$_POST['descripcion'],
-                      ":id" => $_POST["id"]
-                    );
-  
+          ":nombre" => $_POST["certificado"],
+          ":descripcion" => @$_POST['descripcion'],
+          ":id" => $_POST["id"]
+        );
+
         $db->sentencia("UPDATE certificaciones SET nombre = :nombre, descripcion = :descripcion WHERE id = :id", $datosSQL);
     
         $db->insertLogs("certificaciones", $_POST["id"], "Se edita el certificado {$_POST['certificado']}", $usuario["id"]);
