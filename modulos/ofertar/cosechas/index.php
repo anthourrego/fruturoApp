@@ -124,6 +124,10 @@
               <label for="precio">Precio por kilogramos <span class="text-danger">*</span></label>
               <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
             </div>
+            <div class="form-group">
+              <label for="certificados">Certificados:</label>
+              <div id="certificados" class="row"></div>
+            </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
@@ -148,71 +152,6 @@
       $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear oferta cosecha`);
       $("#formCrear :input[name='accion']").val('crear');
       $("#modalCrear").modal("show");
-    });
-
-
-    //Se cargan los departamentos
-    $.ajax({
-      url: '<?php echo($ruta_raiz) ?>modulos/productos/acciones',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        accion: "listaProdcutos"
-      },
-      success: function(data){
-        if (data.success) {
-          $("#formCrear :input[name='producto']").empty();
-          $("#formCrear :input[name='producto']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
-          for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#formCrear :input[name='producto']").append(`
-              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
-            `);
-          }
-        }else{
-          Swal.fire({
-            icon: 'warning',
-            html: data.msj
-          })
-        }
-      },
-      error: function(){
-        Swal.fire({
-          icon: 'error',
-          html: 'No se han enviado los datos'
-        })
-      }
-    });
-
-    //Se cargan los terrenos
-    $.ajax({
-      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        accion: "tusTerrenos"
-      },
-      success: function(data){
-        if (data.success) {
-          $("#formCrear :input[name='terreno']").empty();
-          $("#formCrear :input[name='terreno']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
-          for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#formCrear :input[name='terreno']").append(`
-              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
-            `);
-          }
-        }else{
-          Swal.fire({
-            icon: 'warning',
-            html: data.msj
-          })
-        }
-      },
-      error: function(){
-        Swal.fire({
-          icon: 'error',
-          html: 'No se han enviado los datos'
-        })
-      }
     });
 
     $("#formCrear").submit(function(event){
@@ -275,7 +214,13 @@
       }
     });
 
+    lista();
+    listaTerrenos();
+    listaProductos();
+    checkCertificaciones();
+  });
 
+  function lista(){
     $("#tabla").DataTable({
       stateSave: true,
       responsive: true,
@@ -328,7 +273,75 @@
         [0, "asc"]
       ], //Ordenar (columna,orden)
     });
-  });
+  }
+
+  function listaTerrenos(){
+    //Se cargan los terrenos
+    $.ajax({
+      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "tusTerrenos"
+      },
+      success: function(data){
+        if (data.success) {
+          $("#formCrear :input[name='terreno']").empty();
+          $("#formCrear :input[name='terreno']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+          for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $("#formCrear :input[name='terreno']").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);
+          }
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+  }
+
+  function listaProductos(){
+    //Se cargan los productos
+    $.ajax({
+      url: '<?php echo($ruta_raiz) ?>modulos/productos/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "listaProdcutos"
+      },
+      success: function(data){
+        if (data.success) {
+          $("#formCrear :input[name='producto']").empty();
+          $("#formCrear :input[name='producto']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+          for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $("#formCrear :input[name='producto']").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);
+          }
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+  }
 
   function eliminar(datos){
     Swal.fire({
@@ -374,6 +387,44 @@
             })
           }
         });
+      }
+    });
+  }
+
+  function checkCertificaciones(){
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/certificados/acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "listaCertificados"
+      },
+      success: function(data){
+        if (data.success) {
+          console.log(data);
+          $('#certificados').empty();
+          for (let i = 0; i < data.msj['cantidad_registros']; i++) {
+            $('#certificados').append(`
+              <div class="col-12 col-lg-6">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" name="certificado[]" class="custom-control-input" value="${data.msj[i].id}" id="certificado${data.msj[i].id}">
+                  <label class="custom-control-label" for="certificado${data.msj[i].id}">${data.msj[i].nombre}</label>
+                </div>
+              </div>
+            `);
+          }
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(data){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
       }
     });
   }

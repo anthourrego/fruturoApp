@@ -31,7 +31,7 @@
     echo $lib->metaTagsRequired();
     echo $lib->iconoPag();
   ?>  
-  <title>Consumer Electronics Group S.A.S</title>
+  <title>Fruturo App</title>
 
   <?php  
     echo $lib->jquery();

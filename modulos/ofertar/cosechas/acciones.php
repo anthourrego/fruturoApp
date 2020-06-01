@@ -114,6 +114,23 @@ function crear(){
 
   if ($id_registro > 0) {
     $db->insertLogs("cosechas", $id_registro, "Se crea la cosecha", $usuario["id"]);
+
+    if (@$_POST["certificado"]) {
+      
+      foreach ($_POST["certificado"] as $certificado) {
+        $datos_certi = array(
+          ":fk_cosecha" => $id_registro, 
+          ":fk_certificacion" => $certificado, 
+          ":fecha_creacion" => date("Y-m-d"), 
+          ":fk_creador" => $usuario["id"]
+        );
+        $id_registro_certi = $db->sentencia("INSERT INTO cosechas_certificaciones (fk_cosecha, fk_certificacion, fecha_creacion, fk_creador) VALUES (:fk_cosecha, :fk_certificacion, :fecha_creacion, :fk_creador)", $datos_certi);
+
+        $db->insertLogs("cosechas_certificaciones", $id_registro_certi, "Se crea la cosecha con el certificado", $usuario["id"]);
+      }
+
+    }
+
     $resp['success'] = true;
     $resp['msj'] = 'Se ha creado correctamente.';
   } else {
