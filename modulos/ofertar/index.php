@@ -36,7 +36,14 @@
   <section class="content mt-5">
     <div class="container">
       <div class="alert alert-warning" role="alert">
-        Para poder ofertar tu cosecha primero debes de crear una finca
+        Para realizar una oferta de una cosecha:
+        <ol>
+          <li>Ingrear a registrar finca.</li>
+          <li>Crear o registrar una finca.</li>
+          <li>Ingresar a ofertar cosecha.</li>
+          <li>Crear una oferta de cosecha del producto deseado.</li>
+          <li>Esperar una respuesta de la oferta realizada.</li>
+        </ol>
       </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">

@@ -91,7 +91,6 @@
         </div>
         <form id="formCrear" autocomplete="off">
           <input type="hidden" name="accion" value="crear">
-          <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
               <label for="nombre">Nombre del terreno o finca <span class="text-danger">*</span></label>
@@ -132,7 +131,7 @@
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+            <button id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
             <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
           </div>
         </form>
@@ -147,7 +146,13 @@
   $(function(){
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){
+      $("#formCrear :input").removeAttr("disabled", true);
+      $("#formCrear")[0].reset();
+      $("#formCrear :input[name='departamento']")[0].selectedIndex = 0;
+      $("#formCrear :input[name='municipio']")[0].selectedIndex = 0;
+      $("#registro_ica").addClass("d-none");
       $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear finca`);
+      $("#btnCrear").removeClass("d-none");
       $("#formCrear :input[name='accion']").val('crear');
       $("#modalCrear").modal("show");
     });
@@ -155,6 +160,7 @@
     //Validamos el check del predio exportador para habilitar el campo del registro
     $("#formCrear :input[name='predio_exportador']").on("click", function(){
       let predio_exportado = $(this).val();
+      console.log(predio_exportado);
       if (predio_exportado == 1) {
         $("#registro_ica").removeClass("d-none");
         $("#formCrear :input[name='registro_ica']").removeAttr("disabled");
@@ -236,7 +242,7 @@
 
     $("#formCrear").submit(function(event){
       event.preventDefault();
-      if($("#formCrear").valid()){
+      if($("#formCrear").valid() && $("#formCrear :input[name='accion']").val() != 0){
         $.ajax({
           type: "POST",
           url: "acciones",
@@ -396,7 +402,26 @@
   }
 
   function ver(datos){
-    console.log(datos);
+    $("#formCrear :input").removeAttr("disabled", true);
+    $("#tituloModal").html(`<i class="far fa-eye"></i> Ver | ${datos.nombre}`);
+    $("#formCrear :input[name='accion']").val(0);
+    $("#formCrear :input[name='nombre']").val(datos.nombre);
+    $("#formCrear :input[name='departamento']").val(datos.fk_departamento);
+    $("#formCrear :input[name='departamento']").change();
+    $("#formCrear :input[name='municipio']").val(datos.fk_municipio);
+    $("#formCrear :input[name='hectareas']").val(datos.hectareas);
+    $("#formCrear :input[name='registro_ica']").val(datos.registro_ica);
+    $("#formCrear :input[name='direccion']").val(datos.direccion);
+    if (datos.predio_exportador == 1) {
+      $("#predio_exportador").click();
+    } else {
+      $("#predio_exportador2").click();
+    }
+
+    $("#formCrear :input").attr("disabled", true);
+    $("#btnCerrar").removeAttr("disabled");
+    $("#btnCrear").addClass("d-none");
+    $("#modalCrear").modal("show");
   }
 </script>
 </html>

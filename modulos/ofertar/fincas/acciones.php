@@ -66,12 +66,16 @@ function lista(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => '`f`.`id`',                    'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => '`f`.`nombre`',                'dt' => 'nombre',          'field' => 'nombre' ),
-              array( 'db' => '`m`.`nombre`',                'dt' => 'municipio',       'field' => 'municipio', 'as' => 'municipio' ),
-              array( 'db' => '`f`.`direccion`',             'dt' => 'direccion',       'field' => 'direccion' ),
-              array( 'db' => '`f`.`hectareas`',             'dt' => 'hectareas',       'field' => 'hectareas' ),
-              array( 'db' => '`f`.`fecha_creacion`',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
+              array( 'db' => '`f`.`id`',                    'dt' => 'id',                  'field' => 'id' ),
+              array( 'db' => '`f`.`nombre`',                'dt' => 'nombre',              'field' => 'nombre' ),
+              array( 'db' => '`f`.`fk_municipio`',          'dt' => 'fk_municipio',        'field' => 'fk_municipio' ),
+              array( 'db' => '`m`.`nombre`',                'dt' => 'municipio',           'field' => 'municipio', 'as' => 'municipio' ),
+              array( 'db' => '`m`.`fk_departamento`',       'dt' => 'fk_departamento',     'field' => 'fk_departamento' ),
+              array( 'db' => '`f`.`direccion`',             'dt' => 'direccion',           'field' => 'direccion' ),
+              array( 'db' => '`f`.`hectareas`',             'dt' => 'hectareas',           'field' => 'hectareas' ),
+              array( 'db' => '`f`.`predio_exportador`',     'dt' => 'predio_exportador',   'field' => 'predio_exportador' ),
+              array( 'db' => '`f`.`registro_ica`',          'dt' => 'registro_ica',        'field' => 'registro_ica' ),
+              array( 'db' => '`f`.`fecha_creacion`',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion')
             );
     
   $sql_details = array(
