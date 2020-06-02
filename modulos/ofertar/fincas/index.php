@@ -66,7 +66,6 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Municipio</th>
                 <th scope="col">Dirección</th>
@@ -105,7 +104,7 @@
             <div class="form-group">
               <label for="municipio">Municipio <span class="text-danger">*</span></label>
               <select class="custom-select" name="municipio" required>
-                <option value="" selected disabled>Seleccione un opción</option>
+                <option value="" selected disabled>Seleccione una opción</option>
               </select>
             </div>
             <div class="form-group">
@@ -176,7 +175,7 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='departamento']").empty();
-          $("#formCrear :input[name='departamento']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+          $("#formCrear :input[name='departamento']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='departamento']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
@@ -200,7 +199,7 @@
     $(document).on("change", "#formCrear :input[name='departamento']", function(){
       $("#formCrear :input[name='municipio']").attr("disabled", false);
       $("#formCrear :input[name='municipio']").empty();
-      $("#formCrear :input[name='municipio']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+      $("#formCrear :input[name='municipio']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
 
       if ($(this).val() != 0) {  
         $.ajax({
@@ -299,13 +298,18 @@
       }
     });
 
+    listar();
+  });
+
+  function listar(){
 
     $("#tabla").DataTable({
-      stateSave: true,
+      stateSave: false,
       responsive: true,
       processing: true,
       serverSide: true,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 10,
       language: {
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
@@ -321,36 +325,26 @@
           }
       },
       columns: [
-          { data: "id" },
-          { data: "nombre" },
-          { data: "municipio" },
-          { data: "direccion" },
-          { data: "hectareas" },
-          { data: "fecha_creacion" },
-          {
-            "render": function (nTd, sData, oData, iRow, iCol) {
-              return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Eliminar</button>
-                      </div>`;
-            }
+        { data: "nombre" },
+        { data: "municipio" },
+        { data: "direccion" },
+        { data: "hectareas" },
+        { data: "fecha_creacion" },
+        {
+          "render": function (nTd, sData, oData, iRow, iCol) {
+            return `<div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-primary btn-sm mx-1" onClick='ver(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
+                      <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Eliminar</button>
+                    </div>`;
           }
-      ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
         }
       ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10', '25', '50', 'Todo' ]
+      ],
     });
-  });
+  };
 
   function eliminar(datos){
     Swal.fire({
@@ -399,6 +393,10 @@
         });
       }
     });
+  }
+
+  function ver(datos){
+    console.log(datos);
   }
 </script>
 </html>

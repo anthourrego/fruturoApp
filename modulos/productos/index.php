@@ -70,7 +70,6 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Creador</th>
                 <th scope="col">Fecha creación</th>
@@ -208,11 +207,12 @@
 
 
     $("#tabla").DataTable({
-      stateSave: true,
+      stateSave: false,
       responsive: true,
       processing: true,
       serverSide: true,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 10,
       language: {
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
@@ -230,41 +230,32 @@
           }
       },
       columns: [
-          {
-            data: "id"
-          },
-          {
-            data: "nombre"
-          },
-          {
-            data: "creador"
-          },
-          {
-            data: "fecha_creacion"
-          },
-          {
-            "render": function (nTd, sData, oData, iRow, iCol) {
-              return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-producto='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                      </div>`;
-            }
+        { data: "nombre" },
+        { data: "creador" },
+        { data: "fecha_creacion" },
+        {
+          "render": function (nTd, sData, oData, iRow, iCol) {
+            return `<div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-producto='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
+                      <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    </div>`;
           }
-      ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
         }
       ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
+      dom: 'Bfrtip',
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10 registros', '25 registros', '50 registros', 'Mostrar todo' ]
+      ],
+      buttons: [
+        'pageLength',
+        {
+          extend: 'excelHtml5',
+          autoFilter: true,
+        },
+        'pdf',
+        'colvis'
+      ]
     });
   });
 

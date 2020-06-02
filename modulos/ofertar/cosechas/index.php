@@ -66,7 +66,6 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Producto</th>
                 <th scope="col">Finca</th>
                 <th scope="col">Volumen total</th>
@@ -109,11 +108,11 @@
               </select>
             </div>
             <div class="form-group">
-              <label for="fecha_inicio">Fecha de inicio de la cosacha <span class="text-danger">*</span></label>
+              <label for="fecha_inicio">Fecha de inicio de la cosecha <span class="text-danger">*</span></label>
               <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
             </div>
             <div class="form-group">
-              <label for="fecha_fin">Fecha de fin de la cosacha <span class="text-danger">*</span></label>
+              <label for="fecha_fin">Fecha de fin de la cosecha <span class="text-danger">*</span></label>
               <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
             </div>
             <div class="form-group">
@@ -222,11 +221,12 @@
 
   function lista(){
     $("#tabla").DataTable({
-      stateSave: true,
+      stateSave: false,
       responsive: true,
       processing: true,
       serverSide: true,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 10,
       language: {
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
@@ -242,7 +242,6 @@
           }
       },
       columns: [
-          { data: "id" },
           { data: "producto" },
           { data: "finca" },
           { data: "volumen_total" },
@@ -258,20 +257,10 @@
             }
           }
       ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
-        }
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10', '25', '50', 'Todo' ]
       ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
     });
   }
 
@@ -287,7 +276,7 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='terreno']").empty();
-          $("#formCrear :input[name='terreno']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+          $("#formCrear :input[name='terreno']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='terreno']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
@@ -321,7 +310,7 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='producto']").empty();
-          $("#formCrear :input[name='producto']").append(`<option value="0" selected disabled>Seleccione un opción</option>`);
+          $("#formCrear :input[name='producto']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='producto']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>

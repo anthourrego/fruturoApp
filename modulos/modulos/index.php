@@ -89,7 +89,7 @@
                 <label for="modulo-tipo" class="col-12 col-lg-4">Tipo Módulo <span class="text-danger">*</span>:</label>
                 <div class="col-12 col-lg-8">
                   <select class="custom-select tipoModulo" name="modulo-tipo" disabled required>
-                    <option value='0' disabled selected>Seleccione un opción</option>
+                    <option value='0' disabled selected>Seleccione una opción</option>
                   </select>
                 </div>
               </div>
@@ -150,7 +150,7 @@
             <div class="form-group">
               <label for="modulo-tipo">Tipo Módulo <span class="text-danger">*</span></label>
               <select class="custom-select tipoModulo" name="modulo-tipo" required>
-                <option value='0' disabled selected>Seleccione un opción</option>
+                <option value='0' disabled selected>Seleccione una opción</option>
               </select>
             </div>
             <div class="form-group">
@@ -224,7 +224,7 @@
         if (data.success) {
           $(`.tipoModulo`).empty();
           $(`.tipoModulo`).append(`
-            <option value="0" disabled selected>Seleccione un opción</option>
+            <option value="0" disabled selected>Seleccione una opción</option>
           `);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $(`.tipoModulo`).append(`

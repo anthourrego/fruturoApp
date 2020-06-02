@@ -72,7 +72,6 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Creador</th>
                 <th scope="col">Fecha creación</th>
@@ -263,11 +262,12 @@
 
   function listaTabla(){
     $("#tabla").DataTable({
-      stateSave: true,
+      stateSave: false,
       responsive: true,
       processing: true,
       serverSide: true,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 10,
       language: {
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
@@ -285,7 +285,6 @@
           }
       },
       columns: [
-        { data: "id" },
         { data: "nombre" },
         { data: "creador" },
         { data: "fecha_creacion"},
@@ -298,20 +297,20 @@
           }
         }
       ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
-        }
+      dom: 'Bfrtip',
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10 registros', '25 registros', '50 registros', 'Mostrar todo' ]
       ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
+      buttons: [
+        'pageLength',
+        {
+          extend: 'excelHtml5',
+          autoFilter: true,
+        },
+        'pdf',
+        'colvis'
+      ]
     });
   }
 </script>

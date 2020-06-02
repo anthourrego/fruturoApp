@@ -70,7 +70,6 @@
           <table id="tablaUsuarios" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
-                <th scope="col">Id</th>
                 <th scope="col">Tipo documento</th>
                 <th scope="col">Nro documento</th>
                 <th scope="col">Tipo persona</th>
@@ -726,11 +725,12 @@
 
   function lista(){
     $("#tablaUsuarios").DataTable({
-      stateSave: true,
+      stateSave: false,
       responsive: true,
       processing: true,
       serverSide: true,
-      pageLength: 25,
+      lengthChange: true,
+      pageLength: 10,
       language: {
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
@@ -748,7 +748,6 @@
           }
       },
       columns: [
-        { data: "id" },
         { data: "tipo_documento" },
         { data: "nro_documento" },
         { data: "tipo_persona" },
@@ -769,20 +768,20 @@
           }
         }
       ],
-      columnDefs: [
-        {
-          className: "dt-center",
-          targets: "_all"
-        },
-        {
-          targets: [0],
-          visible: false
-        }
+      dom: 'Bfrtip',
+      lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10 registros', '25 registros', '50 registros', 'Mostrar todo' ]
       ],
-      lengthChange: true,
-      order: [
-        [0, "asc"]
-      ], //Ordenar (columna,orden)
+      buttons: [
+        'pageLength',
+        {
+          extend: 'excelHtml5',
+          autoFilter: true,
+        },
+        'pdf',
+        'colvis'
+      ]
     });
   }
 
