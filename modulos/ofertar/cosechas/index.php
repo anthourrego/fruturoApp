@@ -390,7 +390,6 @@
       },
       success: function(data){
         if (data.success) {
-          console.log(data);
           $('#certificados').empty();
           for (let i = 0; i < data.msj['cantidad_registros']; i++) {
             $('#certificados').append(`

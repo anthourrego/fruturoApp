@@ -185,7 +185,7 @@ function tusTerrenos(){
     $resp["success"] = true;
     $resp["msj"] = $datos;
   } else {
-    $resp["msj"] = "No se han encontrado datos";
+    $resp["msj"] = "No tienes ninguna finca registrada, debes de registrar una finca por poder realizar una oferta";
   }
   
   $db->desconectar();

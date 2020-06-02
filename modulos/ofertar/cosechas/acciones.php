@@ -21,44 +21,6 @@ $session = new Session();
 
 $usuario = $session->get("usuario");
 
-function departamentos(){
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $departamentos = $db->consulta("SELECT * FROM departamentos");
-
-  if ($departamentos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $departamentos;
-  } else {
-    $resp["msj"] = "No se han encontrado datos";
-  }
-  
-  $db->desconectar();
-
-  return json_encode($resp);
-}
-
-function municipios(){
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $municipios = $db->consulta("SELECT * FROM municipios WHERE fk_departamento = :fk_departamento", array(":fk_departamento" => $_POST["departamento"]));
-
-  if ($municipios["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $municipios;
-  } else {
-    $resp["msj"] = "No se han encontrado datos";
-  }
-  
-  $db->desconectar();
-
-  return json_encode($resp);
-}
-
 function lista(){
   global $usuario;
   $table      = 'cosechas';
