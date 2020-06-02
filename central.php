@@ -287,8 +287,8 @@
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No'
+      confirmButtonText: '<i class="fas fa-sign-out-alt"></i> Si',
+      cancelButtonText: '<i class="fas fa-times"></i> No'
     }).then((result) => {
       if (result.value) {
         localStorage.removeItem("url<?php echo(PROYECTO) ?>");
