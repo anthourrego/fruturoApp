@@ -277,7 +277,14 @@
       TiposDocumentos();
       TipoPersonas();
       TiposPerfiles();
-      $(".datepicker").datepicker({ dateFormat: "yy-mm-dd", maxDate: "-18Y" });
+      
+      $(".datepicker").datepicker({ 
+        dateFormat: "yy-mm-dd", 
+        maxDate: "-18Y",
+        changeMonth: true,
+        changeYear: true
+      });
+
       $("#fecha").val(moment().subtract(18, 'years').format("YYYY-MM-DD"));
       $("#contentRegistro").show(1000);
       $("#nro_documento").focus();

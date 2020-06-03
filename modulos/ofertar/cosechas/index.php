@@ -142,9 +142,23 @@
 ?>
 <script>
   $(function(){
-    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd"});
+    $(".datepicker").datepicker({ 
+      dateFormat: "yy-mm-dd",
+      changeMonth: true,
+      changeYear: true
+    });
+
+
     $("#formCrear :input[name='fecha_inicio']").val(moment().format("YYYY-MM-DD"));
     $("#formCrear :input[name='fecha_fin']").val(moment().format("YYYY-MM-DD"));
+
+    //Se define el rango de fecha
+    $("#formCrear :input[name='fecha_inicio']").on("change", function (e) {
+      $("#formCrear :input[name='fecha_fin']").datepicker("option", 'minDate', getDate(this));
+    });
+    $("#formCrear :input[name='fecha_fin']").on("change", function (e) {
+      $("#formCrear :input[name='fecha_inicio']").datepicker("option", 'maxDate', getDate(this));
+    });
 
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){

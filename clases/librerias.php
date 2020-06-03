@@ -53,7 +53,18 @@
       $this->cadena_libreria = '
       <script src="'.$this->ruta_libreria.'jquery-ui/jquery-ui.min.js"></script>
 			<script src="'.$this->ruta_libreria.'jquery-ui/jquery-ui-es.js"></script>
-			<link rel="stylesheet" href="'.$this->ruta_libreria.'jquery-ui/jquery-ui.min.css" />';
+      <link rel="stylesheet" href="'.$this->ruta_libreria.'jquery-ui/jquery-ui.min.css" />
+      <script type="text/javascript">
+        function getDate( element ) {
+          var date;
+          try {
+            date = $.datepicker.parseDate("yy-mm-dd", element.value );
+          } catch( error ) {
+            date = null;
+          }
+          return date;
+        };
+      </script>';
       return($this->cadena_libreria);
       
     }
