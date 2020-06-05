@@ -29,6 +29,7 @@
     echo $lib->adminLTE();
     echo $lib->bootstrap();
     echo $lib->fontAwesome();
+    echo $lib->sweetAlert2();
     echo $lib->proyecto();
   ?>
 </head>
@@ -61,7 +62,7 @@
         <!-- ./col -->
         <div class=" col-12 col-md-6 col-lg-4">
           <!-- small box -->
-          <a class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="cosechas">
+          <a id="cosecha" class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="#">
             <div class="inner">
               <h4>Ofertar Cosecha</h4>
             </div>
@@ -92,7 +93,47 @@
 ?>
 <script>
   $(function(){
-    cerrarCargando();
-  })
+    let contFinca = 0;
+
+    //Se cargan los terrenos
+    $.ajax({
+      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "tusTerrenos"
+      },
+      success: function(data){
+        if (data.success) {
+          contFinca = 1
+        }else{
+          contFinca = 0
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      },
+      complete: function(){
+        cerrarCargando();
+      }
+    });
+
+    $("#cosecha").on("click", function(e){
+      e.preventDefault();
+      if (contFinca == 1) {
+        window.location.href = 'cosechas'; 
+      }else{
+        Swal.fire({
+          icon: 'warning',
+          html: 'Para ofertar una cosecha debes de registrar primero un terreno'
+        });
+      }
+    });
+
+  });
+
 </script>
 </html>

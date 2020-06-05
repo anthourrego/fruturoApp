@@ -35,8 +35,8 @@
     echo $lib->fontAwesome();
     echo $lib->sweetAlert2();
     echo $lib->jqueryValidate();
+    echo $lib->bootstrapSelect();
     echo $lib->datatables();
-    echo $lib->bootstrapTreeView();
     echo $lib->proyecto();
   ?>
 </head>
@@ -98,13 +98,11 @@
             </div>
             <div class="form-group">
               <label for="departamento">Departamento <span class="text-danger">*</span></label>
-              <select class="custom-select" name="departamento" required></select>
+              <select class="selectpicker form-control" name="departamento" required data-live-search="true" data-size="5" title="Seleccione un departamento"></select>
             </div>
             <div class="form-group">
               <label for="municipio">Municipio <span class="text-danger">*</span></label>
-              <select class="custom-select" name="municipio" required>
-                <option value="" selected disabled>Seleccione una opción</option>
-              </select>
+              <select class="selectpicker form-control" name="municipio" disabled required  data-live-search="true" data-size="5" title="Seleccione un municipio"></select>
             </div>
             <div class="form-group">
               <label for="hectareas">Hectáreas Sembradas <span class="text-danger">*</span></label>
@@ -160,7 +158,6 @@
     //Validamos el check del predio exportador para habilitar el campo del registro
     $("#formCrear :input[name='predio_exportador']").on("click", function(){
       let predio_exportado = $(this).val();
-      console.log(predio_exportado);
       if (predio_exportado == 1) {
         $("#registro_ica").removeClass("d-none");
         $("#formCrear :input[name='registro_ica']").removeAttr("disabled");
@@ -181,12 +178,12 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='departamento']").empty();
-          $("#formCrear :input[name='departamento']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='departamento']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
+          $("#formCrear :input[name='departamento']").selectpicker('refresh');
         }else{
           Swal.fire({
             icon: 'warning',
@@ -203,12 +200,11 @@
     });
 
     $(document).on("change", "#formCrear :input[name='departamento']", function(){
-      $("#formCrear :input[name='municipio']").attr("disabled", false);
+      $("#formCrear :input[name='municipio']").prop("disabled", false);
       $("#formCrear :input[name='municipio']").empty();
-      $("#formCrear :input[name='municipio']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
-
       if ($(this).val() != 0) {  
         $.ajax({
+          async:false,
           url: 'acciones',
           type: 'POST',
           dataType: 'json',
@@ -223,6 +219,7 @@
                   <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
                 `);
               }
+              $("#formCrear :input[name='municipio']").selectpicker('refresh');
             }else{
               Swal.fire({
                 icon: 'warning',
@@ -261,8 +258,8 @@
             if (data.success) {
               $("#tabla").DataTable().ajax.reload();
               $("#formCrear")[0].reset();
-              $("#formCrear :input[name='departamento']")[0].selectedIndex = 0;
-              $("#formCrear :input[name='municipio']")[0].selectedIndex = 0;
+              $("#formCrear :input[name='departamento']").selectpicker('render');
+              $("#formCrear :input[name='municipio']").selectpicker('render');
               $("#registro_ica").addClass("d-none");
               $("#formCrear :input[name='registro_ica']").attr("disabled", true);
               $("#formCrear :input").removeClass("is-valid");
@@ -409,6 +406,7 @@
     $("#formCrear :input[name='departamento']").val(datos.fk_departamento);
     $("#formCrear :input[name='departamento']").change();
     $("#formCrear :input[name='municipio']").val(datos.fk_municipio);
+    $("#formCrear :input[name='municipio']").change();
     $("#formCrear :input[name='hectareas']").val(datos.hectareas);
     $("#formCrear :input[name='registro_ica']").val(datos.registro_ica);
     $("#formCrear :input[name='direccion']").val(datos.direccion);

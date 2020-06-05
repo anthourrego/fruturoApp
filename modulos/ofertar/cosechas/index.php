@@ -36,7 +36,7 @@
     echo $lib->sweetAlert2();
     echo $lib->jqueryValidate();
     echo $lib->datatables();
-    echo $lib->bootstrapTreeView();
+    echo $lib->bootstrapSelect();
     echo $lib->proyecto();
   ?>
 </head>
@@ -97,15 +97,11 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="producto">Producto <span class="text-danger">*</span></label>
-              <select class="custom-select" required name="producto">
-                <option value="0" disabled selected>Seleccion un opción</option>
-              </select>
+              <select class="selectpicker form-control" required name="producto" required data-live-search="true" data-size="5" title="Seleccione un producto"></select>
             </div>
             <div class="form-group">
               <label for="terreno">Finca <span class="text-danger">*</span></label>
-              <select class="custom-select" required name="terreno">
-                <option value="0" disabled selected>Seleccion un opción</option>
-              </select>
+              <select class="selectpicker form-control" required name="terreno" required data-live-search="true" data-size="5" title="Seleccione un terreno"></select>
             </div>
             <div class="form-group">
               <label for="fecha_inicio">Fecha de inicio de la cosecha <span class="text-danger">*</span></label>
@@ -148,7 +144,6 @@
       changeYear: true
     });
 
-
     $("#formCrear :input[name='fecha_inicio']").val(moment().format("YYYY-MM-DD"));
     $("#formCrear :input[name='fecha_fin']").val(moment().format("YYYY-MM-DD"));
 
@@ -190,6 +185,8 @@
               $("#formCrear")[0].reset();
               $("#formCrear :input").removeClass("is-valid");
               $("#formCrear :input").removeClass("is-invalid");
+              $("#formCrear :input[name='terreno']").selectpicker('render');
+              $("#formCrear :input[name='producto']").selectpicker('render');
               $("#modalCrear").modal("hide");
               Swal.fire({
                 toast: true,
@@ -290,12 +287,12 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='terreno']").empty();
-          $("#formCrear :input[name='terreno']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='terreno']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
+          $("#formCrear :input[name='terreno']").selectpicker('refresh');
         }else{
           Swal.fire({
             icon: 'warning',
@@ -324,12 +321,12 @@
       success: function(data){
         if (data.success) {
           $("#formCrear :input[name='producto']").empty();
-          $("#formCrear :input[name='producto']").append(`<option value="0" selected disabled>Seleccione una opción</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='producto']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
+          $("#formCrear :input[name='producto']").selectpicker('refresh');
         }else{
           Swal.fire({
             icon: 'warning',
