@@ -39,11 +39,9 @@
       <div class="alert alert-warning" role="alert">
         Para realizar una oferta de una cosecha:
         <ol>
-          <li>Ingrear a registrar finca.</li>
-          <li>Crear o registrar una finca.</li>
-          <li>Ingresar a ofertar cosecha.</li>
-          <li>Crear una oferta de cosecha del producto deseado.</li>
-          <li>Esperar una respuesta de la oferta realizada.</li>
+          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu finca, haz click en Registrar Finca.</li>
+          <li>Si ya está registrada tu finca, haz click en Ofertar Cosecha para empezar a ofrecer tus productos.</li>
+          <li>En el momento en que hayas terminado de ingresar tus fincas y cosechas puedes hacer click en Cerrar Sesión.</li>
         </ol>
       </div>
       <!-- Small boxes (Stat box) -->

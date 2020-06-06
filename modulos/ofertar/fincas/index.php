@@ -57,6 +57,13 @@
   <!-- Main content -->
   <section class="content">
     <div class="container">
+      <div class="alert alert-warning" role="alert">
+        Para registrar una finca:
+        <ol>
+          <li>Haz click en Crear Finca e ingresa la información que allí solicitamos y cuando la hayas completado haz click en Enviar.</li>
+          <li>Si necesitas regresar o ya terminaste haz click en Inicio, arriba en esta pagina.</li>
+        </ol>
+      </div>
       <div class="card">
         <div class="card-header d-flex justify-content-end">
           <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
