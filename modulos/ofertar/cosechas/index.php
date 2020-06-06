@@ -253,20 +253,20 @@
           }
       },
       columns: [
-          { data: "producto" },
-          { data: "finca" },
-          { data: "volumen_total" },
-          { data: "precio" },
-          { data: "fecha_inicio" },
-          { data: "fecha_final" },
-          { data: "fecha_creacion" },
-          {
-            "render": function (nTd, sData, oData, iRow, iCol) {
-              return `<div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
-                      </div>`;
-            }
+        { data: "producto" },
+        { data: "finca" },
+        { data: "volumen_total" },
+        { data: "precio" },
+        { data: "fecha_inicio" },
+        { data: "fecha_final" },
+        { data: "fecha_creacion" },
+        {
+          "render": function (nTd, sData, oData, iRow, iCol) {
+            return `<div class="d-flex justify-content-center">
+                      <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
+                    </div>`;
           }
+        }
       ],
       lengthMenu: [
         [ 10, 25, 50, -1 ],
