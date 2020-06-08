@@ -37,6 +37,7 @@
     echo $lib->jqueryValidate();
     echo $lib->datatables();
     echo $lib->bootstrapSelect();
+    echo $lib->bsCustomFileInput();
     echo $lib->proyecto();
   ?>
 </head>
@@ -127,6 +128,16 @@
               <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
             </div>
             <div class="form-group">
+              <label for="fotos">Fotos de la cosecha: <span class="text-danger">*</span></label>
+              <div class="custom-file">
+                <input required type="file" class="custom-file-input" id="fotos" name="fotos[]" accept="image/png, image/jpg, image/jpeg" multiple>
+                <label class="custom-file-label" for="fotos" data-browse="Elegir">Seleccionar Archivo</label>
+                <small id="archivosExtensionesSmall" class="form-text text-muted">
+                  Puedes seleccionar una o más fotos
+                </small>
+              </div>
+            </div>
+            <div class="form-group">
               <label for="certificados">Certificados:</label>
               <div id="certificados" class="row"></div>
             </div>
@@ -136,6 +147,9 @@
             <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
           </div>
         </form>
+        <div class="progress mt-2" style="height: 25px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="percent">0%</div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -169,15 +183,31 @@
       $("#modalCrear").modal("show");
     });
 
+    /* ==================================================================== */
+    // Variables de barra de progreso
+    var bar = $('.progress-bar');
+    var percent = $('.percent');
+
     $("#formCrear").submit(function(event){
       event.preventDefault();
-      if($("#formCrear").valid()){
+      if ($(this).valid()) {
         $.ajax({
-          type: "POST",
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = ((evt.loaded / evt.total) * 100);
+                $(".progress-bar").width(Math.round(percentComplete) + '%');
+                $(".progress-bar").html(Math.round(percentComplete)+'%');
+              }
+            }, false);
+            return xhr;
+          },
           url: "acciones",
+          type: "POST",
+          dataType: "json",
           cache: false,
           contentType: false,
-          dataType: 'json',
           processData: false,
           data: new FormData(this),
           beforeSend: function(){
@@ -185,6 +215,9 @@
             //Desabilitamos el botón
             $('#btnCrear').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`);
             $("#btnCrear").attr("disabled" , true);
+
+            $(".progress-bar").width('0%');
+            $(".progress-bar").html('0%');
           },
           success: function(data){
             if (data.success) {
@@ -194,6 +227,8 @@
               $("#formCrear :input").removeClass("is-invalid");
               $("#formCrear :input[name='terreno']").selectpicker('render');
               $("#formCrear :input[name='producto']").selectpicker('render');
+              $("#formCrear :input[name='fecha_inicio']").val(moment().format("YYYY-MM-DD"));
+              $("#formCrear :input[name='fecha_fin']").val(moment().format("YYYY-MM-DD"));
               $("#modalCrear").modal("hide");
               Swal.fire({
                 toast: true,
@@ -226,11 +261,15 @@
             $('#formCrear :input').attr("disabled", false);
             $('#btnCrear').html(`<i class="fas fa-paper-plane"></i> Enviar`);
             $("#btnCrear").attr("disabled", false);
+
+            setTimeout(function(){
+              bar.width('0%');
+              percent.html('0%');
+            }, 1000);
           }
         });
       }
     });
-
     lista();
     listaTerrenos();
     listaProductos();

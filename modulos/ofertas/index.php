@@ -48,7 +48,7 @@
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Ofertas</h1>
@@ -60,7 +60,7 @@
 
   <!-- Main content -->
   <section class="content">
-    <div class="container">
+    <div class="container-fluid">
       <div class="card">
         <div class="card-header d-flex justify-content-end">
           <!-- <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button> -->
@@ -70,9 +70,10 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
+                <th scope="col">Departamento</th>
+                <th scope="col">Municipio</th>
                 <th scope="col">Persona</th>
                 <th scope="col">Producto</th>
-                <th scope="col">Finca</th>
                 <th scope="col">Volumen total</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Inicio cosecha</th>
