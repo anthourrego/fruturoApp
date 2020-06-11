@@ -92,7 +92,7 @@
   </section>
   <!-- /.content -->
 
-  <!-- Modal Producto -->
+  <!-- Modal Cosecha -->
   <div class="modal fade" id="modalCrear" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -149,6 +149,65 @@
         </form>
         <div class="progress mt-2" style="height: 25px;">
           <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><div class="percent">0%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Cosecha -->
+  <div class="modal fade" id="modalVer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear oferta cosecha</h5>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">Datos</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="fotos-tab" data-toggle="tab" href="#fotos" role="tab" aria-controls="fotos" aria-selected="false">Fotos</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="datos">
+            <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
+            <form id="formVer" autocomplete="off">
+                <div class="form-group">
+                  <label for="producto">Producto</label>
+                  <select class="selectpicker form-control" required name="producto" required data-live-search="true" data-size="5" title="Seleccione un producto"></select>
+                </div>
+                <div class="form-group">
+                  <label for="terreno">Finca</label>
+                  <select class="selectpicker form-control" required name="terreno" required data-live-search="true" data-size="5" title="Seleccione un terreno"></select>
+                </div>
+                <div class="form-group">
+                  <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
+                  <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="fecha_fin">Fecha de fin de la cosecha</label>
+                  <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="volumen_total">Volumen total en Kilogramos</label>
+                  <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="precio">Precio por kilogramos</label>
+                  <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="certificados">Certificados:</label>
+                  <div id="certificados" class="row"></div>
+                </div>
+              </form>  
+            </div>
+            <div class="tab-pane fade" id="fotos" role="tabpanel" aria-labelledby="fotos-tab">...</div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
         </div>
       </div>
     </div>
