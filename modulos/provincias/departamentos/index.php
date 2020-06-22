@@ -74,7 +74,7 @@
               <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -122,6 +122,7 @@
       $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear Departamento`);
       $("#formCrearDepto :input[name='accion']").val('crearDepartamento');
       $("#modalCrearDepto").modal("show");
+      $("#formCrearDepto :input[name='nombre']").val('');
       $("#formCrearDepto :input[name='nombre']").focus();
     });
 
@@ -180,7 +181,7 @@
               });
             }else{
               Swal.fire({
-                icon: 'error',
+                icon: 'warning',
                 html: data.msj
               })
             }
@@ -189,7 +190,7 @@
             //Habilitamos el botón
             Swal.fire({
               icon: 'error',
-              html: 'Error al registrar.'
+              html: 'Error al guardar.'
             });
             //Habilitamos el botón
             $('#btnCrearDepto').html(`<i class="fas fa-paper-plane"></i> Enviar`);
@@ -209,7 +210,7 @@
 
   function inhabilitar(datos){
     Swal.fire({
-      title: "¿Estas seguro de inhabilitar el perfil " + datos['nombre'] + "?",
+      title: "¿Estas seguro de inhabilitar el departamento " + datos['nombre'] + "?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -223,25 +224,25 @@
           type: 'POST',
           dataType: 'json',
           data: {
-            accion: "inhabilitar", 
+            accion: "inhabilitarDepartamento", 
             id: datos['id'],
             nombre: datos['nombre']
           },
           success: function(data){
             if (data == 1) {
-              $("#tabla").DataTable().ajax.reload();
+              $("#tablaDepto").DataTable().ajax.reload();
               Swal.fire({
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha inhabilitado el perfil " + datos['nombre'],
+                title: "Se ha inhabilitado el departamento " + datos['nombre'],
                 showConfirmButton: false,
                 timer: 5000
               });
             }else{
               Swal.fire({
                 icon: 'warning',
-                html: "Error al inhabilitar el perfil " + datos['nombre']
+                html: "Error al inhabilitar el departamento " + datos['nombre']
               })
             }
           },
@@ -283,7 +284,6 @@
       columns: [
         { data: "nombre" },
         { data: "fecha_creacion" },
-        // { data: "estado"},
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">

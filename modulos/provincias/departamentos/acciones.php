@@ -48,43 +48,39 @@
         }
 
     } else {
-        $resp['msj'] = 'El ' + $_POST['nombre'] + ' ya existe';
+        $resp['msj'] = 'El departamento ' . $_POST['nombre'] . ' ya existe';
     }
 
     return json_encode($resp);
 
   }
 
-  function editarDeptartamento() {}
+  function editarDepartamento() {
+    global $usuario;
+    $db = new Bd();
+    $db->conectar();
+    $resp = array('success' => false);
+    $depto = validarDepartamento($_POST['nombre']);
 
-  function editarDepartamento() {}
-
-  function listaDepartamentos() {
-    $table      = 'departamentos';
-    // Table's primary key
-    $primaryKey = 'id';
-
-    // indexes
-    $columns = array(
-                array( 'db' => 'id', 'dt' => 'id',                 'field' => 'id' ),
-                array( 'db' => 'nombre',   'dt' => 'nombre',  'field' => 'nombre'),
-                array( 'db' => 'fecha_creacion',           'dt' => 'fecha_creacion',          'field' => 'fecha_creacion' ),
-                // array( 'db' => 'estado',              'dt' => 'estado',             'field' => 'estado'),
-                );
+    if ($depto == 0) {
         
-    $sql_details = array(
-                    'user' => BDUSER,
-                    'pass' => BDPASS,
-                    'db'   => BDNAME,
-                    'host' => BDSERVER
-                    );
-        
-    // $joinQuery = "FROM {$table} WHERE estado = 1";
-    $joinQuery = "FROM {$table}";
-    $extraWhere= "";
-    $groupBy = "";
-    $having = "";
-    return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
+        $datos = array(
+          ":nombre" => cadena_db_insertar($_POST["nombre"]),
+          ":id" => $_POST["id"],
+        );
+
+        $db->sentencia("UPDATE departamentos SET nombre = :nombre WHERE id = :id", $datos);
+    
+        $db->insertLogs("perfiles", $_POST["id"], "Se edita el perfil {$_POST['nombre']}", $usuario["id"]);
+    
+        $resp['success'] = true;
+        $resp['msj'] = "Se ha modificado correctamente el departamento {$_POST['nombre']}.";
+
+    } else {
+        $resp['msj'] = 'El departamento ' . $_POST['nombre'] . ' ya existe';
+    }
+
+    return json_encode($resp);
   }
 
   function validarDepartamento($nombre){
@@ -101,6 +97,45 @@
     $db->desconectar();
   
     return $resp;
+  }
+
+  function listaDepartamentos() {
+    $table      = 'departamentos';
+    // Table's primary key
+    $primaryKey = 'id';
+
+    // indexes
+    $columns = array(
+                array( 'db' => 'id', 'dt' => 'id',                 'field' => 'id' ),
+                array( 'db' => 'nombre',   'dt' => 'nombre',  'field' => 'nombre'),
+                array( 'db' => 'fecha_creacion',           'dt' => 'fecha_creacion',          'field' => 'fecha_creacion' ),
+                );
+        
+    $sql_details = array(
+                    'user' => BDUSER,
+                    'pass' => BDPASS,
+                    'db'   => BDNAME,
+                    'host' => BDSERVER
+                    );
+        
+    $joinQuery = "FROM {$table} WHERE estado = 1";
+    $extraWhere= "";
+    $groupBy = "";
+    $having = "";
+    return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
+  }
+
+  function inhabilitarDepartamento() {
+    global $usuario;
+    $db = new Bd();
+    $db->conectar();
+
+    $db->sentencia("UPDATE departamentos SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
+    $db->insertLogs("departamentos", $_POST["id"], "Se inhabilita el departamento {$_POST['nombre']}", $usuario["id"]);
+
+    $db->desconectar();
+
+    return json_encode(1);
   }
 
   if(@$_REQUEST['accion']){
