@@ -127,6 +127,8 @@
       $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear Municipio`);
       $("#formCrearMunicipio :input[name='accion']").val('crearMunicipio');
       $("#modalCrearMunicipio").modal("show");
+      $("#formCrearMunicipio :input[name='departamento']").val('');
+      $("#formCrearMunicipio :input[name='departamento']").change();
       $("#formCrearMunicipio :input[name='nombre']").val('');
       $("#formCrearMunicipio :input[name='nombre']").focus();
     });

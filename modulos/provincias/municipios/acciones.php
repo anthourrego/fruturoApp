@@ -41,7 +41,7 @@
         $id_registro = $db->sentencia("INSERT INTO municipios (nombre, fk_departamento, fecha_creacion, estado, fk_creador) VALUES (:nombre, :fk_departamento, :fecha_creacion, :estado, :fk_creador)", $datos);
     
         if ($id_registro > 0) {
-            $db->insertLogs("departamentos", $id_registro, "Se crea el departamento {$_POST['nombre']}", $usuario["id"]);
+            $db->insertLogs("departamentos", $id_registro, "Se crea el municipio {$_POST['nombre']}", $usuario["id"]);
             $resp['success'] = true;
             $resp['msj'] = "Se ha creado correctamente el municipio {$_POST['nombre']}.";
         } else {
@@ -63,26 +63,36 @@
     $resp = array('success' => false);
     $muni = validarMunicipio($_POST['nombre'], true);
 
-    if ($muni != 0) {
+    if ($muni == 0 || isset($muni['fk_departamento'])) {
 
-      if ($_POST["departamento"] != $muni['fk_departamento'] || $_POST["nombre"] != $muni['nombre']) {
+      $datos = array(
+        ":nombre" => $_POST["nombre"],
+        ":fk_departamento" => $_POST["departamento"],
+        ":id" => $_POST["id"],
+      );
+
+      if (isset($muni['fk_departamento'])) {
+        if ($_POST["departamento"] != $muni['fk_departamento'] || $_POST["nombre"] != $muni['nombre']) {
       
-        $datos = array(
-          ":nombre" => $_POST["nombre"],
-          ":fk_departamento" => $_POST["departamento"],
-          ":id" => $_POST["id"],
-        );
+          $datos = array(
+            ":nombre" => $_POST["nombre"],
+            ":fk_departamento" => $_POST["departamento"],
+            ":id" => $_POST["id"],
+          );  
 
-        $db->sentencia("UPDATE municipios SET nombre = :nombre, fk_departamento = :fk_departamento WHERE id = :id", $datos);
-    
-        $db->insertLogs("perfiles", $_POST["id"], "Se edita el municipio {$_POST['nombre']}", $usuario["id"]);
-    
-        $resp['success'] = true;
-        $resp['msj'] = "Se ha modificado correctamente el municipio {$_POST['nombre']}.";
-
-      } else {
-        $resp['msj'] = 'Realice algún cambio';
+        } else {
+          $resp['msj'] = 'Realice algún cambio';
+          return json_encode($resp);
+        }
       }
+      
+      $db->sentencia("UPDATE municipios SET nombre = :nombre, fk_departamento = :fk_departamento WHERE id = :id", $datos);
+  
+      $db->insertLogs("perfiles", $_POST["id"], "Se edita el municipio {$_POST['nombre']}", $usuario["id"]);
+  
+      $resp['success'] = true;
+      $resp['msj'] = "Se ha modificado correctamente el municipio {$_POST['nombre']}.";
+      
 
     } else {
         $resp['msj'] = 'El municipio ' . $_POST['nombre'] . ' ya existe';
@@ -91,7 +101,7 @@
     return json_encode($resp);
   }
 
-  function inhabilitarDepartamento() {
+  function inhabilitarMunicipio() {
     global $usuario;
     $db = new Bd();
     $db->conectar();
@@ -111,18 +121,10 @@
     
     $verificar = $db->consulta("SELECT nombre, fk_departamento FROM municipios WHERE nombre = :nombre", array(":nombre" => $nombre));
 
-    if($validarDepto) {
-
-      if ($verificar["cantidad_registros"] == 1) {
-        $resp = $verificar[0];
-      }
-
-    } else {
-
-      if ($verificar["cantidad_registros"] > 0) {
-        $resp = $verificar["cantidad_registros"];
-      }
-
+    if ($verificar["cantidad_registros"] == 1 && $validarDepto) {
+      $resp = $verificar[0];
+    } else if ($verificar["cantidad_registros"] > 0) {
+      $resp = $verificar["cantidad_registros"];
     }
 
     $db->desconectar();
