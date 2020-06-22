@@ -31,7 +31,7 @@
     if ($depto == 0) {
 
         $datos = array(
-            ":nombre" => cadena_db_insertar($_POST["nombre"]), 
+            ":nombre" => $_POST["nombre"], 
             ":fk_departamento" => $_POST["departamento"],
             ":fecha_creacion" => date('Y-m-d H:i:s'), 
             ":estado" => 1, 
@@ -68,7 +68,7 @@
       if ($_POST["departamento"] != $muni['fk_departamento'] || $_POST["nombre"] != $muni['nombre']) {
       
         $datos = array(
-          ":nombre" => cadena_db_insertar($_POST["nombre"]),
+          ":nombre" => $_POST["nombre"],
           ":fk_departamento" => $_POST["departamento"],
           ":id" => $_POST["id"],
         );
