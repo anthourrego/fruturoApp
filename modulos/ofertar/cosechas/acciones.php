@@ -28,14 +28,14 @@ function lista(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => '`c`.`id`',                    'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => '`p`.`nombre`',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => '`f`.`nombre`',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => '`c`.`volumen_total`',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
-              array( 'db' => '`c`.`precio`',                'dt' => 'precio',          'field' => 'precio'),
-              array( 'db' => '`c`.`fecha_inicio`',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
-              array( 'db' => '`c`.`fecha_final`',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
-              array( 'db' => '`c`.`fecha_creacion`',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
+              array( 'db' => 'c.id',                    'dt' => 'id',              'field' => 'id' ),
+              array( 'db' => 'p.nombre',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
+              array( 'db' => 'f.nombre',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
+              array( 'db' => 'c.volumen_total',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
+              array( 'db' => 'c.precio',                'dt' => 'precio',          'field' => 'precio'),
+              array( 'db' => 'c.fecha_inicio',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
+              array( 'db' => 'c.fecha_final',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
+              array( 'db' => 'c.fecha_creacion',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
             );
     
   $sql_details = array(
@@ -45,8 +45,8 @@ function lista(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM `{$table}` AS `c` INNER JOIN `productos` AS `p` ON `c`.`fk_producto` = `p`.id INNER JOIN `fincas` AS `f` ON `c`.`fk_finca` = `f`.`id`";
-  $extraWhere= "`c`.`estado` = 1 AND `c`.`fk_creador` = " . $usuario["id"];
+  $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id";
+  $extraWhere= "c.estado = 1 AND c.fk_creador = " . $usuario["id"];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -115,7 +115,7 @@ function crear(){
             if(move_uploaded_file($_FILES['fotos']['tmp_name'][$key], $target_path)) {
               $datos_foto = array(
                 ":tipo" => $extension, 
-                ":ruta" => $target_path, 
+                ":ruta" => substr($target_path, 9), 
                 ":fk_cosecha" => $id_registro, 
                 ":fecha_creacion" => date("Y-m-d H:i:s"), 
                 ":fk_creador" => $usuario['id']
@@ -196,9 +196,29 @@ function eliminar(){
   return json_encode(1);
 }
 
+function fotosCosechas(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * FROM cosechas_fotos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+
+  if ($datos['cantidad_registros'] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  }else{
+    $resp['msj'] = "No se han encontrado datos";
+  }  
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+
 /*****************************************/
 
-function validarNombre($nombre, $id = 0){
+/* function validarNombre($nombre, $id = 0){
   $db = new Bd();
   $db->conectar();
   global $usuario;
@@ -275,7 +295,7 @@ function editar(){
 
   $db->desconectar();
   return json_encode($resp);
-}
+} */
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){
