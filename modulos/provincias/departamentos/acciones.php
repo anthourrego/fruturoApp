@@ -118,8 +118,8 @@
                     'host' => BDSERVER
                     );
         
-    $joinQuery = "FROM {$table} WHERE estado = 1";
-    $extraWhere= "";
+    $joinQuery = "FROM {$table}";
+    $extraWhere= "estado = 1";
     $groupBy = "";
     $having = "";
     return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));

@@ -63,8 +63,14 @@
     <div class="container">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success btnCrearMunicipio" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
+          <div class="d-flex justify-content-between">
+          <form id="formEstadosListar" autocomplete="off">
+            <select class="custom-select" name="estado" required data-live-search="true" data-size="5" title="Seleccione un estado">
+                <option selected value="1">Activos</option>
+                <option value="0">Inactivos</option>
+            </select>
+          </form>
+          <button class="btn btn-success btnCrearMunicipio" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
           </div>
         </div>
         <!-- /.card-header -->
@@ -119,6 +125,8 @@
   echo $lib->cambioPantalla();
 ?>
 <script>
+  let estadoTabla = 1;
+
   $(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -214,18 +222,25 @@
       }
     });
 
+    $("#formEstadosListar :input[name='estado']").change(function () {
+      top.$('#cargando').modal('show');
+      estadoTabla = $("#formEstadosListar :input[name='estado']").val();
+      $('#tablaMunicipio').dataTable().fnDestroy();
+      listaTabla();
+    });
+
     listaTabla();
     departamentos();
   });
 
-  function inhabilitar(datos){
+  function cambiarEstado(datos){
     Swal.fire({
-      title: "¿Estas seguro de inhabilitar el Municipio " + datos['nombre'] + "?",
+      title: `¿Estas seguro de ${estadoTabla == 1 ? 'inhabilitar' : 'habilitar'} el municipio  ${datos['nombre']}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: '<i class="far fa-trash-alt"></i> Si',
+      confirmButtonText: `<i class="fas ${estadoTabla == 1 ? 'fa-trash-alt' : 'fa-check'}"></i> Si`,
       cancelButtonText: '<i class="fa fa-times"></i> No'
     }).then((result) => {
       if (result.value) {
@@ -234,9 +249,10 @@
           type: 'POST',
           dataType: 'json',
           data: {
-            accion: "inhabilitarMunicipio", 
+            accion: "cambiarEstadoMunicipio", 
             id: datos['id'],
-            nombre: datos['nombre']
+            nombre: datos['nombre'], 
+            estado: datos['estado'],
           },
           success: function(data){
             if (data == 1) {
@@ -245,14 +261,14 @@
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha inhabilitado el Municipio " + datos['nombre'],
+                title: `Se ha ${estadoTabla == 1 ? 'inhabilitado' : 'habilitado'} el municipio ${datos['nombre']}`,
                 showConfirmButton: false,
                 timer: 5000
               });
             }else{
               Swal.fire({
                 icon: 'warning',
-                html: "Error al inhabilitar el Municipio " + datos['nombre']
+                html: `Error al ${estadoTabla == 1 ? 'inhabilitar' : 'habilitar'} el municipio ${datos['nombre']}`
               })
             }
           },
@@ -279,11 +295,12 @@
         url: "<?php echo($ruta_raiz); ?>librerias/dataTables/Spanish.json"
       },
       ajax: {
-          url: "acciones",
+        url: "acciones",
           type: "GET",
           dataType: "json",
           data: {
-            accion: 'listaMunicipios'
+            accion: 'listaMunicipios',
+            estado: estadoTabla
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -299,7 +316,7 @@
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarMunicipio" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
-                      <button type="button" class="btn btn-danger btn-sm mx-1" onClick='inhabilitar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                      <button type="button" class="btn ${estadoTabla == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${estadoTabla == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${estadoTabla == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
                     </div>`;
           }
         }

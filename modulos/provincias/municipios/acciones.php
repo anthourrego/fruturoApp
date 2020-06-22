@@ -101,12 +101,17 @@
     return json_encode($resp);
   }
 
-  function inhabilitarMunicipio() {
+  function cambiarEstadoMunicipio() {
     global $usuario;
     $db = new Bd();
     $db->conectar();
 
-    $db->sentencia("UPDATE municipios SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
+    $array = array(
+      ":id" => $_POST["id"],
+      ":estado" => ($_POST["estado"] == 1 ? 0 : 1),
+    );
+
+    $db->sentencia("UPDATE municipios SET estado = :estado WHERE id = :id", $array);
     $db->insertLogs("municpios", $_POST["id"], "Se inhabilita el municipio {$_POST['nombre']}", $usuario["id"]);
 
     $db->desconectar();
@@ -144,6 +149,7 @@
                array( 'db' => '`muni`.`fecha_creacion`', 'dt' => 'fecha_creacion', 'field' => 'fecha_creacion'),
                array( 'db' => '`depto`.`nombre`',        'dt' => 'departamento',   'field' => 'departamento', 'as' => 'departamento'),
                array( 'db' => '`depto`.`id`',            'dt' => 'idDepto',        'field' => 'idDepto', 'as' => 'idDepto'),
+               array( 'db' => '`muni`.`estado`',          'dt' => 'estado',        'field' => 'estado', 'as' => 'estado'),
               );
         
     $sql_details = array(
@@ -153,8 +159,8 @@
                     'host' => BDSERVER
                     );
 
-    $joinQuery = "FROM `{$table}` AS `muni` INNER JOIN `departamentos` AS `depto` ON muni.fk_departamento	= depto.id WHERE muni.estado = 1";
-    $extraWhere= "";
+    $joinQuery = "FROM `{$table}` AS `muni` INNER JOIN `departamentos` AS `depto` ON muni.fk_departamento	= depto.id";
+    $extraWhere= "muni.estado = " . $_GET['estado'];
     $groupBy = "";
     $having = "";
     return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
