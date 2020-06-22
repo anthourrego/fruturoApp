@@ -71,7 +71,7 @@
 
         $db->sentencia("UPDATE departamentos SET nombre = :nombre WHERE id = :id", $datos);
     
-        $db->insertLogs("perfiles", $_POST["id"], "Se edita el perfil {$_POST['nombre']}", $usuario["id"]);
+        $db->insertLogs("perfiles", $_POST["id"], "Se edita el departamento {$_POST['nombre']}", $usuario["id"]);
     
         $resp['success'] = true;
         $resp['msj'] = "Se ha modificado correctamente el departamento {$_POST['nombre']}.";

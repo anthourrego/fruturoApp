@@ -33,14 +33,12 @@
   <?php  
     echo $lib->jquery();
     echo $lib->jqueryUI();
-    echo $lib->moment();
     echo $lib->adminLTE();
     echo $lib->bootstrap();
     echo $lib->fontAwesome();
     echo $lib->sweetAlert2();
     echo $lib->jqueryValidate();
     echo $lib->datatables();
-    echo $lib->bootstrapTreeView();
     echo $lib->proyecto();
   ?>
 </head>
