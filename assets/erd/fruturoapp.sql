@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2020 a las 02:06:09
+-- Tiempo de generación: 22-06-2020 a las 04:12:22
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -158,6 +158,25 @@ INSERT INTO `departamentos` (`id`, `nombre`, `fecha_creacion`, `fk_creador`) VAL
 (30, 'Valle del Cauca', '2020-05-08 00:33:56', 1),
 (31, 'Vaupés', '2020-05-08 00:33:56', 1),
 (32, 'Vichada', '2020-05-08 00:33:56', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fincas`
+--
+
+CREATE TABLE `fincas` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `fk_municipio` int(11) NOT NULL DEFAULT 0,
+  `direccion` text NOT NULL,
+  `hectareas` float NOT NULL DEFAULT 0,
+  `predio_exportador` int(11) NOT NULL DEFAULT 0,
+  `registro_ica` text NOT NULL,
+  `fk_usuario` int(11) NOT NULL DEFAULT 0,
+  `fecha_creacion` datetime NOT NULL,
+  `estado` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1551,6 +1570,12 @@ ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id`) USING BTREE;
 
 --
+-- Indices de la tabla `fincas`
+--
+ALTER TABLE `fincas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `logs`
 --
 ALTER TABLE `logs`
@@ -1642,6 +1667,12 @@ ALTER TABLE `cosechas_fotos`
 -- AUTO_INCREMENT de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `fincas`
+--
+ALTER TABLE `fincas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

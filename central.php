@@ -87,7 +87,7 @@
           </a>  
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <span class="dropdown-item-text text-center"><?php echo $usuario['nombre'] ?></span>
-            <a class="dropdown-item modal-link" href="<?php echo RUTA_RAIZ ?>modulos/usuarios/editar_perfil"><i class="fas fa-user-edit"></i> Perfil</a>
+            <a class="dropdown-item modal-link" href="<?php echo RUTA_RAIZ ?>modulos/usuarios/editar_perfil" target="object-contenido"><i class="fas fa-user-edit"></i> Perfil</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="javascript:cerrarSesion();"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
           </div>
