@@ -86,7 +86,7 @@
   <!-- /.content -->
 
   <!-- Modal Producto -->
-  <div class="modal fade" id="modalCrear" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal fade" id="modalCrearDepto" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -118,32 +118,32 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     //Se abre la modal para crear
-    $('.btnCrear').on("click", function(){
-      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear perfil`);
-      $("#formCrear :input[name='accion']").val('crear');
-      $("#modalCrear").modal("show");
-      $("#formCrear :input[name='nombre']").focus();
+    $('.btnCrearDepto').on("click", function(){
+      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear Departamento`);
+      $("#formCrearDepto :input[name='accion']").val('crearDepartamento');
+      $("#modalCrearDepto").modal("show");
+      $("#formCrearDepto :input[name='nombre']").focus();
     });
 
     //Editar Usuario
-    $(document).on("click", ".btnEditar", function(){
+    $(document).on("click", ".btnEditarDepto", function(){
       let datos = $(this).data("datos");
-      $("#tituloModal").html(`<i class="fas fa-edit"></i> Editar perfil | ` + datos['nombre']);
-      $("#formCrear :input").removeClass("is-valid");
-      $("#formCrear :input").removeClass("is-invalid");
+      $("#tituloModal").html(`<i class="fas fa-edit"></i> Editar Departamento | ` + datos['nombre']);
+      $("#formCrearDepto :input").removeClass("is-valid");
+      $("#formCrearDepto :input").removeClass("is-invalid");
 
-      $("#formCrear :input[name='accion']").val('editar');
-      $("#formCrear :input[name='id']").val(datos['id']);
-      $("#formCrear :input[name='nombre']").val(datos['nombre']);
+      $("#formCrearDepto :input[name='accion']").val('editarDepartamento');
+      $("#formCrearDepto :input[name='id']").val(datos['id']);
+      $("#formCrearDepto :input[name='nombre']").val(datos['nombre']);
 
-      $("#modalCrear").modal("show");
-      $("#formCrear :input[name='nombre']").focus();
+      $("#modalCrearDepto").modal("show");
+      $("#formCrearDepto :input[name='nombre']").focus();
     });
 
     //Acciones al cerrar la modal
-    $('#modalCrear').on('hidden.bs.modal', function (e) {
-      if($("#formCrear :input[name='accion']").val() == 'editar'){
-        $("#formCrear")[0].reset();
+    $('#modalCrearDepto').on('hidden.bs.modal', function (e) {
+      if($("#formCrearDepto :input[name='accion']").val() == 'editar'){
+        $("#formCrearDepto")[0].reset();
       }
     });
 
@@ -169,7 +169,7 @@
               $("#formCrearDepto")[0].reset();
               $("#formCrear :input").removeClass("is-valid");
               $("#formCrear :input").removeClass("is-invalid");
-              $("#modalCrear").modal("hide");
+              $("#modalCrearDepto").modal("hide");
               Swal.fire({
                 toast: true,
                 position: 'bottom-end',
@@ -287,7 +287,7 @@
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
-                      <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
+                      <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarDepto" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='inhabilitar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
                     </div>`;
           }
