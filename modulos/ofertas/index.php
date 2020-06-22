@@ -62,9 +62,9 @@
   <section class="content">
     <div class="container-fluid">
       <div class="card">
-        <div class="card-header d-flex justify-content-end">
-          <!-- <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button> -->
-        </div>
+        <!-- <div class="card-header d-flex justify-content-end">
+          <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
+        </div> -->
         <!-- /.card-header -->
         <div class="card-body">
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
