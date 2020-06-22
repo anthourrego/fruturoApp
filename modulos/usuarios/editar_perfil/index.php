@@ -30,63 +30,80 @@
     echo $lib->jqueryUI();
     echo $lib->bootstrap();
     echo $lib->sweetAlert2();
+    echo $lib->fontAwesome();
     echo $lib->jqueryValidate(0);
     echo $lib->proyecto();
   ?>
 </head>
 <body>
-  <div class="container-fluid w-75 p-3">
-    <form id="formEditarUsuario" autocomplete="off" class="row">
-      <input type="hidden" name="accion" value="editarUsuario">
-      <input type="hidden" name="id" value="0">
-      <div class="form-group col-12 col-sm-6">
-        <label for="tipoPersona">Tipo persona <span class="text-danger">*</span></label>
-        <select name="tipoPersona" required class="custom-select">
-          <option value="0" selected disabled>Seleccione una opción</option>
-        </select>
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="tipoDocumento">Tipo documento <span class="text-danger">*</span></label>
-        <select name="tipoDocumento" required class="custom-select">
-          <option value="0" selected disabled>Seleccione una opción</option>
-        </select>
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="nroDocumento">Nro documento <span class="text-danger">*</span></label>
-        <input type="text" minlength="7" name="nroDocumento" class="form-control" placeholder="Escriba un número de documento" required autocomplete="off">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="correo">Correo <span class="text-danger">*</span></label>
-        <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="nombres">Nombres <span class="text-danger">*</span></label>
-        <input type="text" name="nombres" class="form-control" placeholder="Escriba los nombres" required autocomplete="off">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="apellidos">Apellidos <span class="text-danger">*</span></label>
-        <input type="text" name="apellidos" class="form-control" placeholder="Escriba los apellidos" required autocomplete="off">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="fecha_nacimiento">Fecha Nacimiento <span class="text-danger">*</span></label>
-        <input type="text" name="fechaNacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-        <input type="tel" name="telefono" class="form-control" placeholder="Escriba un teléfono" required autocomplete="off" onKeyPress="return soloNumeros(event)">
-      </div>
-      <div class="form-group col-12 col-sm-6">
-        <label for="perfil">Perfil <span class="text-danger">*</span></label>
-        <select name="perfil" required class="custom-select">
-          <option value="0" selected disabled>Seleccione una opción</option>
-        </select>
-      </div>
-      <div class="d-flex justify-content-end align-items-center col-12 col-sm-6">
-        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button> -->
-        <button id="btnEditarPerfil" type="submit" class="btn btn-primary h-50"><i class="fas fa-paper-plane"></i>Editar</button>
-      </div>
-    </form>
+  <!-- Content Header (Page header) -->
+  <div div class="content-header mt-3">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-12">
+          <h2 class="m-0 text-dark">Editar perfil</h2>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
   </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container">
+      <hr>
+      <form id="formEditarUsuario" autocomplete="off" class="row">
+        <input type="hidden" name="accion" value="editarUsuario">
+        <input type="hidden" name="id" value="0">
+        <div class="form-group col-12 col-sm-6">
+          <label for="tipoDocumento">Tipo documento <span class="text-danger">*</span></label>
+          <select name="tipoDocumento" required class="custom-select">
+            <option value="0" selected disabled>Seleccione una opción</option>
+          </select>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="nroDocumento">Nro documento <span class="text-danger">*</span></label>
+          <input type="text" minlength="7" name="nroDocumento" class="form-control" placeholder="Escriba un número de documento" required autocomplete="off">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="tipoPersona">Tipo persona <span class="text-danger">*</span></label>
+          <select name="tipoPersona" required class="custom-select">
+            <option value="0" selected disabled>Seleccione una opción</option>
+          </select>
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="correo">Correo <span class="text-danger">*</span></label>
+          <input type="email" name="correo" class="form-control" placeholder="Escriba un correo" required autocomplete="off">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="nombres">Nombres <span class="text-danger">*</span></label>
+          <input type="text" name="nombres" class="form-control" placeholder="Escriba los nombres" required autocomplete="off">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="apellidos">Apellidos <span class="text-danger">*</span></label>
+          <input type="text" name="apellidos" class="form-control" placeholder="Escriba los apellidos" required autocomplete="off">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="fecha_nacimiento">Fecha Nacimiento <span class="text-danger">*</span></label>
+          <input type="text" name="fechaNacimiento" class="form-control datepicker" placeholder="Fecha Nacimiento" required autocomplete="off">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+          <input type="tel" name="telefono" class="form-control" placeholder="Escriba un teléfono" required autocomplete="off" onKeyPress="return soloNumeros(event)">
+        </div>
+        <div class="form-group col-12 col-sm-6">
+          <label for="perfil">Perfil <span class="text-danger">*</span></label>
+          <select name="perfil" required class="custom-select">
+            <option value="0" selected disabled>Seleccione una opción</option>
+          </select>
+        </div>
+        <div class="d-flex justify-content-end align-items-center col-12">
+          <button id="btnEditarPerfil" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Editar</button>
+        </div>
+      </form>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
 </body>
 <?php 
   echo $lib->cambioPantalla();
@@ -115,11 +132,18 @@
           },
           success: function (data) {
             if (data['success']) {
-              console.log("Funciono " + $("#formEditarUsuario :input[name='nombres']").val());
               Swal.fire({
                 icon: 'success',
-                html: data['mensaje']
+                html: data['msj']
               });
+
+              setTimeout(function(){ top.window.location.reload(); }, 900);
+              
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: data.msj
+              })
             }
             $("#btnEditarPerfil").attr("disabled" , false);
           },
@@ -194,13 +218,14 @@
   }
 
   function TiposPerfiles(){
+
     $.ajax({
       url: "<?php echo($ruta_raiz); ?>modulos/usuarios/perfiles/acciones",
       type: "POST",
       dataType: "json",
       data: {
         accion: "listaPerfiles",
-        admin: 1
+        admin: <?php echo($usuario["perfil"]); ?>
       },
       success: function(datos){
         $('#formCrearUsuario :input[name="perfil"], #formEditarUsuario :input[name="perfil"]').empty();
@@ -244,7 +269,8 @@
           $("#formEditarUsuario :input[name='perfil']").val(usuario['fk_perfil']);
           $("#formEditarUsuario :input[name='tipoDocumento']").attr("disabled", true);
           $("#formEditarUsuario :input[name='fechaNacimiento']").attr("disabled", true);
-          $("#formEditarUsuario :input[name='perfil']").attr("disabled", true);
+          $("#formEditarUsuario :input[name='nroDocumento']").attr("disabled", true);
+          //$("#formEditarUsuario :input[name='perfil']").attr("disabled", true);
         }
       },
       error: function () {

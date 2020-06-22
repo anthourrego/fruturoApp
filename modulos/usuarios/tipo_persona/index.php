@@ -182,7 +182,7 @@
               });
             }else{
               Swal.fire({
-                icon: 'error',
+                icon: 'warning',
                 html: data.msj
               })
             }
