@@ -398,7 +398,7 @@
       success: function(data){
         if (data.success) {
           $("#formDepartamentosListar :input[name='depto']").empty();
-          $("#formDepartamentosListar :input[name='depto']").append(`<option value="-1">Seleccione un departamento...</option>`);
+          $("#formDepartamentosListar :input[name='depto']").append(`<option value="-1">Todos</option>`);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formDepartamentosListar :input[name='depto']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
