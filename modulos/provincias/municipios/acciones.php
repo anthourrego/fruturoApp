@@ -159,8 +159,15 @@
                     'host' => BDSERVER
                     );
 
+    
+    $extraWhere;
+
+    if ($_GET['departamento'] != -1) {
+      $extraWhere = "muni.estado = " . $_GET['estado'] . " AND muni.fk_departamento = " . $_GET['departamento'];
+    } else {
+      $extraWhere = "muni.estado = " . $_GET['estado'];
+    }
     $joinQuery = "FROM `{$table}` AS `muni` INNER JOIN `departamentos` AS `depto` ON muni.fk_departamento	= depto.id";
-    $extraWhere= "muni.estado = " . $_GET['estado'];
     $groupBy = "";
     $having = "";
     return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -171,7 +178,14 @@
     $db->conectar();
     $resp["success"] = false;
   
-    $departamentos = $db->consulta("SELECT * FROM departamentos");
+    $departamentos;
+
+    if ($_GET['estado'] == 1) {
+      $departamentos = $db->consulta("SELECT * FROM departamentos WHERE estado = " . $_GET['estado']);
+    } else {
+      $departamentos = $db->consulta("SELECT * FROM departamentos");
+    }
+
   
     if ($departamentos["cantidad_registros"] > 0) {
       $resp["success"] = true;

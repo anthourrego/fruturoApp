@@ -33,7 +33,6 @@
   <?php  
     echo $lib->jquery();
     echo $lib->jqueryUI();
-    echo $lib->moment();
     echo $lib->adminLTE();
     echo $lib->bootstrap();
     echo $lib->fontAwesome();
@@ -64,13 +63,18 @@
       <div class="card">
         <div class="card-header">
           <div class="d-flex justify-content-between">
-          <form id="formEstadosListar" autocomplete="off">
-            <select class="custom-select" name="estado" required data-live-search="true" data-size="5" title="Seleccione un estado">
-                <option selected value="1">Activos</option>
-                <option value="0">Inactivos</option>
-            </select>
-          </form>
-          <button class="btn btn-success btnCrearMunicipio" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
+            <div class="d-flex">
+              <form id="formEstadosListar" autocomplete="off" class="mr-3">
+                <select class="custom-select" name="estado" required data-live-search="true" data-size="5" title="Seleccione un estado">
+                    <option selected value="1">Activos</option>
+                    <option value="0">Inactivos</option>
+                </select>
+              </form>
+              <form id="formDepartamentosListar" autocomplete="off">
+                <select class="custom-select" name="depto" data-live-search="true" data-size="5" title="Seleccione un departamento"></select>
+              </form>
+            </div>
+            <button class="btn btn-success btnCrearMunicipio" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
           </div>
         </div>
         <!-- /.card-header -->
@@ -226,11 +230,20 @@
       top.$('#cargando').modal('show');
       estadoTabla = $("#formEstadosListar :input[name='estado']").val();
       $('#tablaMunicipio').dataTable().fnDestroy();
+      $("#formDepartamentosListar :input[name='depto']").val('-1');
       listaTabla();
+    });
+
+    $("#formDepartamentosListar :input[name='depto']").change(function () {
+      top.$('#cargando').modal('show');
+      let deptoTabla = $("#formDepartamentosListar :input[name='depto']").val();
+      $('#tablaMunicipio').dataTable().fnDestroy();
+      listaTabla(deptoTabla);
     });
 
     listaTabla();
     departamentos();
+    departamentosLista();
   });
 
   function cambiarEstado(datos){
@@ -283,7 +296,7 @@
     });
   }
 
-  function listaTabla(){
+  function listaTabla(depto){
     $("#tablaMunicipio").DataTable({
       stateSave: false,
       responsive: true,
@@ -300,7 +313,8 @@
           dataType: "json",
           data: {
             accion: 'listaMunicipios',
-            estado: estadoTabla
+            estado: estadoTabla,
+            departamento: (depto ? depto : -1),
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -341,10 +355,11 @@
   function departamentos(){
     $.ajax({
       url: 'acciones',
-      type: 'POST',
+      type: 'GET',
       dataType: 'json',
       data: {
-        accion: "departamentos"
+        accion: "departamentos",
+        estado: 1
       },
       success: function(data){
         if (data.success) {
@@ -355,6 +370,41 @@
             `);
           }
           $("#formCrearMunicipio :input[name='departamento']").selectpicker('refresh');
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+  }
+
+  function departamentosLista(){
+    $.ajax({
+      url: 'acciones',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        accion: "departamentos",
+        estado: 1,
+      },
+      success: function(data){
+        if (data.success) {
+          $("#formDepartamentosListar :input[name='depto']").empty();
+          $("#formDepartamentosListar :input[name='depto']").append(`<option value="-1">Seleccione un departamento...</option>`);
+          for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $("#formDepartamentosListar :input[name='depto']").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);
+          }
+          $("#formDepartamentosListar :input[name='depto']").val('-1');
         }else{
           Swal.fire({
             icon: 'warning',
