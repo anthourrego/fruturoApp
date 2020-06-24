@@ -106,9 +106,10 @@
 
     // indexes
     $columns = array(
-                array( 'db' => 'id', 'dt' => 'id',                 'field' => 'id' ),
-                array( 'db' => 'nombre',   'dt' => 'nombre',  'field' => 'nombre'),
-                array( 'db' => 'fecha_creacion',           'dt' => 'fecha_creacion',          'field' => 'fecha_creacion' ),
+                array( 'db' => 'id',             'dt' => 'id',             'field' => 'id' ),
+                array( 'db' => 'nombre',         'dt' => 'nombre',         'field' => 'nombre'),
+                array( 'db' => 'fecha_creacion', 'dt' => 'fecha_creacion', 'field' => 'fecha_creacion' ),
+                array( 'db' => 'estado',         'dt' => 'estado',         'field' => 'estado' ),
                 );
         
     $sql_details = array(
@@ -119,18 +120,23 @@
                     );
         
     $joinQuery = "FROM {$table}";
-    $extraWhere= "estado = 1";
+    $extraWhere= "estado = " . $_GET['estado'];
     $groupBy = "";
     $having = "";
     return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
   }
 
-  function inhabilitarDepartamento() {
+  function cambiarEstadoDepartamento() {
     global $usuario;
     $db = new Bd();
     $db->conectar();
 
-    $db->sentencia("UPDATE departamentos SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
+    $array = array(
+      ":id" => $_POST["id"],
+      ":estado" => ($_POST["estado"] == 1 ? 0 : 1),
+    );
+
+    $db->sentencia("UPDATE departamentos SET estado = :estado WHERE id = :id", $array);
     $db->insertLogs("departamentos", $_POST["id"], "Se inhabilita el departamento {$_POST['nombre']}", $usuario["id"]);
 
     $db->desconectar();
