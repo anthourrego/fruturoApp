@@ -235,6 +235,7 @@
           },
           success: function(data){
             if (data.success) {
+              cargarMensajes();
               $("#formMensaje :input[name='mensaje']").val('');
               $("#formMensaje :input").removeClass("is-valid");
               $("#formMensaje :input").removeClass("is-invalid");
