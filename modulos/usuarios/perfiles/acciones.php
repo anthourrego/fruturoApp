@@ -177,10 +177,10 @@ function listaPerfiles($admin = 0){
     $admin = 1;
   }
 
-  if ($admin == 0) {
-    $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
-  }else{
+  if ($admin == 1) {
     $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1");
+  }else{
+    $datos = $db->consulta("SELECT * FROM perfiles WHERE estado = 1 AND id != 1");
   }
 
   if ($datos["cantidad_registros"] > 0) {

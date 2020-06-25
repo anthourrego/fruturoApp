@@ -38,6 +38,7 @@
     echo $lib->datatables();
     echo $lib->bootstrapSelect();
     echo $lib->bsCustomFileInput();
+    echo $lib->lightbox();
     echo $lib->proyecto();
   ?>
 </head>
@@ -59,8 +60,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="alert alert-warning" role="alert">
-        Para ofertar una cosecha:
-        <ol>
+        <ol class="mb-0">
           <li>Haz click en Crear Oferta e ingresa la Información que allí solicitamos y cuando la hayas completado haz click en Enviar.</li>
           <li>Si necesitas regresar o ya terminaste de ingresar tus productos haz click en Inicio, arriba en esta pagina.</li>
         </ol>
@@ -159,51 +159,52 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear oferta cosecha</h5>
+          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Ver oferta</h5>
         </div>
         <div class="modal-body">
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a class="nav-link active" id="datos-tab" data-toggle="tab" href="#datos" role="tab" aria-controls="datos" aria-selected="true">Datos</a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" id="fotos-tab" data-toggle="tab" href="#fotos" role="tab" aria-controls="fotos" aria-selected="false">Fotos</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="datos">
-            <div class="tab-pane fade show active" id="datos" role="tabpanel" aria-labelledby="datos-tab">
-            <form id="formVer" autocomplete="off">
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <a class="nav-item nav-link active" id="nav-datos-tab" data-toggle="tab" href="#nav-datos" role="tab" aria-controls="nav-datos" aria-selected="true">Datos</a>
+              <a class="nav-item nav-link" id="nav-fotos-tab" data-toggle="tab" href="#nav-fotos" role="tab" aria-controls="nav-profile" aria-selected="fotos">Fotos</a>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-datos" role="tabpanel" aria-labelledby="nav-datos-tab">
+              <form class="mt-3" id="formVer" autocomplete="off">
                 <div class="form-group">
                   <label for="producto">Producto</label>
-                  <select class="selectpicker form-control" required name="producto" required data-live-search="true" data-size="5" title="Seleccione un producto"></select>
+                  <input class="form-control" type="text" required name="producto" placeholder="Escriba el producto" disabled autocomplete="off">
                 </div>
                 <div class="form-group">
                   <label for="terreno">Finca</label>
-                  <select class="selectpicker form-control" required name="terreno" required data-live-search="true" data-size="5" title="Seleccione un terreno"></select>
+                  <input class="form-control" type="text" required name="terreno" placeholder="Escriba el terreno" disabled autocomplete="off">
                 </div>
                 <div class="form-group">
                   <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
-                  <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
+                  <input type="text" name="fecha_inicio" class="form-control"  placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off" disabled>
                 </div>
                 <div class="form-group">
                   <label for="fecha_fin">Fecha de fin de la cosecha</label>
-                  <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
+                  <input type="text" name="fecha_fin" class="form-control" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off" disabled>
                 </div>
                 <div class="form-group">
                   <label for="volumen_total">Volumen total en Kilogramos</label>
-                  <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+                  <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
                 </div>
                 <div class="form-group">
                   <label for="precio">Precio por kilogramos</label>
-                  <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+                  <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
                 </div>
                 <div class="form-group">
                   <label for="certificados">Certificados:</label>
-                  <div id="certificados" class="row"></div>
+                  <ul id="certificados_cosecha"></ul>
                 </div>
-              </form>  
+              </form> 
             </div>
-            <div class="tab-pane fade" id="fotos" role="tabpanel" aria-labelledby="fotos-tab">...</div>
+            <div class="tab-pane fade" id="nav-fotos" role="tabpanel" aria-labelledby="nav-fotos-tab">
+              <div class="row mt-3" id="cosechas_fotos">
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer d-flex justify-content-between">
@@ -368,6 +369,7 @@
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
+                      <button class="btn btn-primary" onClick='verCosecha(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
                     </div>`;
           }
@@ -531,6 +533,88 @@
         })
       }
     });
+  }
+
+  function verCosecha(datos){
+    cargaDatos = 0;
+    $("#formVer :input[name='producto']").val(datos["producto"]);
+    $("#formVer :input[name='terreno']").val(datos["finca"]);
+    $("#formVer :input[name='fecha_inicio']").val(datos["fecha_inicio"]);
+    $("#formVer :input[name='fecha_fin']").val(datos["fecha_final"]);
+    $("#formVer :input[name='volumen_total']").val(datos["volumen_total"]);
+    $("#formVer :input[name='precio']").val(datos["precio"]);
+
+    //Se trae la lista de certificados que tenga
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/certificados/acciones",
+      type: "POST",
+      dataType: "json",
+      async: false,
+      data: {
+        accion: "certificadosCosechaUsuario",
+        idCosecha: datos['id']
+      },
+      success: function(data){
+        cargaDatos++;
+        $('#certificados_cosecha').empty();
+        if (data.success) {
+          for (let i = 0; i < data.msj['cantidad_registros']; i++) {
+            $('#certificados_cosecha').append(`
+              <li>${data.msj[i].nombre}</li>
+            `);
+          }
+        }else{
+          $('#certificados_cosecha').append(`
+            <li>No hay certificados</li>
+          `);
+        }
+      },
+      error: function(data){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+
+    //Se traen las fotos de la cosecha
+    $.ajax({
+      url: "acciones",
+      type: "POST",
+      dataType: "json",
+      async: false,
+      data: {
+        accion: "fotosCosechas",
+        idCosecha: datos['id']
+      },
+      success: function(data){
+        cargaDatos++;
+        $('#cosechas_fotos').empty();
+        if (data.success) {
+          for (let i = 0; i < data.msj['cantidad_registros']; i++) {
+            $('#cosechas_fotos').append(`
+              <div class="col-6">
+                <a href="<?php echo($ruta_raiz); ?>${data.msj[i].ruta}" data-lightbox="galeria"><img class="img-thumbnail" src="<?php echo($ruta_raiz); ?>${data.msj[i].ruta}"></a>
+              </div>
+            `);
+          }
+        }else{
+          $('#cosechas_fotos').append(`
+            <p>No hay fotos</p>
+          `);
+        }
+      },
+      error: function(data){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+
+    if (cargaDatos == 2) {
+      $("#modalVer").modal("show");
+    }
   }
 </script>
 </html>
