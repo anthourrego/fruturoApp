@@ -50,7 +50,7 @@ function lista(){
                 );
       
   $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id INNER JOIN municipios AS muni ON muni.id = f.fk_municipio INNER JOIN departamentos AS dep ON dep.id = muni.fk_departamento INNER JOIN usuarios AS u ON u.id = c.fk_creador";
-  $extraWhere= "c.estado = 1";
+  $extraWhere= "c.estado = ".$_GET['estado'];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
