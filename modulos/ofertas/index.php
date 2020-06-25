@@ -95,7 +95,8 @@
 <script>
   $(function(){
     cerrarCargando();
-    //lista();
+    console.log('xxx');
+    lista();
   });
 
   function lista(){
