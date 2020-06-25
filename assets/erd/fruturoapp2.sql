@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 25-06-2020 a las 03:31:15
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.3
+-- Servidor: localhost
+-- Tiempo de generación: 23-06-2020 a las 01:57:01
+-- Versión del servidor: 10.4.13-MariaDB
+-- Versión de PHP: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -63,6 +62,15 @@ CREATE TABLE `cosechas` (
   `fecha_creacion` datetime NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosechas`
+--
+
+INSERT INTO `cosechas` (`id`, `fk_producto`, `fk_finca`, `volumen_total`, `precio`, `fecha_inicio`, `fecha_final`, `estado`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 1, 1, 12323, '123123123', '2020-06-21', '2020-06-21', 1, '2020-06-21 00:04:21', 1),
+(2, 1, 1, 12323, '123123123', '2020-06-21', '2020-06-21', 1, '2020-06-21 00:04:28', 1),
+(3, 1, 1, 123123000, '12312312', '2020-06-21', '2020-06-21', 1, '2020-06-21 00:06:09', 1);
 
 -- --------------------------------------------------------
 
@@ -119,7 +127,7 @@ CREATE TABLE `departamentos` (
   `nombre` varchar(50) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 1,
-  `estado` int(11) NOT NULL DEFAULT 1
+  `estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -136,7 +144,7 @@ INSERT INTO `departamentos` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `es
 (7, 'Caldas', '2020-05-08 00:33:56', 1, 1),
 (8, 'Caquetá', '2020-05-08 00:33:56', 1, 1),
 (9, 'Casanare', '2020-05-08 00:33:56', 1, 1),
-(10, 'Cauca', '2020-05-08 00:33:56', 1, 1),
+(10, 'Caucaa', '2020-05-08 00:33:56', 1, 0),
 (11, 'Cesar', '2020-05-08 00:33:56', 1, 1),
 (12, 'Chocó', '2020-05-08 00:33:56', 1, 1),
 (13, 'Córdoba', '2020-05-08 00:33:56', 1, 1),
@@ -158,7 +166,13 @@ INSERT INTO `departamentos` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `es
 (29, 'Tolima', '2020-05-08 00:33:56', 1, 1),
 (30, 'Valle del Cauca', '2020-05-08 00:33:56', 1, 1),
 (31, 'Vaupés', '2020-05-08 00:33:56', 1, 1),
-(32, 'Vichada', '2020-05-08 00:33:56', 1, 1);
+(32, 'Vichada', '2020-05-08 00:33:56', 1, 1),
+(33, 'Departamento de prueba', '2020-06-22 13:42:27', 1, 0),
+(34, 'Otro de prueba', '2020-06-22 13:43:13', 1, 1),
+(35, 'Anthoniooooo', '2020-06-22 13:46:38', 1, 0),
+(36, 'Pruebaaaa', '2020-06-22 13:47:37', 1, 0),
+(37, 'Departamento', '2020-06-22 14:54:09', 1, 1),
+(38, 'Funcionnaaaa', '2020-06-22 14:54:43', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -169,15 +183,23 @@ INSERT INTO `departamentos` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `es
 CREATE TABLE `fincas` (
   `id` int(11) NOT NULL,
   `nombre` varchar(150) NOT NULL,
-  `fk_municipio` int(11) NOT NULL DEFAULT 0,
+  `fk_municipio` int(11) NOT NULL,
   `direccion` text NOT NULL,
-  `hectareas` float NOT NULL DEFAULT 0,
-  `predio_exportador` int(11) NOT NULL DEFAULT 0,
-  `registro_ica` mediumtext DEFAULT NULL,
-  `fk_usuario` int(11) NOT NULL DEFAULT 0,
-  `fecha_creacion` datetime NOT NULL,
-  `estado` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `hectareas` float NOT NULL,
+  `predio_exportador` int(11) NOT NULL,
+  `registro_ica` text NOT NULL,
+  `fk_usuario` int(11) NOT NULL,
+  `fecha_creacion` date NOT NULL,
+  `estado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `fincas`
+--
+
+INSERT INTO `fincas` (`id`, `nombre`, `fk_municipio`, `direccion`, `hectareas`, `predio_exportador`, `registro_ica`, `fk_usuario`, `fecha_creacion`, `estado`) VALUES
+(1, 'Finca de prueba', 888, 'DIrecci&oacute;n de la finca de prueba', 124123000, 1, '234234234', 1, '2020-06-20', 1),
+(2, '786786', 5, '7i689u89798', 6565, 1, '876876', 1, '2020-06-21', 1);
 
 -- --------------------------------------------------------
 
@@ -193,6 +215,106 @@ CREATE TABLE `logs` (
   `fk_usuario` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `logs`
+--
+
+INSERT INTO `logs` (`id`, `nombre_tabla`, `id_registro`, `accion`, `fk_usuario`, `fecha_creacion`) VALUES
+(1, 'fincas', 1, 'Se crea la finca Finca de prueba', 1, '2020-06-20 23:06:21'),
+(2, 'usuarios', 1, 'Se edita el usuario admin@admin.com', 1, '2020-06-21 01:38:19'),
+(3, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:41:53'),
+(4, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:42:31'),
+(5, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:44:23'),
+(6, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:44:31'),
+(7, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:44:48'),
+(8, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 17:52:55'),
+(9, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 18:04:07'),
+(10, 'usuarios', 1, 'Se edita el perfil del usuario admin@admin.com', 1, '2020-06-21 18:22:47'),
+(11, 'fincas', 2, 'Se crea la finca 786786', 1, '2020-06-21 21:17:43'),
+(12, 'usuarios_modulos', 12, 'El permiso se ha creado', 1, '2020-06-22 11:50:55'),
+(13, 'usuarios_modulos', 13, 'El permiso se ha creado', 1, '2020-06-22 12:03:55'),
+(14, 'usuarios_modulos', 14, 'El permiso se ha creado', 1, '2020-06-22 12:03:56'),
+(15, 'departamentos', 33, 'Se crea el departamento Departamento de prueba', 1, '2020-06-22 13:42:27'),
+(16, 'departamentos', 34, 'Se crea el departamento Otro de prueba', 1, '2020-06-22 13:43:13'),
+(17, 'departamentos', 35, 'Se crea el departamento Anthony', 1, '2020-06-22 13:46:38'),
+(18, 'departamentos', 36, 'Se crea el departamento Pruebaaaa', 1, '2020-06-22 13:47:37'),
+(19, 'perfiles', 35, 'Se edita el perfil Anthoniooooo', 1, '2020-06-22 14:45:20'),
+(20, 'departamentos', 37, 'Se crea el departamento Departamento', 1, '2020-06-22 14:54:09'),
+(21, 'perfiles', 10, 'Se edita el perfil Caucaa', 1, '2020-06-22 14:54:28'),
+(22, 'departamentos', 38, 'Se crea el departamento Funcionnaaaa', 1, '2020-06-22 14:54:43'),
+(23, 'departamentos', 35, 'Se inhabilita el departamento Anthoniooooo', 1, '2020-06-22 14:57:36'),
+(24, 'departamentos', 10, 'Se inhabilita el departamento Caucaa', 1, '2020-06-22 15:01:30'),
+(25, 'departamentos', 33, 'Se inhabilita el departamento Departamento de prueba', 1, '2020-06-22 15:02:25'),
+(26, 'departamentos', 36, 'Se inhabilita el departamento Pruebaaaa', 1, '2020-06-22 15:03:01'),
+(27, 'departamentos', 1103, 'Se crea el departamento Municipio de prueba', 1, '2020-06-22 16:18:59'),
+(28, 'perfiles', 721, 'Se edita el municipio Acacíass', 1, '2020-06-22 16:20:23'),
+(29, 'perfiles', 721, 'Se edita el municipio Acacíass', 1, '2020-06-22 16:20:28'),
+(30, 'perfiles', 721, 'Se edita el municipio Acacías', 1, '2020-06-22 16:20:37'),
+(31, 'perfiles', 639, 'Se edita el municipio Acevedoo', 1, '2020-06-22 16:23:54'),
+(32, 'perfiles', 639, 'Se edita el municipio Acevedo', 1, '2020-06-22 16:24:04'),
+(33, 'perfiles', 853, 'Se edita el municipio Ábrego', 1, '2020-06-22 16:37:44'),
+(34, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:43:55'),
+(35, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:44:28'),
+(36, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:45:53'),
+(37, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:47:35'),
+(38, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:48:08'),
+(39, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:49:30'),
+(40, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:51:29'),
+(41, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:52:50'),
+(42, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:53:27'),
+(43, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:53:38'),
+(44, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:57:22'),
+(45, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:57:45'),
+(46, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:58:13'),
+(47, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:58:21'),
+(48, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:58:41'),
+(49, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:58:47'),
+(50, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:59:42'),
+(51, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 16:59:48'),
+(52, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:06:55'),
+(53, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:10:04'),
+(54, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:17:23'),
+(55, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:17:29'),
+(56, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:20:08'),
+(57, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:20:45'),
+(58, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:25:48'),
+(59, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:25:55'),
+(60, 'perfiles', 4, 'Se edita el municipio Abriaquíi', 1, '2020-06-22 17:26:02'),
+(61, 'perfiles', 4, 'Se edita el municipio Abriaquíi', 1, '2020-06-22 17:29:48'),
+(62, 'perfiles', 4, 'Se edita el municipio Abriaquíi', 1, '2020-06-22 17:29:54'),
+(63, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:29:58'),
+(64, 'perfiles', 721, 'Se edita el municipio Acacías', 1, '2020-06-22 17:35:42'),
+(65, 'perfiles', 721, 'Se edita el municipio Acacíass', 1, '2020-06-22 17:35:48'),
+(66, 'perfiles', 721, 'Se edita el municipio Acacías', 1, '2020-06-22 17:35:54'),
+(67, 'perfiles', 721, 'Se edita el municipio Acacías', 1, '2020-06-22 17:36:00'),
+(68, 'perfiles', 721, 'Se edita el municipio Acacías', 1, '2020-06-22 17:36:06'),
+(69, 'perfiles', 4, 'Se edita el municipio Abriaquíi', 1, '2020-06-22 17:36:43'),
+(70, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:36:49'),
+(71, 'perfiles', 4, 'Se edita el municipio Abriaquí', 1, '2020-06-22 17:36:55'),
+(72, 'perfiles', 853, 'Se edita el municipio Ábrego', 1, '2020-06-22 17:37:13'),
+(73, 'perfiles', 3, 'Se edita el municipio Abejorrall', 1, '2020-06-22 17:39:34'),
+(74, 'perfiles', 3, 'Se edita el municipio Abejorral', 1, '2020-06-22 17:39:38'),
+(75, 'municpios', 4, 'Se inhabilita el municipio Abriaquí', 1, '2020-06-22 17:42:46'),
+(76, 'municpios', 3, 'Se inhabilita el municipio Abejorral', 1, '2020-06-22 17:43:21'),
+(77, 'municpios', 3, 'Se inhabilita el municipio Abejorral', 1, '2020-06-22 18:23:44'),
+(78, 'municpios', 721, 'Se inhabilita el municipio Acacías', 1, '2020-06-22 18:24:54'),
+(79, 'municpios', 853, 'Se inhabilita el municipio Ábrego', 1, '2020-06-22 18:45:06'),
+(80, 'municpios', 853, 'Se inhabilita el municipio Ábrego', 1, '2020-06-22 18:46:22'),
+(81, 'municpios', 3, 'Se inhabilita el municipio Abejorral', 1, '2020-06-22 18:46:46'),
+(82, 'municpios', 4, 'Se inhabilita el municipio Abriaquí', 1, '2020-06-22 18:49:21'),
+(83, 'municpios', 456, 'Se inhabilita el municipio Acandí', 1, '2020-06-22 18:49:23'),
+(84, 'municpios', 158, 'Se inhabilita el municipio Achí', 1, '2020-06-22 18:49:26'),
+(85, 'municpios', 517, 'Se inhabilita el municipio Agua de Dios', 1, '2020-06-22 18:49:31'),
+(86, 'municpios', 3, 'Se inhabilita el municipio Abejorral', 1, '2020-06-22 18:51:20'),
+(87, 'municpios', 4, 'Se inhabilita el municipio Abriaquí', 1, '2020-06-22 18:51:58'),
+(88, 'municpios', 721, 'Se inhabilita el municipio Acacías', 1, '2020-06-22 18:52:01'),
+(89, 'municpios', 853, 'Se inhabilita el municipio Ábrego', 1, '2020-06-22 18:52:58'),
+(90, 'municpios', 639, 'Se inhabilita el municipio Acevedo', 1, '2020-06-22 18:54:10'),
+(91, 'municpios', 158, 'Se inhabilita el municipio Achí', 1, '2020-06-22 18:54:18'),
+(92, 'municpios', 456, 'Se inhabilita el municipio Acandí', 1, '2020-06-22 18:54:21'),
+(93, 'perfiles', 853, 'Se edita el municipio Ábrego', 1, '2020-06-22 18:54:37'),
+(94, 'perfiles', 853, 'Se edita el municipio Ábrego', 1, '2020-06-22 18:54:42');
 
 -- --------------------------------------------------------
 
@@ -227,9 +349,9 @@ INSERT INTO `modulos` (`id`, `nombre`, `tag`, `icono`, `ruta`, `fk_modulo_tipo`,
 (7, 'usuarios_tipo_persona', 'Tipo persona', 'far fa-user', 'usuarios/tipo_persona/', 1, 1, '2020-05-30 00:29:39', 1, 1),
 (8, 'usuarios_perfiles', 'Perfiles', 'fas fa-user-tag', 'usuarios/perfiles/', 1, 1, '2020-05-30 00:51:57', 1, 1),
 (9, 'ofertas', 'Ofertas', 'fas fa-award', 'ofertas/', 1, 0, '2020-06-05 12:34:22', 1, 1),
-(10, 'provincias', 'Provincias', 'fa fa-building', 'provincias/', 1, 0, '2020-06-22 13:05:18', 1, 1),
-(11, 'provincias_departamentos', 'Departamentos', 'fas fa-city', 'provincias/departamentos/', 1, 10, '2020-06-22 13:05:54', 1, 1),
-(12, 'provincias_municipios', 'Municipios', 'fas fa-city', 'provincias/municipios/', 1, 10, '2020-06-22 13:06:29', 1, 1);
+(10, 'provincias', 'Provincias', 'fa fa-building', 'provincias/', 1, 0, '2020-06-05 12:34:22', 1, 1),
+(11, 'provincias_departamentos', 'Departamentos', 'fas fa-city', 'provincias/departamentos/', 1, 10, '2020-05-30 00:51:57', 1, 1),
+(12, 'provincias_municipios', 'Municipios', 'fas fa-city', 'provincias/municipios/', 1, 10, '2020-05-30 00:51:57', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -265,7 +387,7 @@ CREATE TABLE `municipios` (
   `fk_departamento` int(10) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 1,
-  `estado` int(11) NOT NULL DEFAULT 1
+  `estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -275,7 +397,7 @@ CREATE TABLE `municipios` (
 INSERT INTO `municipios` (`id`, `nombre`, `fk_departamento`, `fecha_creacion`, `fk_creador`, `estado`) VALUES
 (1, 'Leticia', 1, '2020-05-08 00:33:56', 1, 1),
 (2, 'Puerto Nariño', 1, '2020-05-08 00:33:56', 1, 1),
-(3, 'Abejorral', 2, '2020-05-08 00:33:56', 1, 1),
+(3, 'Abejorral', 2, '2020-05-08 00:33:56', 1, 0),
 (4, 'Abriaquí', 2, '2020-05-08 00:33:56', 1, 1),
 (5, 'Alejandria', 2, '2020-05-08 00:33:56', 1, 1),
 (6, 'Amagá', 2, '2020-05-08 00:33:56', 1, 1),
@@ -789,7 +911,7 @@ INSERT INTO `municipios` (`id`, `nombre`, `fk_departamento`, `fecha_creacion`, `
 (514, 'Tierralta', 13, '2020-05-08 00:33:56', 1, 1),
 (515, 'Tuchín', 13, '2020-05-08 00:33:56', 1, 1),
 (516, 'Valencia', 13, '2020-05-08 00:33:56', 1, 1),
-(517, 'Agua de Dios', 14, '2020-05-08 00:33:56', 1, 1),
+(517, 'Agua de Dios', 14, '2020-05-08 00:33:56', 1, 0),
 (518, 'Albán', 14, '2020-05-08 00:33:56', 1, 1),
 (519, 'Anapoima', 14, '2020-05-08 00:33:56', 1, 1),
 (520, 'Anolaima', 14, '2020-05-08 00:33:56', 1, 1),
@@ -911,7 +1033,7 @@ INSERT INTO `municipios` (`id`, `nombre`, `fk_departamento`, `fecha_creacion`, `
 (636, 'El Retorno', 16, '2020-05-08 00:33:56', 1, 1),
 (637, 'Miraflores', 16, '2020-05-08 00:33:56', 1, 1),
 (638, 'San José del Guaviare', 16, '2020-05-08 00:33:56', 1, 1),
-(639, 'Acevedo', 17, '2020-05-08 00:33:56', 1, 1),
+(639, 'Acevedo', 17, '2020-05-08 00:33:56', 1, 0),
 (640, 'Agrado', 17, '2020-05-08 00:33:56', 1, 1),
 (641, 'Aipe', 17, '2020-05-08 00:33:56', 1, 1),
 (642, 'Algeciras', 17, '2020-05-08 00:33:56', 1, 1),
@@ -1125,7 +1247,7 @@ INSERT INTO `municipios` (`id`, `nombre`, `fk_departamento`, `fecha_creacion`, `
 (850, 'Toledo', 22, '2020-05-08 00:33:56', 1, 1),
 (851, 'Villa Caro', 22, '2020-05-08 00:33:56', 1, 1),
 (852, 'Villa del Rosario', 22, '2020-05-08 00:33:56', 1, 1),
-(853, 'Ábrego', 22, '2020-05-08 00:33:56', 1, 1),
+(853, 'Ábrego', 21, '2020-05-08 00:33:56', 1, 1),
 (854, 'Colón', 23, '2020-05-08 00:33:56', 1, 1),
 (855, 'Mocoa', 23, '2020-05-08 00:33:56', 1, 1),
 (856, 'Orito', 23, '2020-05-08 00:33:56', 1, 1),
@@ -1375,7 +1497,8 @@ INSERT INTO `municipios` (`id`, `nombre`, `fk_departamento`, `fecha_creacion`, `
 (1099, 'Cumaribo', 32, '2020-05-08 00:33:56', 1, 1),
 (1100, 'La Primavera', 32, '2020-05-08 00:33:56', 1, 1),
 (1101, 'Puerto Carreño', 32, '2020-05-08 00:33:56', 1, 1),
-(1102, 'Santa Rosalía', 32, '2020-05-08 00:33:56', 1, 1);
+(1102, 'Santa Rosalía', 32, '2020-05-08 00:33:56', 1, 1),
+(1103, 'Municipio de prueba', 2, '2020-06-22 16:18:59', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1497,10 +1620,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `fk_creador`) VALUES
-(1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$nMbAlCKj4jwp9QrXyri13ue1.WnTVfHi5d2FpZWF70/353bwF2biq', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, 1),
+(1, 1, '12345678', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$.lg.H1z/iuQ5.e9GYUcaKusRKmyQ4Xr8rGuGrstfKOEUSiu7suzKm', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, 1),
 (2, 2, '1087996797', 1, 'coo@fruturo.one', 'Juan', 'Londono', '$2y$15$1x/MTYxwaSA7eZ22uL.aqezNyLNmKZE1txFaYGUJisIgtoU1S30Ve', '1988-02-19', '3184663375', 1, 1, '2020-06-02 09:12:18', 1, 0),
 (3, 1, '1225091213', 1, 'antho.120@hotmail.com', 'Anthony', 'Urrego', '$2y$15$I9R59IntLO2TVuFZ0FTUSOdkKBUvq7oiOs102qzkn0b7z9PzM.L8W', '2002-06-03', '3103587032', 3, 1, '2020-06-03 11:03:53', 1, 0),
-(4, 1, '1234567', 1, 'cordobita@productor.com', 'Cordobita', 'Rasca', '$2y$15$OxsS/qsIZUpelCbaygq/jujd3jPeyl97i6q2NhEF5Asc20F0zOJoi', '2002-06-06', '3013013011', 2, 1, '2020-06-06 13:04:54', 1, 0);
+(4, 1, '1234567', 1, 'cordobita@productor.com', 'Cordobita', 'Rasca', '$2y$15$OxsS/qsIZUpelCbaygq/jujd3jPeyl97i6q2NhEF5Asc20F0zOJoi', '2002-06-06', '3013013011', 2, 1, '2020-06-06 13:04:54', 1, 0),
+(5, 1, '234234324', 1, 'm@m.com', '234234234', '34234234', '$2y$15$.lg.H1z/iuQ5.e9GYUcaKusRKmyQ4Xr8rGuGrstfKOEUSiu7suzKm', '2002-06-01', '23423423423', 2, 1, '2020-06-20 22:55:09', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1533,9 +1657,9 @@ INSERT INTO `usuarios_modulos` (`id`, `fk_modulo`, `fk_usuario`, `fecha_creacion
 (9, 7, 1, '2020-05-30 00:30:46', 1, 1),
 (10, 8, 1, '2020-05-30 00:52:15', 1, 1),
 (11, 9, 1, '2020-06-05 12:43:45', 1, 1),
-(12, 10, 1, '2020-06-22 13:06:50', 1, 1),
-(13, 11, 1, '2020-06-22 13:06:50', 1, 1),
-(14, 12, 1, '2020-06-22 13:06:52', 1, 1);
+(12, 10, 1, '2020-06-22 11:50:55', 1, 1),
+(13, 11, 1, '2020-06-22 12:03:55', 1, 1),
+(14, 12, 1, '2020-06-22 12:03:56', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -1657,7 +1781,7 @@ ALTER TABLE `certificaciones`
 -- AUTO_INCREMENT de la tabla `cosechas`
 --
 ALTER TABLE `cosechas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_certificaciones`
@@ -1681,19 +1805,19 @@ ALTER TABLE `cosecha_oferta`
 -- AUTO_INCREMENT de la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `fincas`
 --
 ALTER TABLE `fincas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -1711,7 +1835,7 @@ ALTER TABLE `modulo_tipo`
 -- AUTO_INCREMENT de la tabla `municipios`
 --
 ALTER TABLE `municipios`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1103;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1104;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -1741,7 +1865,7 @@ ALTER TABLE `tipo_persona`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_modulos`

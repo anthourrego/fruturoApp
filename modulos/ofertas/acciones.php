@@ -28,14 +28,18 @@ function lista(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => '`c`.`id`',                    'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => '`p`.`nombre`',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => '`f`.`nombre`',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => '`c`.`volumen_total`',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
-              array( 'db' => '`c`.`precio`',                'dt' => 'precio',          'field' => 'precio'),
-              array( 'db' => '`c`.`fecha_inicio`',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
-              array( 'db' => '`c`.`fecha_final`',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
-              array( 'db' => '`c`.`fecha_creacion`',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
+              array( 'db' => 'c.id',                                'dt' => 'id',              'field' => 'id' ),
+              array( 'db' => 'muni.nombre',                         'dt' => 'municipio',       'field' => 'municipio',      'as' => 'municipio' ),
+              array( 'db' => 'dep.nombre',                          'dt' => 'departamento',    'field' => 'departamento',   'as' => 'departamento' ),
+              array( 'db' => 'p.nombre',                            'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
+              array( 'db' => 'u.id',                                'dt' => 'idUsuario',       'field' => 'idUsuario',      'as' => 'idUsuario' ),
+              array( 'db' => 'concat(u.nombres, " ", u.apellidos)', 'dt' => 'nombre',          'field' => 'nombre',         'as' => 'nombre' ),
+              array( 'db' => 'f.nombre',                            'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
+              array( 'db' => 'c.volumen_total',                     'dt' => 'volumen_total',   'field' => 'volumen_total' ),
+              array( 'db' => 'c.precio',                            'dt' => 'precio',          'field' => 'precio'),
+              array( 'db' => 'c.fecha_inicio',                      'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
+              array( 'db' => 'c.fecha_final',                       'dt' => 'fecha_final',     'field' => 'fecha_final'),
+              array( 'db' => 'c.fecha_creacion',                    'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
             );
     
   $sql_details = array(
@@ -45,16 +49,105 @@ function lista(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM `{$table}` AS `c` INNER JOIN `productos` AS `p` ON `c`.`fk_producto` = `p`.id INNER JOIN `fincas` AS `f` ON `c`.`fk_finca` = `f`.`id` INNER JOIN ";
-  $extraWhere= "`c`.`estado` = 1 AND `c`.`fk_creador` = " . $usuario["id"];
+  $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id INNER JOIN municipios AS muni ON muni.id = f.fk_municipio INNER JOIN departamentos AS dep ON dep.id = muni.fk_departamento INNER JOIN usuarios AS u ON u.id = c.fk_creador";
+  $extraWhere= "c.estado = 1";
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
 }
 
+function datosUsuario(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT 
+                          u.correo AS correo, 
+                          u.nombres AS nombres, 
+                          u.apellidos AS apellidos, 
+                          u.telefono AS telefono, 
+                          u.nro_documento AS nro_documento,
+                          td.abreviacion AS doc_abreviacion,
+                          td.nombre AS documento,
+                          tp.nombre AS tipo_per,
+                          p.nombre AS perfil
+                        FROM usuarios AS u 
+                          INNER JOIN tipo_documento AS td ON u.fk_tipo_documento = td.id 
+                          INNER JOIN tipo_persona AS tp ON tp.id = u.fk_tipo_persona 
+                          INNER JOIN perfiles AS p ON p.id = u.fk_perfil 
+                        WHERE u.id = :id", 
+                        array(":id" => $_REQUEST["idUsuario"]));
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos[0]; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function enviarMensaje(){
+  $db = new Bd();
+  $db->conectar();
+  global $usuario;
+  $resp["success"] = false;
+
+  $datos = array(
+            ":fk_cosecha" => $_REQUEST["idCosecha"], 
+            ":mensaje" => cadena_db_insertar($_REQUEST["mensaje"]), 
+            ":oferta" => 0, 
+            ":fk_creador" => $usuario["id"], 
+            ":fecha_creacion" => date("Y-m-d H:i:s")
+          );
+
+  $id_registro = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, mensaje, oferta, fk_creador, fecha_creacion) VALUES (:fk_cosecha, :mensaje, :oferta, :fk_creador, :fecha_creacion)", $datos);
+
+  if ($id_registro > 0) {
+    $db->insertLogs("cosecha_oferta", $id_registro, "Se crea un oferta o mensaje de la consecha {$_POST['idCosecha']}", $usuario["id"]);
+    $resp['success'] = true;
+    $resp['msj'] = 'Se ha enviado correctamente.';
+  } else {
+    $resp['msj'] = 'Error al realizar el registro.';
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function traerMensajes(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $mensaje = $db->consulta("SELECT 
+                            co.*,
+                            u.nombres AS nombres_usu,
+                            u.apellidos AS apellidos_usu
+                          FROM cosecha_oferta AS co 
+                            INNER JOIN usuarios AS u ON u.id = co.fk_creador 
+                          WHERE fk_cosecha = :fk_cosecha", 
+                          array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+
+  if ($mensaje["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $mensaje;
+  }else{
+    $resp["msj"] = "No hay mensajes";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
 /*****************************************/
 
-function crear(){
+/* function crear(){
   $db = new Bd();
   $db->conectar();
   $resp = array();
@@ -152,7 +245,7 @@ function datos($id){
 
   $db->desconectar();
   return $resp;
-}
+} */
 
 
 if(@$_REQUEST['accion']){
