@@ -33,6 +33,7 @@ function lista(){
               array( 'db' => 'dep.nombre',                          'dt' => 'departamento',    'field' => 'departamento',   'as' => 'departamento' ),
               array( 'db' => 'p.nombre',                            'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
               array( 'db' => 'u.id',                                'dt' => 'idUsuario',       'field' => 'idUsuario',      'as' => 'idUsuario' ),
+              array( 'db' => 'u.correo',                            'dt' => 'correo',          'field' => 'correo'),
               array( 'db' => 'concat(u.nombres, " ", u.apellidos)', 'dt' => 'nombre',          'field' => 'nombre',         'as' => 'nombre' ),
               array( 'db' => 'f.nombre',                            'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
               array( 'db' => 'c.volumen_total',                     'dt' => 'volumen_total',   'field' => 'volumen_total' ),
@@ -97,27 +98,33 @@ function enviarMensaje(){
   global $usuario;
   $resp["success"] = false;
 
-  $datos = array(
-            ":fk_cosecha" => $_REQUEST["idCosecha"], 
-            ":mensaje" => cadena_db_insertar($_REQUEST["mensaje"]), 
-            ":oferta" => 0, 
-            ":fk_creador" => $usuario["id"], 
-            ":fecha_creacion" => date("Y-m-d H:i:s")
-          );
+  //Enviamos un correo con la información
+  /* $correo = enviarCorreo($_REQUEST["correo"], $_REQUEST["mensaje"], $_REQUEST["nombre_usuario"]);
+  if ($correo === true) { */
+    $datos = array(
+      ":fk_cosecha" => $_REQUEST["idCosecha"], 
+      ":mensaje" => cadena_db_insertar($_REQUEST["mensaje"]), 
+      ":oferta" => 0, 
+      ":fk_creador" => $usuario["id"], 
+      ":fecha_creacion" => date("Y-m-d H:i:s")
+    );
 
-  $id_registro = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, mensaje, oferta, fk_creador, fecha_creacion) VALUES (:fk_cosecha, :mensaje, :oferta, :fk_creador, :fecha_creacion)", $datos);
+    $id_registro = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, mensaje, oferta, fk_creador, fecha_creacion) VALUES (:fk_cosecha, :mensaje, :oferta, :fk_creador, :fecha_creacion)", $datos);
 
-  if ($id_registro > 0) {
-    if ($usuario["perfil"] == 1 && $_REQUEST["cosechaEstado"] == 1) {
-      $db->sentencia("UPDATE cosechas SET estado = 2 WHERE id = :id", array(":id" => $_POST["idCosecha"]));
+    if ($id_registro > 0) {
+      if ($usuario["perfil"] == 1 && $_REQUEST["cosechaEstado"] == 1) {
+        $db->sentencia("UPDATE cosechas SET estado = 2 WHERE id = :id", array(":id" => $_POST["idCosecha"]));
+      }
+
+      $db->insertLogs("cosecha_oferta", $id_registro, "Se crea un oferta o mensaje de la consecha {$_POST['idCosecha']}", $usuario["id"]);
+      $resp['success'] = true;
+      $resp['msj'] = 'Se ha enviado correctamente.';
+    } else {
+      $resp['msj'] = 'Error al realizar el registro.';
     }
-
-    $db->insertLogs("cosecha_oferta", $id_registro, "Se crea un oferta o mensaje de la consecha {$_POST['idCosecha']}", $usuario["id"]);
-    $resp['success'] = true;
-    $resp['msj'] = 'Se ha enviado correctamente.';
-  } else {
-    $resp['msj'] = 'Error al realizar el registro.';
-  }
+  /* } else {
+    $resp['msj'] = $correo;
+  } */
 
   $db->desconectar();
 

@@ -32,6 +32,7 @@ function lista(){
               array( 'db' => 'p.nombre',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
               array( 'db' => 'f.nombre',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
               array( 'db' => 'c.volumen_total',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
+              array( 'db' => 'c.estado',                'dt' => 'estado',          'field' => 'estado' ),
               array( 'db' => 'c.precio',                'dt' => 'precio',          'field' => 'precio'),
               array( 'db' => 'c.fecha_inicio',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
               array( 'db' => 'c.fecha_final',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
@@ -46,7 +47,7 @@ function lista(){
                 );
       
   $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id";
-  $extraWhere= "c.estado = 1 AND c.fk_creador = " . $usuario["id"];
+  $extraWhere= "c.estado IN (1, 2) AND c.fk_creador = " . $usuario["id"];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));

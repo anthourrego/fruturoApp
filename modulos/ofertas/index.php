@@ -72,9 +72,9 @@
             <div class="input-group mb-3 w-md-25 w-100">
               <select class="custom-select" id="selectEstado" name="status">
                 <option value="1" selected>Activo</option>
-                <option value="0">Cancelado</option>
                 <option value="2">En Proceso</option>
                 <option value="3">Finalizado</option>
+                <option value="0">Cancelado</option>
               </select>
               <div class="input-group-append">
                 <label class="input-group-text" for="inputGroupSelect02">Estado</label>
@@ -208,6 +208,8 @@
             <input type="hidden" name="accion" value="enviarMensaje">
             <input type="hidden" name="idCosecha">
             <input type="hidden" name="cosechaEstado">
+            <input type="hidden" name="correo">
+            <input type="hidden" name="nombre_usuario">
             <div class="form-group">
               <label for="mensaje">Mensaje:</label>
               <textarea class="form-control" required name="mensaje" rows="3"></textarea>
@@ -496,8 +498,11 @@
   }
 
   function mensajes(datos){
+    console.log(datos);
     $("#formMensaje :input[name='idCosecha']").val(datos["id"]);
     $("#formMensaje :input[name='cosechaEstado']").val(datos["cosecha_estado"]);
+    $("#formMensaje :input[name='correo']").val(datos["correo"]);
+    $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre"]);
     cargarMensajes();
     $("#modalMensajes").modal("show");
   }

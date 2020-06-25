@@ -456,9 +456,14 @@
         { data: "fecha_creacion" },
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
+            console.log(oData);
+            let mensaje = '';
+            if(oData.estado == 2){
+              mensaje = `<button class="btn btn-info ml-2" onClick='mensajes(${JSON.stringify(oData)})'><i class="fas fa-comments"></i> Mensajes</button>`;
+            }
             return `<div class="d-flex justify-content-center">
                       <button class="btn btn-primary" onClick='verCosecha(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
-                      <button class="btn btn-info ml-2" onClick='mensajes(${JSON.stringify(oData)})'><i class="fas fa-comments"></i> Mensajes</button>
+                      ${mensaje}
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
                     </div>`;
           }
