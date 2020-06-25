@@ -230,8 +230,8 @@
       top.$('#cargando').modal('show');
       estadoTabla = $("#formEstadosListar :input[name='estado']").val();
       $('#tablaMunicipio').dataTable().fnDestroy();
-      $("#formDepartamentosListar :input[name='depto']").val('-1');
-      listaTabla();
+   
+      listaTabla($("#formDepartamentosListar :input[name='depto']").val());
     });
 
     $("#formDepartamentosListar :input[name='depto']").change(function () {

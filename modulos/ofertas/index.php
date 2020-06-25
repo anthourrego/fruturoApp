@@ -69,6 +69,17 @@
         <!-- /.card-header -->
         <div class="card-body">
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
+            <div class="input-group mb-3 w-md-25 w-100">
+              <select class="custom-select" id="selectEstado" name="status">
+                <option value="1" selected>Activo</option>
+                <option value="0">Cancelado</option>
+                <option value="2">En Proceso</option>
+                <option value="3">Finalizado</option>
+              </select>
+              <div class="input-group-append">
+                <label class="input-group-text" for="inputGroupSelect02">Estado</label>
+              </div>
+            </div>
             <thead class="thead-light">
               <tr>
                 <th scope="col">Departamento</th>
@@ -277,12 +288,18 @@
       }
     });
 
+    $("#selectEstado").change(function () {
+      $('#tabla').dataTable().fnDestroy();
+      lista();
+    });
 
     cerrarCargando();
     lista();
   });
 
   function lista(){
+   
+    var estado = $("#selectEstado").val();
     $("#tabla").DataTable({
       stateSave: false,
       responsive: true,
@@ -298,7 +315,8 @@
           type: "GET",
           dataType: "json",
           data: {
-            accion: 'lista'
+            accion: 'lista',
+            estado: estado
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -338,10 +356,21 @@
           autoFilter: true,
         },
         'pdf',
-        'colvis'
+        'colvis',
+        /* {
+          // se agrega botón para filtrar por estados;
+          text: 'Activos',
+          action: function (e, dt, node, config) {
+            node[0].innerText = node[0].innerText == 'Activos' ? 'Inactivos' : 'Activos';
+            lista()
+          }
+        } */
       ]
     });
+    const select = "<div class='input-group mb-3'><select class='custom-select' id='selectEstado' name='status'><option value='1' selected>Activo</option><option value='0'>Cancelado</option><option value='2'>En Proceso</option><option value='3'>Finalizado</option></select><div class='input-group-append'><label class='input-group-text' for='inputGroupSelect02'>Estado</label></div></div>";
+    $("#tabla_wrapper").prepend(select);
   }
+
 
   function verCosecha(datos){
     top.$("#cargando").modal("show");

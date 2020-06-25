@@ -68,6 +68,15 @@
         <!-- /.card-header -->
         <div class="card-body">
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
+            <div class="input-group mb-3 w-md-25 w-100">
+              <select class="custom-select" id="selectEstado" name="status">
+                <option value="1" selected>Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+              <div class="input-group-append">
+                <label class="input-group-text" for="inputGroupSelect02">Estado</label>
+              </div>
+            </div>
             <thead class="thead-light">
               <tr>
                 <th scope="col">Nombre</th>
@@ -210,8 +219,14 @@
       }
     });
 
+    $("#selectEstado").change(function () {
+      $('#tabla').dataTable().fnDestroy();
+      lista();
+    });
 
-    $("#tabla").DataTable({
+    function lista(){
+      var estado = $("#selectEstado").val();
+      $("#tabla").DataTable({
       stateSave: false,
       responsive: true,
       processing: true,
@@ -226,7 +241,8 @@
           type: "GET",
           dataType: "json",
           data: {
-            accion: 'lista'
+            accion: 'lista',
+            estado:  $("#selectEstado").val()
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -243,9 +259,11 @@
             "render": function (nTd, sData, oData, iRow, iCol) {
               return `<div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn ${ $('#selectEstado').val() == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$('#selectEstado').val() == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${$('#selectEstado').val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
                       </div>`;
             }
+
+            
           }
       ],
       dom: 'Bfrtip',
@@ -262,7 +280,12 @@
         'pdf',
         'colvis'
       ]
-    });
+      });
+      
+    }
+
+    lista();
+    
   });
 
   function eliminar(datos){
@@ -300,6 +323,57 @@
               Swal.fire({
                 icon: 'warning',
                 html: "Error al eliminar el certificado " + datos['nombre']
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
+      }
+    });
+  }
+
+  function cambiarEstado(datos){
+    console.log('datos ', datos);
+    Swal.fire({
+      title: `¿Estas seguro de ${ $("#selectEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} el certificado  ${datos['nombre']}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `<i class="fas ${ $("#selectEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i> Si`,
+      cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "cambiarEstadoCertificado", 
+            id: datos['id'],
+            nombre: datos['nombre'], 
+            estado: $("#selectEstado").val() == 1 ? 0 : 1,
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tabla").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: `Se ha ${$("#selectEstado").val() ? 'inhabilitado' : 'habilitado'} el certificado ${datos['nombre']}`,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: `Error al ${estadoTabla == 1 ? 'inhabilitar' : 'habilitar'} el certificado ${datos['nombre']}`
               })
             }
           },
