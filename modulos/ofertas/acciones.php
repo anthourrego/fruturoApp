@@ -36,6 +36,7 @@ function lista(){
               array( 'db' => 'concat(u.nombres, " ", u.apellidos)', 'dt' => 'nombre',          'field' => 'nombre',         'as' => 'nombre' ),
               array( 'db' => 'f.nombre',                            'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
               array( 'db' => 'c.volumen_total',                     'dt' => 'volumen_total',   'field' => 'volumen_total' ),
+              array( 'db' => 'c.estado',                            'dt' => 'cosecha_estado',  'field' => 'cosecha_estado', 'as' => 'cosecha_estado'),
               array( 'db' => 'c.precio',                            'dt' => 'precio',          'field' => 'precio'),
               array( 'db' => 'c.fecha_inicio',                      'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
               array( 'db' => 'c.fecha_final',                       'dt' => 'fecha_final',     'field' => 'fecha_final'),
@@ -107,6 +108,10 @@ function enviarMensaje(){
   $id_registro = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, mensaje, oferta, fk_creador, fecha_creacion) VALUES (:fk_cosecha, :mensaje, :oferta, :fk_creador, :fecha_creacion)", $datos);
 
   if ($id_registro > 0) {
+    if ($usuario["perfil"] == 1 && $_REQUEST["cosechaEstado"] == 1) {
+      $db->sentencia("UPDATE cosechas SET estado = 2 WHERE id = :id", array(":id" => $_POST["idCosecha"]));
+    }
+
     $db->insertLogs("cosecha_oferta", $id_registro, "Se crea un oferta o mensaje de la consecha {$_POST['idCosecha']}", $usuario["id"]);
     $resp['success'] = true;
     $resp['msj'] = 'Se ha enviado correctamente.';
@@ -143,6 +148,32 @@ function traerMensajes(){
   $db->desconectar();
 
   return json_encode($resp);
+}
+
+function eliminar(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+
+  $db->sentencia("UPDATE cosechas SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
+  $db->insertLogs("cosechas", $_POST["id"], "Se cancela la oferta por parte del comprador", $usuario["id"]);
+
+  $db->desconectar();
+
+  return json_encode(1);
+}
+
+function finalizar(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+
+  $db->sentencia("UPDATE cosechas SET estado = 3 WHERE id = :id", array(":id" => $_POST["id"]));
+  $db->insertLogs("cosechas", $_POST["id"], "Se finaliza la oferta por parte del comprador", $usuario["id"]);
+
+  $db->desconectar();
+
+  return json_encode(1);
 }
 
 /*****************************************/

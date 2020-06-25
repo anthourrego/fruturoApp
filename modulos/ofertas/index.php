@@ -189,12 +189,14 @@
       <div class="modal-content" style="height: calc(100vh - 60px)">
         <div class="modal-header">
           <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5>
+          <button data-toggle="tooltip" data-placement="top" title="Cargar mensajes" class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i></button>
         </div>
         <div id="contenidoMensajes" class="modal-body overflow-auto"></div> 
         <div class="modal-footer">
           <form id="formMensaje" class="w-100" action="">
             <input type="hidden" name="accion" value="enviarMensaje">
             <input type="hidden" name="idCosecha">
+            <input type="hidden" name="cosechaEstado">
             <div class="form-group">
               <label for="mensaje">Mensaje:</label>
               <textarea class="form-control" required name="mensaje" rows="3"></textarea>
@@ -221,7 +223,7 @@
       if($("#formMensaje").valid()){
         $.ajax({
           type: "POST",
-          url: "acciones",
+          url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
           cache: false,
           contentType: false,
           dataType: 'json',
@@ -316,8 +318,10 @@
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
-                      <button class="btn btn-primary" onClick='verCosecha(${JSON.stringify(oData)})'><i class="far fa-eye"></i></button>
-                      <button class="btn btn-info ml-2" onClick='mensajes(${JSON.stringify(oData)})'><i class="fas fa-comments"></i></button>
+                      <button class="btn btn-primary mx-1" onClick='verCosecha(${JSON.stringify(oData)})' data-toggle="tooltip" data-placement="top" title="Ver"><i class="far fa-eye"></i></button>
+                      <button class="btn btn-info mx-1" onClick='mensajes(${JSON.stringify(oData)})' data-toggle="tooltip" data-placement="top" title="Mensajes"><i class="fas fa-comments"></i></button>
+                      <button class="btn btn-success mx-1 px-3" onClick='finalizar(${JSON.stringify(oData)})' data-toggle="tooltip" data-placement="top" title="Finalizar"><i class="fas fa-dollar-sign"></i></button>
+                      <button type="button" class="btn btn-danger btn-sm mx-1 px-3" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" data-placement="top" title="Cancelar"><i class="fas fa-trash-alt"></i></button>
                     </div>`;
           }
         }
@@ -464,6 +468,7 @@
 
   function mensajes(datos){
     $("#formMensaje :input[name='idCosecha']").val(datos["id"]);
+    $("#formMensaje :input[name='cosechaEstado']").val(datos["cosecha_estado"]);
     cargarMensajes();
     $("#modalMensajes").modal("show");
   }
@@ -514,6 +519,102 @@
           icon: 'error',
           html: 'No se han enviado los datos'
         })
+      }
+    });
+  }
+
+  function eliminar(datos){
+    Swal.fire({
+      title: "¿Estas seguro de cancelar la oferta?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="far fa-trash-alt"></i> Si',
+      cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "eliminar", 
+            id: datos['id']
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tabla").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: "Se ha cancelado",
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: "Error al cancelar"
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
+      }
+    });
+  }
+
+  function finalizar(datos){
+    Swal.fire({
+      title: "¿Estas seguro de terminar esta compra?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '<i class="fas fa-dollar-sign"></i> Si',
+      cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "finalizar", 
+            id: datos['id']
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tabla").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: "Se ha finalizado",
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: "Error al finalizar la compra"
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
       }
     });
   }

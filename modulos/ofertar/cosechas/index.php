@@ -213,6 +213,33 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Mensaje -->
+  <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="height: calc(100vh - 60px)">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5> 
+          <button class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i> Recargar</button>
+        </div>
+        <div id="contenidoMensajes" class="modal-body overflow-auto"></div> 
+        <div class="modal-footer">
+          <form id="formMensaje" class="w-100" action="">
+            <input type="hidden" name="accion" value="enviarMensaje">
+            <input type="hidden" name="idCosecha">
+            <div class="form-group">
+              <label for="mensaje">Mensaje:</label>
+              <textarea class="form-control" required name="mensaje" rows="3"></textarea>
+            </div>
+            <div class="w-100 d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+              <button id="btnCrearMensaje" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 <?php 
   echo $lib->cambioPantalla();
@@ -330,6 +357,67 @@
         });
       }
     });
+
+    $("#formMensaje").submit(function(event){
+      event.preventDefault();
+      if($("#formMensaje").valid()){
+        $.ajax({
+          type: "POST",
+          url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
+          cache: false,
+          contentType: false,
+          dataType: 'json',
+          processData: false,
+          data: new FormData(this),
+          beforeSend: function(){
+            $('#formMensaje :input').attr("disabled", true);
+            //Desabilitamos el botón
+            $('#btnCrearMensaje').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`);
+            $("#btnCrearMensaje").attr("disabled" , true);
+          },
+          success: function(data){
+            if (data.success) {
+              cargarMensajes();
+              $("#formMensaje :input[name='mensaje']").val('');
+              $("#formMensaje :input").removeClass("is-valid");
+              $("#formMensaje :input").removeClass("is-invalid");
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: data.msj,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'error',
+                html: data.msj
+              })
+            }
+          },
+          error: function(){
+            //Habilitamos el botón
+            Swal.fire({
+              icon: 'error',
+              html: 'Error al enviar los datos.'
+            });
+            //Habilitamos el botón
+            $('#formMensaje :input').attr("disabled", false);
+            $('#btnCrearMensaje').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+            $("#btnCrearMensaje").attr("disabled", false);
+          },
+          complete: function(){
+            //Habilitamos el botón
+            $('#formMensaje :input').attr("disabled", false);
+            $('#btnCrearMensaje').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+            $("#btnCrearMensaje").attr("disabled", false);
+          }
+        });
+      }
+    });
+
+
     lista();
     listaTerrenos();
     listaProductos();
@@ -370,6 +458,7 @@
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
                       <button class="btn btn-primary" onClick='verCosecha(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
+                      <button class="btn btn-info ml-2" onClick='mensajes(${JSON.stringify(oData)})'><i class="fas fa-comments"></i> Mensajes</button>
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Cancelar</button>
                     </div>`;
           }
@@ -615,6 +704,62 @@
     if (cargaDatos == 2) {
       $("#modalVer").modal("show");
     }
+  }
+
+  function mensajes(datos){
+    $("#formMensaje :input[name='idCosecha']").val(datos["id"]);
+    cargarMensajes();
+    $("#modalMensajes").modal("show");
+  }
+
+  function cargarMensajes(){
+    //Se cargan las lista de mnesajes sobre la cosecha
+    $.ajax({
+      url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
+      type: "POST",
+      dataType: "json",
+      async: false,
+      data: {
+        accion: "traerMensajes",
+        idCosecha: $("#formMensaje :input[name='idCosecha']").val()
+      },
+      success: function(data){
+        $("#contenidoMensajes").empty();
+        if (data.success) {
+          for (let i = 0; i < data.msj["cantidad_registros"]; i++) {
+            if (data.msj[i].fk_creador == <?php echo($usuario['id']); ?>) {
+              $("#contenidoMensajes").append(`
+                <div class="ml-auto alert alert-warning w-90" role="alert">
+                  <p class="font-weight-bold pb-1 border-bottom border-warning text-right">
+                    ${data.msj[i].nombres_usu} ${data.msj[i].apellidos_usu} | <small>${data.msj[i].fecha_creacion}</small>
+                  </p>
+                  ${data.msj[i].mensaje}
+                </div>`);
+            }else{
+              $("#contenidoMensajes").append(`
+                <div class="alert alert-info w-90" role="alert">
+                  <p class="font-weight-bold pb-1 border-bottom border-info">
+                  ${data.msj[i].nombres_usu} ${data.msj[i].apellidos_usu} | <small>${data.msj[i].fecha_creacion}</small>
+                  </p>
+                  ${data.msj[i].mensaje}
+                </div>
+              `);
+            }
+          } 
+          setTimeout(() => { 
+            $("#contenidoMensajes").scrollTop($("#contenidoMensajes")[0].scrollHeight);
+          }, 200);
+        }else{
+          $("#contenidoMensajes").append(`<p class="text-center">No hay mensajes</p>`);
+        }
+      },
+      error: function(data){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
   }
 </script>
 </html>
