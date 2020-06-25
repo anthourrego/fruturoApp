@@ -54,9 +54,9 @@ function crear(){
   global $usuario;
   $resp['success'] = false;
 
-  if (validarNombre(cadena_db_insertar($_POST["producto"])) == 0) {
+  if (validarNombre($_POST["producto"]) == 0) {
     $datos = array(
-      ":nombre" => cadena_db_insertar($_POST["producto"]),
+      ":nombre" => $_POST["producto"],
       "fecha_creacion" => date('Y-m-d H:i:s'),
       "fk_creador" => $usuario["id"],
       "estado" => 1
