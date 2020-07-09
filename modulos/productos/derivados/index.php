@@ -318,8 +318,8 @@
       },
       success: function(data){
         if (data.success) {
-          
-          $("#formCrear :input[name='producto']").empty();
+          $("#formCrear :input[name='producto']").empty();          
+          $("#filtroProducto").empty();
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $("#formCrear :input[name='producto']").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
@@ -334,13 +334,8 @@
               <option value="${-1}">${'Todos'}</option>
           `);
 
-          $("#filtroProducto").val(-1)
-          
-
-          // $("#filtroProducto").val('');
-          $("#formFiltrar :input[name='producto']").val('');
+          $("#filtroProducto").val(-1);
           $("#formCrear :input[name='producto']").selectpicker('refresh');
-          $("#formFiltrar :input[name='producto']").selectpicker('refresh');
         }else{
           Swal.fire({
             icon: 'warning',
@@ -357,9 +352,10 @@
     });
   }
 
-  function eliminar(producto){
+  function eliminar(derivado){
+    console.log(derivado);
     Swal.fire({
-      title: "¿Estas seguro de eliminar el producto " + producto['nombre'] + "?",
+      title: "¿Estas seguro de eliminar el derivado " + derivado['nombre'] + "?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -374,12 +370,13 @@
           dataType: 'json',
           data: {
             accion: "eliminar", 
-            id: producto['id'],
-            nombre: producto['nombre']
+            id: derivado['id'],
+            nombre: derivado['nombre']
           },
           success: function(data){
             if (data == 1) {
               $("#tabla").DataTable().ajax.reload();
+              listarProductos();
               Swal.fire({
                 toast: true,
                 position: 'bottom-end',
