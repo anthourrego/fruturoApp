@@ -41,7 +41,7 @@ function lista(){
                 );
       
   $joinQuery = "FROM `{$table}` AS `p` INNER JOIN `usuarios` AS `u` ON `p`.`fk_creador` = `u`.`id`";
-  $extraWhere= "`p`.`estado` = 1";
+  $extraWhere= "`p`.`estado` = ".$_GET['estado'];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -193,6 +193,20 @@ function listaPerfiles($admin = 0){
   $db->desconectar();
 
   return json_encode($resp);
+}
+
+
+function cambiarEstado(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+
+  $db->sentencia("UPDATE perfiles SET estado = :estado WHERE id = :id", array(":id" => $_POST["id"], ":estado" => $_POST["estado"]));
+  $db->insertLogs("perfiles", $_POST["id"], "Se inhabilita el perfil {$_POST['nombre']}", $usuario["id"]);
+
+  $db->desconectar();
+
+  return json_encode(1);
 }
 
 

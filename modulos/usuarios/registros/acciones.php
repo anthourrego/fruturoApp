@@ -120,7 +120,13 @@ function listaUsuarios(){
                 );
       
   $joinQuery = "FROM {$table} AS u INNER JOIN perfiles AS p ON u.fk_perfil = p.id INNER JOIN tipo_documento AS td ON u.fk_tipo_documento = td.id INNER JOIN tipo_persona AS tp ON u.fk_tipo_persona = tp.id";
-  $extraWhere= "`u`.`estado` = 1";
+  $extraWhere= "`u`.`estado` =".$_GET['estado'];
+  if($_GET['fk_tipo_documento'] != -1 ){
+    $extraWhere .=' AND fk_tipo_documento = '.$_GET['fk_tipo_documento'];
+  }
+  if($_GET['fk_tipo_persona'] != -1 ){
+    $extraWhere .=' AND fk_tipo_persona = '.$_GET['fk_tipo_persona'];
+  }
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -221,6 +227,20 @@ function datosUsuario($id){
   $db->desconectar();
   return $resp;
 }
+
+function cambiarEstado(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+
+  $db->sentencia("UPDATE usuarios SET estado = :estado WHERE id = :id", array(":id" => $_POST["id"], ":estado" => $_POST["estado"]));
+  $db->insertLogs("usuarios", $_POST["id"], "Se inhabilita el usuario {$_POST['nombre']}", $usuario["id"]);
+
+  $db->desconectar();
+
+  return json_encode(1);
+}
+
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){

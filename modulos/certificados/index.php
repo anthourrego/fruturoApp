@@ -63,20 +63,18 @@
     <div class="container-fluid">
       <div class="card">
         <div class="card-header d-flex justify-content-end">
-          <button class="btn btn-success btnCrear" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
+          <div class="input-group w-md-25 w-100 mr-2">
+            <select id="selectEstado" class="custom-select" name="estado" required data-live-search="true" data-size="5" title="Seleccione un estado">
+              <option selected value="1">Activos</option>
+              <option value="0">Inactivos</option>
+            </select>
+          </div>
+        
+          <button class="btn btn-success btnCrear ml-auto" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
-            <div class="input-group mb-3 w-md-25 w-100">
-              <select class="custom-select" id="selectEstado" name="status">
-                <option value="1" selected>Activo</option>
-                <option value="0">Inactivo</option>
-              </select>
-              <div class="input-group-append">
-                <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-              </div>
-            </div>
             <thead class="thead-light">
               <tr>
                 <th scope="col">Nombre</th>

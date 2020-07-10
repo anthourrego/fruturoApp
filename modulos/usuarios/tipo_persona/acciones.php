@@ -41,7 +41,7 @@ function lista(){
                 );
       
   $joinQuery = "FROM `{$table}` AS `tp` INNER JOIN `usuarios` AS `u` ON `tp`.`fk_creador` = `u`.`id`";
-  $extraWhere= "`tp`.`estado` = 1";
+  $extraWhere= "`tp`.`estado` = ".$_GET['estado'];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -185,6 +185,22 @@ function listaTipoPersona(){
 
   return json_encode($resp);
 }
+
+
+function cambiarEstado(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+
+  $db->sentencia("UPDATE tipo_persona SET estado = :estado WHERE id = :id", array(":id" => $_POST["id"], ":estado" => $_POST["estado"]));
+  $db->insertLogs("tipo_persona", $_POST["id"], "Se inhabilita el tipo_persona {$_POST['nombre']}", $usuario["id"]);
+
+  $db->desconectar();
+
+  return json_encode(1);
+}
+
+
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){

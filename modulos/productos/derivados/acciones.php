@@ -111,13 +111,13 @@ function validarNombre($nombre, $id = 0){
   return $resp;
 }
 
-function eliminar(){
+function cambiarEstado(){
   global $usuario;
   $db = new Bd();
   $db->conectar();
 
-  $db->sentencia("UPDATE productos_derivados SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
-  $db->insertLogs("productos_derivados", $_POST["id"], "Se inhabilita el producto {$_POST['nombre']}", $usuario["id"]);
+  $db->sentencia("UPDATE productos_derivados SET estado = :estado WHERE id = :id", array(":id" => $_POST["id"], ":estado" => $_POST["estado"]));
+  $db->insertLogs("productos_derivados", $_POST["id"], "Se inhabilita el derivado {$_POST['nombre']}", $usuario["id"]);
 
   $db->desconectar();
 

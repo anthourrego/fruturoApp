@@ -62,8 +62,38 @@
   <section class="content">
     <div class="container-fluid">
       <div class="card">
-        <div class="card-header d-flex justify-content-end">
-          <button class="btn btn-success btnCrearUsuario" data-toggle="tooltip" title="Crear usuario"><i class="fas fa-user-plus"></i></button>
+        <div class="card-header d-flex ">
+          <div class="input-group w-md-25 w-100 mr-2">
+            <select id="filtroEstado" class="custom-select" name="estado " required data-live-search="true" data-size="5" title="Seleccione un estado">
+              <option selected value="1">Activos</option>
+              <option value="0">Inactivos</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="filtroEstado">Estado</label>
+            </div>
+          </div>
+
+          
+
+
+
+          <div class="input-group w-md-25 w-100 mr-2">
+            <select id="filtroTipoDocumento" class="custom-select " name="fk_tipo_documento" required data-live-search="true" data-size="5" title="Seleccione un estado">
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="filtroTipoDocumento">Tipo Doc.</label>
+            </div>
+          </div>
+
+          <div class="input-group w-md-25 w-100 mr-2">
+            <select id="filtroTipoPersona" class="custom-select " name="fk_tipo_persona" required data-live-search="true" data-size="5" title="Seleccione un estado">
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="filtroTipoPersona">Tipo Pers.</label>
+            </div>
+          </div>
+
+          <button class="btn btn-success btnCrearUsuario ml-auto" data-toggle="tooltip" title="Crear usuario"><i class="fas fa-user-plus"></i></button>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
@@ -565,6 +595,29 @@
       }
     });
 
+    $("#filtroEstado").change(function () {
+      top.$('#cargando').modal('show');
+      $('#tablaUsuarios').dataTable().fnDestroy();
+      lista();
+    });
+
+    $('#filtroTipoDocumento').change( function(){
+      top.$('#cargando').modal('show');
+      $('#tablaUsuarios').dataTable().fnDestroy();
+      lista();
+    })
+
+
+    $('#filtroTipoPersona').change( function(){
+      top.$('#cargando').modal('show');
+      $('#tablaUsuarios').dataTable().fnDestroy();
+      lista();
+    })
+
+
+
+
+
     //Se cargan todas las listas
     lista();
     TiposPerfiles();
@@ -724,6 +777,8 @@
   }
 
   function lista(){
+
+
     $("#tablaUsuarios").DataTable({
       stateSave: false,
       responsive: true,
@@ -739,7 +794,10 @@
           type: "GET",
           dataType: "json",
           data: {
-            accion: 'listaUsuarios'
+            accion: 'listaUsuarios',
+            estado: $('#filtroEstado').val(),
+            fk_tipo_documento :  $("#filtroTipoDocumento").val() ? $("#filtroTipoDocumento").val() : -1,
+            fk_tipo_persona: $("#filtroTipoPersona").val() ? $("#filtroTipoPersona").val() : -1
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -762,11 +820,14 @@
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
                       <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
-                      <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Permisos"><i class="fas fa-user-lock"></i></button>
-                      <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
+                      <button type="button" data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Desactivar' : 'Activar'}" class="btn ${$("#filtroEstado").val() == 1 ? 'fas fa-user-minus btn-danger' : 'fas fa-user-plus btn-primary'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"></button>
                     </div>`;
           }
+        
         }
+        // <button type="button" class="btn ${$("#filtroEstado").val() == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${$("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
+        // <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
+
       ],
       dom: 'Bfrtip',
       lengthMenu: [
@@ -828,6 +889,13 @@
           for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
             $('#formCrearUsuario :input[name="tipo_persona"], #formEditarUsuario :input[name="tipo_persona"]').append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
           }
+
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $("#filtroTipoPersona").append(`<option value="${datos.msj[i].id}">${datos.msj[i].nombre}</option>`);
+          }
+
+          $("#filtroTipoPersona").append(`<option value="-1">${'Todos'}</option>`);
+          $("#filtroTipoPersona").val(-1)
         }
       },
       error: function(e){
@@ -849,13 +917,21 @@
         accion: "listaTipoDocumento",
       },
       success: function(datos){
+
+
         $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').empty();
         $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').append(`<option value="0" selected disabled>Seleccione una opción</option>`);
         if (datos.msj['cantidad_registros'] > 0) {
           for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
             $('#formCrearUsuario :input[name="tipo_documento"], #formEditarUsuario :input[name="tipo_documento"]').append(`<option value="${datos.msj[i].id}">${datos.msj[i].abreviacion} - ${datos.msj[i].nombre}</option>`);
           }
+
+          for (let i = 0; i < datos.msj['cantidad_registros']; i++) { 
+            $("#filtroTipoDocumento").append(`<option value="${datos.msj[i].id}">${datos.msj[i].abreviacion} - ${datos.msj[i].nombre}</option>`);
+          }
         }
+        $("#filtroTipoDocumento").append(`<option value="-1">${'Todos'}</option>`);
+        $("#filtroTipoDocumento").val(-1)
       },
       error: function(e){
         console.log(e);
@@ -866,6 +942,58 @@
       }
     });
   }
-  
+
+  function cambiarEstado(datos){
+    Swal.fire({
+    title: `¿Estas seguro de ${ $("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} ${datos['nombres']}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: `<i class="fas ${ $("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i> Si`,
+    cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "cambiarEstado", 
+            id: datos['id'],
+            nombre: datos['nombres'],
+            // Nuevo estado
+            estado: $("#filtroEstado").val() == 1 ? 0 : 1
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tablaUsuarios").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: `Se ha ${ $("#filtroEstado").val() == 1 ? 'inhabilitado' : 'habilitado'} el municipio ${datos['nombres']}`,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: `Error al ${$("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} el municipio ${datos['nombres']}`
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
+      }
+    });
+  }
+
 </script>
 </html>

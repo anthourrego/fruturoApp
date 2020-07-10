@@ -234,7 +234,7 @@
       // -1 = todos 
       var producto = $("#filtroProducto").val() ? $("#filtroProducto").val() : -1;
       // 1 = activos
-      var estado   = $("#filtroEstado").val()   ? $("#filtroEstado").val()   : 1;
+      var estado   = $("#filtroEstado").val() ? $("#filtroEstado").val() : 1;
 
       $("#tabla").DataTable({
         stateSave: false,
@@ -269,9 +269,10 @@
             "render": function (nTd, sData, oData, iRow, iCol) {
               return `<div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-producto='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                        <button type="button" class="btn ${$("#filtroEstado").val() == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${$("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
                       </div>`;
             }
+            // <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
           }
         ],
         dom: 'Bfrtip',
@@ -335,7 +336,7 @@
           `);
 
           $("#filtroProducto").val(-1);
-          $("#formCrear :input[name='producto']").selectpicker('refresh');
+          // $("#formCrear :input[name='producto']").selectpicker('refresh');
         }else{
           Swal.fire({
             icon: 'warning',
@@ -353,7 +354,6 @@
   }
 
   function eliminar(derivado){
-    console.log(derivado);
     Swal.fire({
       title: "¿Estas seguro de eliminar el derivado " + derivado['nombre'] + "?",
       icon: 'warning',
@@ -402,5 +402,58 @@
       }
     });
   }
+
+  function cambiarEstado(datos){
+
+    Swal.fire({
+      title: `¿Estas seguro de ${ $("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} ${datos['nombre']}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `<i class="fas ${ $("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i> Si`,
+      cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "cambiarEstado", 
+            id: datos['id'],
+            nombre: datos['nombre'],
+            // Nuevo estado
+            estado: $("#filtroEstado").val() == 1 ? 0 : 1
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tabla").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: `Se ha ${ $("#filtroEstado").val() == 1 ? 'inhabilitado' : 'habilitado'} el municipio ${datos['nombre']}`,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: `Error al ${$("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} el municipio ${datos['nombre']}`
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
+      }
+    });
+  }
+
 </script>
 </html>

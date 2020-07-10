@@ -41,7 +41,7 @@ function lista(){
                 );
       
   $joinQuery = "FROM `{$table}` AS `p` INNER JOIN `usuarios` AS `u` ON `p`.`fk_creador` = `u`.`id`";
-  $extraWhere= "`p`.`estado` = 1";
+  $extraWhere= "`p`.`estado` =".$_GET['estado'];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
