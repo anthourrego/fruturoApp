@@ -15,6 +15,11 @@ while($max_salida>0){
 require($ruta_raiz . "clases/funciones_generales.php");
 require($ruta_raiz . "clases/Conectar.php");
 require($ruta_raiz . "clases/Session.php");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
+
 
 function sessionActiva(){
   $session = new Session();
@@ -136,6 +141,161 @@ function validarCorreo($correo){
   
   return $resp;
 }
+
+// funcion recuperar Clave
+function recuperarClave(){
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+  $correo = $_POST['correo'];
+  global $ruta_raiz;
+  
+  if(validarCorreo($correo) > 0){
+    $pin = encriptarPass(generarPin());
+    setearPinRecuperacion($correo, $pin );
+    enviarCorrreo($correo, $pin );
+    $resp['success'] = true;
+    $resp['msj'] = 'Se ha enviado el enlace de recuperaación a tu correo';
+  }else{
+    $resp['success'] = false;
+    $resp['msj'] = 'El correo electrónico no está registrado';
+  } 
+
+  $db->desconectar();
+  return json_encode($resp);
+}
+
+// función para enviar correo con pin de recuperación
+function enviarCorrreo($correo, $codigo){
+  global $ruta_raiz;
+  require($ruta_raiz."librerias/phpmailer/src/PHPMailer.php");
+  require($ruta_raiz."librerias/phpmailer/src/SMTP.php");
+  require($ruta_raiz."librerias/phpmailer/src/Exception.php");
+  $mail = new PHPMailer(true); // Passing `true` enables exceptions
+  $enlace_recuperacion = 'http://localhost/fruturoApp/?recuperar='.$codigo;
+  try {		
+		//Create a new PHPMailer instance
+    $mail = new PHPMailer;
+    //Tell PHPMailer to use SMTP
+    //$mail->isSMTP();
+    $mail->IsSMTP();
+    $mail->SMTPDebug = 2;
+    //Ask for HTML-friendly debug output
+    $mail->Debugoutput = 'html';
+    //Set the hostname of the mail server
+    $mail->Host = 'smtp.gmail.com';
+    //Set the SMTP port number - likely to be 25, 465 or 587
+    $mail->Port = 587;
+  
+    $mail->SMTPSecure = 'tls';
+    //Whether to use SMTP authentication
+    $mail->SMTPAuth = true;
+    //Username to use for SMTP authentication
+    $mail->Username = 'juanfa107@gmail.com';
+    //Password to use for SMTP authentication
+    $mail->Password = '10203040500*';
+    //Set who the message is to be sent from
+    $mail->setFrom('juanfa107@gmail.com', 'Prueba Fruturo | Recover Password ');
+    //Set an alternative reply-to address
+    //$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
+    //Set who the message is to be sent to
+    $mail->addAddress($correo);
+    //$mail->addAddress('analistamercadeo@hyundailatinoamerica.com', 'Servicio al Cliente');
+    //Set the subject line
+    $mail->Subject = "Recuperación contraseña fruturo";
+    //Read an HTML message body from an external file, convert referenced images to embedded,
+    //convert HTML into a basic plain-text alternative body
+    $mail->msgHTML(
+      "<div>
+        <p> Haz solicitado la recuperación de tu cuenta fruturo, <a href='{$enlace_recuperacion}'> click para cambiar contraseña<a></p>
+      </div>"
+    );
+    
+    $mail->CharSet = 'UTF-8';
+
+    if (!$mail->send()) {
+      return false; 
+    } else {
+      return true;
+    }
+  } catch (Exception $e) {
+    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+  }
+}
+
+// se genera pin de recuperacion
+function generarPin(){
+  return date("dHisv");
+}
+
+// se setea pin de recuperación a usuario
+function setearPinRecuperacion($correo ,$codigo_recuperacion){
+  $db = new Bd();
+  $db->conectar();
+  
+  $datosSQL = array(
+    ":correo" => $correo,
+    ":codigo_recuperacion" => $codigo_recuperacion
+  );
+  $db->sentencia("UPDATE usuarios SET codigo_recuperacion = :codigo_recuperacion WHERE correo = :correo", $datosSQL);
+  
+  $db->desconectar();
+}
+
+// funcion para traer datos de un usuario por token
+function findUserByToken(){
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+  $codigo_recuperacion = $_POST['token'];
+  $usuario = $db->consulta('SELECT * FROM usuarios WHERE estado = 1 AND codigo_recuperacion = :codigo_recuperacion', array(':codigo_recuperacion' => $codigo_recuperacion));
+
+  if ($usuario['cantidad_registros'] > 0){
+    $resp = $usuario;
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function cambiarClave(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+
+  $datosSQL = array(
+    ":correo" => $_REQUEST['correoCambio'],
+    ":password" =>  encriptarPass($_REQUEST['recuperacionPassword']),
+  );
+
+  $db->sentencia("UPDATE usuarios SET password = :password WHERE correo = :correo", $datosSQL);
+  $db->desconectar();
+  
+  limpiarToken($_REQUEST['correoCambio']);
+
+  $resp['success'] = true;
+  $resp['msj'] = 'Nueva clave asignada Correctamente';
+
+  return json_encode($resp);
+}
+
+// funcion para borrar codigo de recuperacion y que no se pueda reutilizar
+function limpiarToken($correo){
+  $db = new Bd();
+  $db->conectar();
+
+  $datosSQL = array(
+    ":correo" => $_REQUEST['correoCambio'],
+    ":codigo_recuperacion" => ''
+  );
+
+  $db->sentencia("UPDATE usuarios SET codigo_recuperacion = :codigo_recuperacion WHERE correo = :correo", $datosSQL);
+  //$db->insertLogs("usuarios", $_POST["id"], "Se inhabilita la oferta", $usuario["id"]);
+  $db->desconectar();
+}
+
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){
