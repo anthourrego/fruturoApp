@@ -135,6 +135,7 @@
           <div class="login d-flex align-items-center py-5">
             <div class="container">
               <div class="row">
+                <!-- Formulario de Login -->
                 <div id="contentLogin" class="col-12 col-md-10 col-xl-7 mx-auto">
                   <div class="text-center">
                     <img class="w-50 mb-5" src="assets/img/logo.svg">
@@ -157,7 +158,7 @@
 
                     <div class="text-center mt-4">
                       ¿Aún no tienes una cuenta? <a href="?reg=1">Registrarse</a> <br><br>
-                      <!-- <a href="?reg=1">¿Has olvidado tu contraseña?</a> -->
+                      <a id="olvidarClave" style="color: #007bff;cursor: pointer;">¿Has olvidado tu contraseña?</a>
                     </div>
                   </form>
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
@@ -262,6 +263,48 @@
                   </div>
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
                 </div>
+
+                <!-- Formulario de Recuperacion  -->
+                <div id="contentRecuperacion" class="col-12 col-lg-11 col-xl-10 mx-auto">
+                  <div class="text-center">
+                    <img class="w-30 " src="assets/img/logo.svg">
+                    <h3 class="mb-5">Cambio de contraseña</h3>
+                  </div>
+                  <form id="formRecuperacion" class="form-row" autocomplete="off">
+                    <input type="hidden" name="accion" value="cambiarClave">
+                    <input type="hidden" name="correoCambio" id="correoCambio">
+                    <div class="col-12">
+                      <div class="form-label-group">
+                        <input type="email" id="correoCambioClave" name="correoElectronico" class="form-control" placeholder="Correo electrónico" required autocomplete="off">
+                        <label for="correoCambioClave">Correo electrónico</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="password" id="recuperacionPassword" name="recuperacionPassword" class="form-control" placeholder="Contraseña" required autocomplete="new-password">
+                        <label for="recuperacionPassword">Contraseña<span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                      <div class="form-label-group">
+                        <input type="password" id="rerecuperacionPassword" name="rerecuperacionPassword" class="form-control" placeholder="Confirmar Contraseña" required autocomplete="new-password">
+                        <label for="rerecuperacionPassword">Confirmar contraseña<span class="text-danger">*</span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 mx-auto text-center">
+                      <button class="btn btn-lg btn-verdeOscuro btn-block btn-login text-uppercase font-weight-bold mb-2" id="btnCambiarClave" type="submit">
+                        Cambiar Contraseña <i class="fas fa-sign-in-alt"></i>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="text-center mt-4">
+                    ¿Ya tienes una cuenta? <a href="?reg=0">Iniciar Sesión</a>
+                  </div>
+                  <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
+                </div>
               </div>
             </div>
           </div>
@@ -270,9 +313,37 @@
     </div>
   </body>
 
+
+  <div class="modal fade" id="modalRecuperarClave" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <h3 class="mt-auto mb-auto">Recuperar Contraseña</h3>
+        </div>
+        <form id="formRecuperarClave" autocomplete="off" class="w-90 m-auto">
+          <input type="hidden" name="accion" value="recuperarClave">
+          <div class="form-label-group">
+            <input type="email" id="correoRecuperar" name="correo" class="form-control" placeholder="Correo electrónico" required autocomplete="off">
+            <label for="correoRecuperar">Correo electrónico</label>
+          </div>
+
+          <!-- <button class="btn btn-lg btn-verdeOscuro btn-block btn-login text-uppercase font-weight-bold mb-2" id="btn-inciar" type="submit">
+            Ingresar <i class="fas fa-sign-in-alt"></i>
+          </button> -->
+        </form>
+
+
+        <div class="modal-footer d-flex justify-content-between">
+          <a class=" btn btn-verdeOscuro w-25 text-white rounded-pill" id="btnRecuperarClave" > Recuperar <i class="fas fa-paper-plane"></i></a>
+          <a class=" btn btn-primary w-25 text-white rounded-pill" id="btnCerrarModal"> Cerrar <i class="fas fa-times-circle"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
 <script type="text/javascript">
   $(function(){
-    $("#contentRegistro, #contentLogin").hide();
+    $("#contentRegistro, #contentLogin, #contentRecuperacion").hide();
+
     if (getUrl('reg') == 1) {
       TiposDocumentos();
       TipoPersonas();
@@ -288,6 +359,12 @@
       $("#fecha").val(moment().subtract(18, 'years').format("YYYY-MM-DD"));
       $("#contentRegistro").show(1000);
       $("#nro_documento").focus();
+    }else if(getUrl('recuperar')){
+      // se pone visible el formulario de cambio de clave
+      $("#contentRecuperacion").show(1000);
+      var token_recuperacion = getUrl('recuperar');
+      findUserByToken(token_recuperacion);
+
     }else{
       $("#contentLogin").show(1000);
       $("#correo").focus();
@@ -352,6 +429,27 @@
       }
     });
 
+    $("#formRecuperarClave").validate({
+      rules: {
+        correo: {
+          required: true,
+          email: true
+        }
+      }
+    });
+
+    $("#formRecuperacion").validate({
+      rules: {
+        recuperacionPassword: {
+          required: true
+        },
+        rerecuperacionPassword: "required",
+        rerecuperacionPassword: {
+          equalTo: "#recuperacionPassword"
+        }
+      }
+    });
+
     $("#formRegistro").submit(function(event){
       event.preventDefault();
       if($("#formRegistro").valid()){
@@ -394,6 +492,128 @@
             $('#formRegistro :input').attr("disabled", false);
             $('#btn-registro').html(`Registrarse <i class="fas fa-sign-in-alt"></i>`);
             $("#btn-registro").attr("disabled", false);
+          }
+        });
+      }
+    });
+
+    // evento click opcion recuperar clave
+    $("#olvidarClave").click(function(){
+      //Some code
+      $("#modalRecuperarClave").modal("show");
+    });
+
+    $('#btnCerrarModal').click( function(){
+      $("#modalRecuperarClave").modal("hide");
+    })
+
+    $('#btnRecuperarClave').click(
+      function(){
+        $('#formRecuperarClave').submit();
+      }
+    );
+
+    // formulario solo email
+    $('#formRecuperarClave').submit(
+      function(event){
+        event.preventDefault();
+        if($("#formRecuperarClave").valid()){
+          $.ajax({
+            type: "POST",
+            url: "acciones",
+            cache: false,
+            contentType: false,
+            dataType: 'json',
+            processData: false,
+            data: new FormData(this),
+            beforeSend: function(){
+              $('#correoRecuperar').attr("disabled", true);
+              $('#btnRecuperarClave').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
+              $('#btnRecuperarClave').attr("disabled", true);
+            },
+            success: function(data){
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  html: data.msj,
+                  preConfirm: () => {
+                    //location.href = '?reg=0'
+                  }
+                })
+              }else{
+                Swal.fire({
+                  icon: 'error',
+                  html: data.msj
+                })
+              }
+            },
+            error: function(data){
+              if(data.statusText == 'OK'){
+                Swal.fire({
+                  icon: 'success',
+                  html: 'Correo enviado correctamente',
+                  preConfirm: () => {
+                    $("#modalRecuperarClave").modal("hide");
+                  }
+                })
+              }else{
+                //Habilitamos el botón
+                alertify.error("Error al registrar.");
+              }
+            },
+            complete: function(){
+              //Habilitamos el botón
+              $('#correoRecuperar').attr("disabled", false);
+              $('#correoRecuperar').val('');
+              $('#btnRecuperarClave').html(`Recuperar <i class="fas fa-paper-plane">`);
+              $('#btnRecuperarClave').attr("disabled", false);
+              
+            }
+          });
+        }
+      }
+    );
+
+    // formulario cambio de clave
+    $('#formRecuperacion').submit(function(event){
+      event.preventDefault();
+      if($("#formRecuperacion").valid()){
+        $.ajax({
+          type: "POST",
+          url: "acciones",
+          cache: false,
+          contentType: false,
+          dataType: 'json',
+          processData: false,
+          data: new FormData(this),
+          beforeSend: function(){
+            $('#btnCambiarClave').attr("disabled", true);
+            $('#btnCambiarClave').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cambiando clave...`);
+          },
+          success: function(data){
+             if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  html: data.msj,
+                  preConfirm: () => {
+                    location.href = '?reg=0'
+                  }
+                })
+              }else{
+                Swal.fire({
+                  icon: 'error',
+                  html: data.msj
+                })
+              };
+          },
+          error: function(data){
+            console.log('error: ', data);
+          },
+          complete: function(){
+            //Habilitamos el botón
+            /* $('#formRegistro :input').attr("disabled", false);
+            $('#btn-registro').html(`Registrarse <i class="fas fa-sign-in-alt"></i>`);
+            $("#btn-registro").attr("disabled", false); */
           }
         });
       }
@@ -468,5 +688,34 @@
       }
     });
   }
+
+  // Traer datos de usuario vía token
+  function findUserByToken(token){
+    $.ajax({
+      url: "acciones",
+      type: "POST",
+      dataType: "json",
+      data: {
+        accion: "findUserByToken",
+        token
+      },
+      success: function(datos){
+        if(datos[0]){
+          // se setean datos de usuario en formulario de recuperación
+          $('#correoCambioClave').val(datos[0].correo);
+          $('#correoCambio').val(datos[0].correo);
+          $('#correoCambioClave').attr("disabled", true);
+        }else{
+          location.href = '?reg=0';
+        }
+
+      },
+      error: function(error){
+        console.log({error});
+      }
+    });
+
+  }
+
 </script>
 </html>

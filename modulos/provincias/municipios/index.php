@@ -230,20 +230,19 @@
       top.$('#cargando').modal('show');
       estadoTabla = $("#formEstadosListar :input[name='estado']").val();
       $('#tablaMunicipio').dataTable().fnDestroy();
-   
-      listaTabla($("#formDepartamentosListar :input[name='depto']").val());
+      listaTabla();
     });
 
     $("#formDepartamentosListar :input[name='depto']").change(function () {
       top.$('#cargando').modal('show');
       let deptoTabla = $("#formDepartamentosListar :input[name='depto']").val();
       $('#tablaMunicipio').dataTable().fnDestroy();
-      listaTabla(deptoTabla);
+      listaTabla();
     });
 
-    listaTabla();
     departamentos();
     departamentosLista();
+    listaTabla();
   });
 
   function cambiarEstado(datos){
@@ -296,7 +295,10 @@
     });
   }
 
-  function listaTabla(depto){
+  function listaTabla(){
+
+    var depto = $("#formDepartamentosListar :input[name='depto']").val() ? $("#formDepartamentosListar :input[name='depto']").val() : '-1';
+    
     $("#tablaMunicipio").DataTable({
       stateSave: false,
       responsive: true,
@@ -314,7 +316,7 @@
           data: {
             accion: 'listaMunicipios',
             estado: estadoTabla,
-            departamento: (depto ? depto : -1),
+            departamento: depto
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');

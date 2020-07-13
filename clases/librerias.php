@@ -38,14 +38,14 @@
 
     public function bootstrap(){
       $this->cadena_libreria = '
-  <link rel="stylesheet" type="text/css" href="' . $this->ruta_libreria .'bootstrap/css/bootstrap.min.css">
-  <script type="text/javascript" src="'. $this->ruta_libreria .'bootstrap/js/bootstrap.bundle.min.js"></script>';
+      <link rel="stylesheet" type="text/css" href="' . $this->ruta_libreria .'bootstrap/css/bootstrap.min.css">
+      <script type="text/javascript" src="'. $this->ruta_libreria .'bootstrap/js/bootstrap.bundle.min.js"></script>';
       return($this->cadena_libreria);
     }
 
     public function jquery(){
       $this->cadena_libreria = '
-  <script type="text/javascript" src="'. $this->ruta_libreria .'jquery/jquery-3.4.1.min.js"></script><script type="text/javascript"></script>';
+      <script type="text/javascript" src="'. $this->ruta_libreria .'jquery/jquery-3.4.1.min.js"></script><script type="text/javascript"></script>';
       return($this->cadena_libreria);
     }
 
@@ -71,63 +71,63 @@
 
     public function jqueryValidate($validar = 1, $element = "form-group"){
       $this->cadena_libreria = '
-  <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/jquery.validate.min.js"></script>
-  <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/localization/messages_es.min.js"></script>
-  <script>
-    $(function(){
-      jQuery.validator.setDefaults({
-        debug: true,
-        errorElement: "em",
-        errorPlacement: function (error, element) {
-          error.addClass("invalid-feedback");
-          element.closest(".' . $element .'").append(error);
-        },
-        highlight: function (element, errorClass, validClass) {
-          $(element).addClass("is-invalid");
-          $(element).removeClass("is-valid");
-        },
-        unhighlight: function (element, errorClass, validClass) {
-          $(element).removeClass("is-invalid");
-          $(element).addClass("is-valid");
-        }
-      });';
-  if ($validar == 1) {
-    $this->cadena_libreria .= '$("form").validate();';
-  }
-  $this->cadena_libreria .= '
-    });
-  </script>';
-      return($this->cadena_libreria); 
+      <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/jquery.validate.min.js"></script>
+      <script type="text/javascript" src="'. $this->ruta_libreria .'jquery-validate/localization/messages_es.min.js"></script>
+      <script>
+        $(function(){
+          jQuery.validator.setDefaults({
+            debug: true,
+            errorElement: "em",
+            errorPlacement: function (error, element) {
+              error.addClass("invalid-feedback");
+              element.closest(".' . $element .'").append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+              $(element).addClass("is-invalid");
+              $(element).removeClass("is-valid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+              $(element).removeClass("is-invalid");
+              $(element).addClass("is-valid");
+            }
+          });';
+      if ($validar == 1) {
+        $this->cadena_libreria .= '$("form").validate();';
+      }
+      $this->cadena_libreria .= '
+        });
+      </script>';
+          return($this->cadena_libreria); 
     }
 
     public function alertify(){
       $this->cadena_libreria = '
-  <!-- Alertify - Tema de Bootstrap -->
-  <link rel="stylesheet" href="'. $this->ruta_libreria .'alertifyjs/css/alertify.min.css?1"/>
-  <link rel="stylesheet" href="'. $this->ruta_libreria .'alertifyjs/css/themes/bootstrap.min.css?1"/>
-  <script type="text/javascript" src="'. $this->ruta_libreria .'alertifyjs/alertify.min.js?1"></script>
-  <script type="text/javascript">
-    //override defaults
-    alertify.defaults.transition = "slide";
-    alertify.defaults.theme.ok = "btn btn-primary";
-    alertify.defaults.theme.cancel = "btn btn-danger";
-    alertify.defaults.theme.input = "form-control";
-  </script>';
+      <!-- Alertify - Tema de Bootstrap -->
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'alertifyjs/css/alertify.min.css?1"/>
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'alertifyjs/css/themes/bootstrap.min.css?1"/>
+      <script type="text/javascript" src="'. $this->ruta_libreria .'alertifyjs/alertify.min.js?1"></script>
+      <script type="text/javascript">
+        //override defaults
+        alertify.defaults.transition = "slide";
+        alertify.defaults.theme.ok = "btn btn-primary";
+        alertify.defaults.theme.cancel = "btn btn-danger";
+        alertify.defaults.theme.input = "form-control";
+      </script>';
       return($this->cadena_libreria);
     }
 
     public function datatables(){
       $this->cadena_libreria = '
-  <!-- Data Tables -->
-  <link rel="stylesheet" href="'. $this->ruta_libreria .'dataTables/datatables.min.css">  
-  <script src="'. $this->ruta_libreria .'dataTables/datatables.min.js" charset="utf-8"></script>';
+      <!-- Data Tables -->
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'dataTables/datatables.min.css">  
+      <script src="'. $this->ruta_libreria .'dataTables/datatables.min.js" charset="utf-8"></script>';
       return($this->cadena_libreria); 
     }
 
     public function fontAwesome(){
       $this->cadena_libreria = '
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="'. $this->ruta_libreria .'fontawesome/css/all.css"/>';
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="'. $this->ruta_libreria .'fontawesome/css/all.css"/>';
       return($this->cadena_libreria); 
     }
 
@@ -135,12 +135,12 @@
       $this->cadena_libreria = '
       <!-- ================ Iconos de Font Awesome 4 ========================== -->
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
-    <!-- ==================== Bootstrap Tempus Dominus ===================== -->
-    <link rel="stylesheet" href="' . $this->ruta_libreria . 'tempus-dominus/css/tempusdominus-bootstrap-4.min.css"/>
-    
-    <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/underscore-min.js"></script>';
-    return $this->cadena_libreria;
+      <!-- ==================== Bootstrap Tempus Dominus ===================== -->
+      <link rel="stylesheet" href="' . $this->ruta_libreria . 'tempus-dominus/css/tempusdominus-bootstrap-4.min.css"/>
+      
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/tempusdominus-bootstrap-4.min.js"></script>
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'tempus-dominus/js/underscore-min.js"></script>';
+      return $this->cadena_libreria;
     }
 
     public function bsCustomFileInput(){
@@ -200,7 +200,6 @@
       <script type="text/javascript" src="' . $this->ruta_libreria . 'lightbox/lightbox.js"></script>';
       return $this->cadena_libreria;
     }
-
 
     public function bootstrapTreeView(){
       $this->cadena_libreria = '
@@ -270,6 +269,8 @@
       </script>';
       return $this->cadena_libreria;
     }
+
+  
   }
 
 ?>

@@ -513,7 +513,7 @@
   function listaProductos(){
     //Se cargan los productos
     $.ajax({
-      url: '<?php echo($ruta_raiz) ?>modulos/productos/acciones',
+      url: '<?php echo($ruta_raiz) ?>modulos/productos/productos/acciones',
       type: 'POST',
       dataType: 'json',
       data: {

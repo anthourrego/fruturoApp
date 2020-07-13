@@ -63,8 +63,14 @@
     <div class="container">
       <div class="card">
         <div class="card-header">
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success btnCrear" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
+          <div class="d-flex">
+            <div class="input-group w-md-25 w-100 mr-2">
+              <select id="filtroEstado" class="custom-select" name="estado" required data-live-search="true" data-size="5" title="Seleccione un estado">
+                <option selected value="1">Activos</option>
+                <option value="0">Inactivos</option>
+              </select>
+            </div>
+            <button class="btn btn-success btnCrear ml-auto" data-toggle="tooltip" title="Crear"><i class="fas fa-plus"></i></button>
           </div>
         </div>
         <!-- /.card-header -->
@@ -208,6 +214,12 @@
       }
     });
 
+    $("#filtroEstado").change(function () {
+      top.$('#cargando').modal('show');
+      $('#tabla').dataTable().fnDestroy();
+      listaTabla();
+    });
+
     listaTabla();
   });
 
@@ -276,7 +288,8 @@
           type: "GET",
           dataType: "json",
           data: {
-            accion: 'lista'
+            accion: 'lista',
+            estado : $("#filtroEstado").val()
           },
           complete: function(){
             $('[data-toggle="tooltip"]').tooltip('hide');
@@ -292,7 +305,7 @@
           "render": function (nTd, sData, oData, iRow, iCol) {
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1 btnEditar" data-toggle="tooltip" title="Editar" data-datos='${JSON.stringify(oData)}'><i class="far fa-edit"></i></button>
-                      <button type="button" class="btn btn-danger btn-sm mx-1" onClick='inhabilitar(${JSON.stringify(oData)})' data-toggle="tooltip" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                      <button type="button" class="btn ${$("#filtroEstado").val() == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${$("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
                     </div>`;
           }
         }
@@ -313,5 +326,59 @@
       ]
     });
   }
+
+  function cambiarEstado(datos){
+    Swal.fire({
+    title: `¿Estas seguro de ${ $("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} ${datos['nombre']}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: `<i class="fas ${ $("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i> Si`,
+    cancelButtonText: '<i class="fa fa-times"></i> No'
+    }).then((result) => {
+      if (result.value) {
+
+        $.ajax({
+          url: 'acciones',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            accion: "cambiarEstado", 
+            id: datos['id'],
+            nombre: datos['nombre'],
+            // Nuevo estado
+            estado: $("#filtroEstado").val() == 1 ? 0 : 1
+          },
+          success: function(data){
+            if (data == 1) {
+              $("#tabla").DataTable().ajax.reload();
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: `Se ha ${ $("#filtroEstado").val() == 1 ? 'inhabilitado' : 'habilitado'} el municipio ${datos['nombre']}`,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'warning',
+                html: `Error al ${$("#filtroEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} el municipio ${datos['nombre']}`
+              })
+            }
+          },
+          error: function(){
+            Swal.fire({
+              icon: 'error',
+              html: 'No se han enviado los datos'
+            })
+          }
+        });
+      }
+    });
+  }
+
+
 </script>
 </html>

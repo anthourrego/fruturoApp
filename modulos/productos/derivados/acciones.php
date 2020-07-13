@@ -22,15 +22,17 @@ $session = new Session();
 $usuario = $session->get("usuario");
 
 function lista(){
-  $table      = 'productos';
+  $table      = 'productos_derivados';
   // Table's primary key
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => '`p`.`id`',               'dt' => 'id',             'field' => 'id' ),
-              array( 'db' => '`p`.`nombre`',           'dt' => 'nombre',         'field' => 'nombre' ),
-              array( 'db' => '`p`.`fecha_creacion`',   'dt' => 'fecha_creacion', 'field' => 'fecha_creacion' ),
-              array( 'db' => '`u`.`nombres`',          'dt' => 'creador',        'field' => 'creador',        'as' => 'creador')
+              array( 'db' => '`pd`.`id`',               'dt' => 'id',             'field' => 'id' ),
+              array( 'db' => '`pd`.`nombre`',           'dt' => 'nombre',         'field' => 'nombre' ),
+              array( 'db' => '`pd`.`descripcion`',   'dt' => 'descripcion', 'field' => 'descripcion' ),
+              array( 'db' => '`pd`.`fk_producto`',   'dt' => 'fk_producto', 'field' => 'fk_producto' ),
+              array( 'db' => '`p`.`nombre`',   'dt' => 'nombre_producto', 'field' => 'nombre_producto', 'as' => 'nombre_producto' ),
+              //array( 'db' => '`u`.`nombres`',          'dt' => 'creador',        'field' => 'creador',        'as' => 'creador')
             );
     
   $sql_details = array(
@@ -40,8 +42,15 @@ function lista(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM `{$table}` AS `p` INNER JOIN `usuarios` AS `u` ON `p`.`fk_creador` = `u`.`id`";
-  $extraWhere= "`p`.`estado` = 1";
+  $joinQuery = "FROM `{$table}` AS `pd` INNER JOIN `productos` AS `p` ON `pd`.`fk_producto` = `p`.`id`";
+  
+  $extraWhere= "`pd`.`estado` = ".$_GET['estado'];
+
+  if($_GET['producto'] !== '-1'){
+    $extraWhere .= " AND `pd`.`fk_producto` = " . $_GET['producto'];
+  }
+ 
+
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
@@ -54,18 +63,20 @@ function crear(){
   global $usuario;
   $resp['success'] = false;
 
-  if (validarNombre($_POST["producto"]) == 0) {
+  if (validarNombre($_POST["derivado"]) == 0) {
     $datos = array(
-      ":nombre" => $_POST["producto"],
+      ":nombre" => $_POST["derivado"],
+      ":descripcion" => $_POST["descripcion"],
+      ":fk_producto" => $_POST["producto"],
       "fecha_creacion" => date('Y-m-d H:i:s'),
       "fk_creador" => $usuario["id"],
       "estado" => 1
     );
 
-    $id_registro = $db->sentencia("INSERT INTO productos (nombre, fecha_creacion, fk_creador, estado) VALUES (:nombre, :fecha_creacion, :fk_creador, :estado)", $datos);
+    $id_registro = $db->sentencia("INSERT INTO productos_derivados (nombre, descripcion, fk_producto, fecha_creacion, fk_creador, estado) VALUES (:nombre, :descripcion, :fk_producto, :fecha_creacion, :fk_creador, :estado)", $datos);
 
     if ($id_registro > 0) {
-      $db->insertLogs("productos", $id_registro, "Se crea el producto {$_POST['producto']}", $usuario["id"]);
+      $db->insertLogs("productos", $id_registro, "Se crea el derivado {$_POST['derivado']}", $usuario["id"]);
       $resp['success'] = true;
       $resp['msj'] = 'Se ha creado correctamente.';
     } else {
@@ -86,9 +97,9 @@ function validarNombre($nombre, $id = 0){
   $resp = 0;
 
   if ($id == 0) {
-    $verificar = $db->consulta("SELECT nombre FROM productos WHERE nombre = :nombre", array(":nombre" => $nombre));
+    $verificar = $db->consulta("SELECT nombre FROM productos_derivados WHERE nombre = :nombre", array(":nombre" => $nombre));
   } else {
-    $verificar = $db->consulta("SELECT nombre FROM productos WHERE nombre = :nombre AND id != :id", array(":nombre" => $nombre, ':id' => $id));
+    $verificar = $db->consulta("SELECT nombre FROM productos_derivados WHERE nombre = :nombre AND id != :id", array(":nombre" => $nombre, ':id' => $id));
   }
   
   if ($verificar["cantidad_registros"] > 0) {
@@ -100,13 +111,13 @@ function validarNombre($nombre, $id = 0){
   return $resp;
 }
 
-function eliminar(){
+function cambiarEstado(){
   global $usuario;
   $db = new Bd();
   $db->conectar();
 
-  $db->sentencia("UPDATE productos SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
-  $db->insertLogs("productos", $_POST["id"], "Se inhabilita el producto {$_POST['nombre']}", $usuario["id"]);
+  $db->sentencia("UPDATE productos_derivados SET estado = :estado WHERE id = :id", array(":id" => $_POST["id"], ":estado" => $_POST["estado"]));
+  $db->insertLogs("productos_derivados", $_POST["id"], "Se inhabilita el derivado {$_POST['nombre']}", $usuario["id"]);
 
   $db->desconectar();
 
@@ -127,13 +138,15 @@ function editar(){
       if ($_POST["producto"] != $datosProducto['nombre']) {
   
         $datosSQL = array(
-                      ":nombre" => $_POST["producto"],
+                      ":nombre" => $_POST["derivado"],
+                      ":fk_producto" => $_POST["producto"],
+                      ":descripcion" => $_POST["descripcion"],
                       ":id" => $_POST["id"]
                     );
   
-        $db->sentencia("UPDATE productos SET nombre = :nombre WHERE id = :id", $datosSQL);
+        $db->sentencia("UPDATE productos_derivados SET nombre = :nombre , fk_producto = :fk_producto, descripcion = :descripcion  WHERE id = :id", $datosSQL);
     
-        $db->insertLogs("productos", $_POST["id"], "Se edita el producto {$_POST['producto']}", $usuario["id"]);
+        $db->insertLogs("productos_derivados", $_POST["id"], "Se edita el producto {$_POST['derivado']}", $usuario["id"]);
     
         $resp["success"] = true;
         $resp["msj"] = "El producto se ha actualizado correctamente";
@@ -160,7 +173,7 @@ function datosProducto($id){
   $db->conectar();
   $resp = 0;
 
-  $datos = $db->consulta("SELECT * FROM productos WHERE id = :id", array(":id" => $id));
+  $datos = $db->consulta("SELECT * FROM productos_derivados WHERE id = :id", array(":id" => $id));
 
   if ($datos["cantidad_registros"] == 1) {
     $resp = $datos[0];
