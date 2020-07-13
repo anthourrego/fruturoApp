@@ -59,8 +59,8 @@
     <div class="container">
       <div class="alert alert-warning" role="alert">
         <ol class="mb-0">
-          <li>Haz click en Crear Finca e ingresa la información que allí solicitamos y cuando la hayas completado haz click en Enviar.</li>
-          <li>Si necesitas regresar o ya terminaste haz click en Inicio, arriba en esta pagina.</li>
+          <li>Haz click en <b>Crear Finca</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
+          <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b>, arriba en esta pagina.</li>
         </ol>
       </div>
       <div class="card">
