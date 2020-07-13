@@ -97,13 +97,16 @@ function registrarse(){
         ":fk_perfil" => $_POST["perfil"],
         ":estado" => 1,
         ":fecha_creacion" => date('Y-m-d H:i:s'),
-        ":confirmado" => 1,
+        ":confirmado" => 0,
         ":fk_creador" => 0
       );
 
       $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
 
       if ($id_registro > 0) {
+        $pin = encriptarPass(generarPin());
+        setearPinActivacion($_POST["reCorreo"], $pin);
+        enviarCorrreo($_POST["reCorreo"], $pin, 'activar');
         $resp['success'] = true;
         $resp['msj'] = 'Se ha registrado correctamente.';
       } else {
@@ -153,7 +156,7 @@ function recuperarClave(){
   if(validarCorreo($correo) > 0){
     $pin = encriptarPass(generarPin());
     setearPinRecuperacion($correo, $pin );
-    enviarCorrreo($correo, $pin );
+    enviarCorrreo($correo, $pin, 'recuperar');
     $resp['success'] = true;
     $resp['msj'] = 'Se ha enviado el enlace de recuperaación a tu correo';
   }else{
@@ -166,13 +169,14 @@ function recuperarClave(){
 }
 
 // función para enviar correo con pin de recuperación
-function enviarCorrreo($correo, $codigo){
+function enviarCorrreo($correo, $codigo, $metodo){
   global $ruta_raiz;
   require($ruta_raiz."librerias/phpmailer/src/PHPMailer.php");
   require($ruta_raiz."librerias/phpmailer/src/SMTP.php");
   require($ruta_raiz."librerias/phpmailer/src/Exception.php");
   $mail = new PHPMailer(true); // Passing `true` enables exceptions
-  $enlace_recuperacion = 'http://localhost/fruturoApp/?recuperar='.$codigo;
+  
+  $enlace = 'http://localhost/fruturoApp/?'.$metodo.'='.$codigo;
   try {		
 		//Create a new PHPMailer instance
     $mail = new PHPMailer;
@@ -195,19 +199,19 @@ function enviarCorrreo($correo, $codigo){
     //Password to use for SMTP authentication
     $mail->Password = '10203040500*';
     //Set who the message is to be sent from
-    $mail->setFrom('juanfa107@gmail.com', 'Prueba Fruturo | Recover Password ');
+    $mail->setFrom('juanfa107@gmail.com', 'Prueba Fruturo');
     //Set an alternative reply-to address
     //$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
     //Set who the message is to be sent to
     $mail->addAddress($correo);
     //$mail->addAddress('analistamercadeo@hyundailatinoamerica.com', 'Servicio al Cliente');
     //Set the subject line
-    $mail->Subject = "Recuperación contraseña fruturo";
+    $mail->Subject = "- - F R U T U R O - -";
     //Read an HTML message body from an external file, convert referenced images to embedded,
     //convert HTML into a basic plain-text alternative body
     $mail->msgHTML(
       "<div>
-        <p> Haz solicitado la recuperación de tu cuenta fruturo, <a href='{$enlace_recuperacion}'> click para cambiar contraseña<a></p>
+        <p> Haz solicitado la {$metodo} de tu cuenta fruturo, <a href='{$enlace}'> Enlace <a> </p>
       </div>"
     );
     
@@ -242,6 +246,20 @@ function setearPinRecuperacion($correo ,$codigo_recuperacion){
   $db->desconectar();
 }
 
+// se setea pin de activacion a usuario
+function setearPinActivacion($correo ,$codigo_activacion){
+  $db = new Bd();
+  $db->conectar();
+  
+  $datosSQL = array(
+    ":correo" => $correo,
+    ":codigo_activacion" => $codigo_activacion
+  );
+  $db->sentencia("UPDATE usuarios SET codigo_activacion = :codigo_activacion WHERE correo = :correo", $datosSQL);
+  
+  $db->desconectar();
+}
+
 // funcion para traer datos de un usuario por token
 function findUserByToken(){
   $db = new Bd();
@@ -258,6 +276,24 @@ function findUserByToken(){
 
   return json_encode($resp);
 }
+
+// funcion para traer datos de un usuario por token
+function findUserByTokenActivacion(){
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+  $codigo_activacion = $_POST['token'];
+  $usuario = $db->consulta('SELECT * FROM usuarios WHERE estado = 1 AND codigo_activacion = :codigo_activacion', array(':codigo_activacion' => $codigo_activacion));
+
+  if ($usuario['cantidad_registros'] > 0){
+    $resp = $usuario;
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
 
 function cambiarClave(){
 
@@ -294,6 +330,28 @@ function limpiarToken($correo){
   $db->sentencia("UPDATE usuarios SET codigo_recuperacion = :codigo_recuperacion WHERE correo = :correo", $datosSQL);
   //$db->insertLogs("usuarios", $_POST["id"], "Se inhabilita la oferta", $usuario["id"]);
   $db->desconectar();
+}
+
+function activarCuenta(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+
+  $datosSQL = array(
+    ":id" => $_REQUEST['idActivacion'],
+    ":confirmado" => 1,
+  );
+
+  $db->sentencia("UPDATE usuarios SET confirmado = :confirmado WHERE id = :id", $datosSQL);
+  $db->insertLogs("usuarios", $_REQUEST['idActivacion'], "Se activa usuario", $_REQUEST['idActivacion']);
+
+  $db->desconectar();
+
+  $resp['success'] = true;
+  $resp['msj'] = 'Cuenta activada correctamente'; 
+
+  return json_encode($resp);
 }
 
 

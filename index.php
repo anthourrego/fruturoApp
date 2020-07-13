@@ -305,6 +305,38 @@
                   </div>
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
                 </div>
+
+                <!-- Contenido de Activacion  -->
+                <div id="contentActivacion" class="col-12 col-lg-11 col-xl-10 mx-auto">
+                  <div class="text-center">
+                    <img class="w-30 " src="assets/img/logo.svg">
+                    <h3 class="mb-5">Activación de cuenta</h3>
+                  </div>
+                  <form id="formActivacion" class="form-row" autocomplete="off">
+                    <input type="hidden" name="accion" value="activarCuenta">
+                    <input type="hidden" name="correoActivacion" id="correoActivacion">
+                    <input type="hidden" name="idActivacion" id="idActivacion">
+
+                    <div class="col-12">
+                      <div class="form-label-group">
+                        <input type="email" id="correoActivacion2" name="correoElectronico" class="form-control" placeholder="Correo electrónico" required autocomplete="off">
+                        <label for="correoActivacion2">Correo electrónico</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 mx-auto text-center">
+                      <button class="btn btn-lg btn-verdeOscuro btn-block btn-login text-uppercase font-weight-bold mb-2" id="btnActivarCuenta" type="submit">
+                        Activar Cuenta <i class="fas fa-sign-in-alt"></i>
+                      </button>
+                    </div>
+                  </form>
+                  <div class="text-center mt-4">
+                    ¿Ya tienes una cuenta? <a href="?reg=0">Iniciar Sesión</a>
+                  </div>
+                  <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -342,7 +374,7 @@
   </div>
 <script type="text/javascript">
   $(function(){
-    $("#contentRegistro, #contentLogin, #contentRecuperacion").hide();
+    $("#contentRegistro, #contentLogin, #contentRecuperacion, #contentActivacion").hide();
 
     if (getUrl('reg') == 1) {
       TiposDocumentos();
@@ -363,7 +395,12 @@
       // se pone visible el formulario de cambio de clave
       $("#contentRecuperacion").show(1000);
       var token_recuperacion = getUrl('recuperar');
-      findUserByToken(token_recuperacion);
+      findUserByToken(token_recuperacion, 'recuperar');
+
+    }else if(getUrl('activar')){
+      $("#contentActivacion").show(1000);
+      var token_activacion = getUrl('activar');
+      findUserByToken(token_activacion, 'activar');
 
     }else{
       $("#contentLogin").show(1000);
@@ -483,9 +520,21 @@
               })
             }
           },
-          error: function(){
+          error: function(data){
             //Habilitamos el botón
-            alertify.error("Error al registrar.");
+            if(data.statusText == 'OK'){
+              Swal.fire({
+                icon: 'success',
+                html: 'Enlace de activación enviado cor',
+                preConfirm: () => {
+                  location.href = '?reg=0'
+                }
+              })
+            }else{
+              //Habilitamos el botón
+              alertify.error("Error al registrar.");
+            }
+
           },
           complete: function(){
             //Habilitamos el botón
@@ -574,6 +623,63 @@
       }
     );
 
+    
+    //formulario activacion cuenta
+    $('#formActivacion').submit(
+      function(event){
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "acciones",
+            cache: false,
+            contentType: false,
+            dataType: 'json',
+            processData: false,
+            data: new FormData(this),
+            beforeSend: function(){
+              $('#btnActivarCuenta').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">Activando cuenta ...</span>`);
+              $('#btnActivarCuenta').attr("disabled", true);
+            },
+            success: function(data){
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  html: data.msj,
+                  preConfirm: () => {
+                    location.href = '?reg=0'
+                  }
+                })
+              }else{
+                Swal.fire({
+                  icon: 'error',
+                  html: data.msj
+                })
+              }
+            },
+            error: function(data){
+              if(data.statusText == 'OK'){
+                Swal.fire({
+                  icon: 'success',
+                  html: 'Correo enviado correctamente',
+                  preConfirm: () => {
+                    $("#modalRecuperarClave").modal("hide");
+                  }
+                })
+              }else{
+                //Habilitamos el botón
+                alertify.error("Error al registrar.");
+              }
+            },
+            complete: function(){
+              //Habilitamos el botón
+              $('#btnActivarCuenta').html(`Recuperar <i class="fas fa-paper-plane">`);
+              $('#btnActivarCuenta').attr("disabled", false);
+              
+            }
+          });
+      }
+    );
+
     // formulario cambio de clave
     $('#formRecuperacion').submit(function(event){
       event.preventDefault();
@@ -620,6 +726,7 @@
     });
   });
 
+  // función para traer los tipos de documento
   function TiposDocumentos(){
     $.ajax({
       url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_documento/acciones",
@@ -643,6 +750,7 @@
     });
   }
 
+  // función para traer los tipos de persona
   function TipoPersonas(){
     $.ajax({
       url: "<?php echo($ruta_raiz); ?>modulos/usuarios/tipo_persona/acciones",
@@ -666,6 +774,7 @@
     });
   }
 
+  //función para traer los tipos de perfiles
   function TiposPerfiles(){
     $.ajax({
       url: "<?php echo($ruta_raiz); ?>modulos/usuarios/perfiles/acciones",
@@ -690,21 +799,32 @@
   }
 
   // Traer datos de usuario vía token
-  function findUserByToken(token){
+  function findUserByToken(token, tipo){
     $.ajax({
       url: "acciones",
       type: "POST",
       dataType: "json",
       data: {
-        accion: "findUserByToken",
+        accion: tipo == 'recuperar' ? "findUserByToken" : 'findUserByTokenActivacion',
         token
       },
       success: function(datos){
         if(datos[0]){
-          // se setean datos de usuario en formulario de recuperación
-          $('#correoCambioClave').val(datos[0].correo);
-          $('#correoCambio').val(datos[0].correo);
-          $('#correoCambioClave').attr("disabled", true);
+          // se setean datos de usuario en formulario correspondiente
+          if(tipo == 'activar'){
+            $('#correoActivacion').val(datos[0].correo);
+            $('#correoActivacion2').val(datos[0].correo);
+            $('#correoActivacion2').attr("disabled", true);
+            $('#idActivacion').val(datos[0].id);
+          
+          }else if(tipo == 'recuperar'){
+            $('#correoCambioClave').val(datos[0].correo);
+            $('#correoCambio').val(datos[0].correo);
+            $('#correoCambioClave').attr("disabled", true);
+          }else{
+            location.href = '?reg=0';
+          }
+          
         }else{
           location.href = '?reg=0';
         }
