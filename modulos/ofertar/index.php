@@ -71,6 +71,18 @@
         <!-- ./col -->
         <div class=" col-12 col-md-6 col-lg-4">
           <!-- small box -->
+          <a id="ofertas" class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="#">
+            <div class="inner">
+              <h4>Ver Ofertas</h4>
+            </div>
+            <div class="icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+          </a>
+        </div>
+        <!-- ./col -->
+        <div class=" col-12 col-md-6 col-lg-4">
+          <!-- small box -->
           <a class="small-box bg-danger d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="javascript:top.cerrarSesion();">
             <div class="inner">
               <h4>Cerrar Sesión</h4>
@@ -128,6 +140,13 @@
           html: 'Para ofertar una cosecha debes de registrar primero un terreno'
         });
       }
+    });
+
+    $("#ofertas").on("click", function(evento){
+      evento.preventDefault();
+      
+      window.location = window.location.origin+'/fruturoApp/modulos/ofertas/';
+      
     });
 
   });
