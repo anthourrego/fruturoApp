@@ -38,9 +38,9 @@
     <div class="container">
       <div class="alert alert-warning" role="alert">
         <ol class="mb-0">
-          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu finca, haz click en Registrar Finca.</li>
-          <li>Si ya está registrada tu finca, haz click en Ofertar Cosecha para empezar a ofrecer tus productos.</li>
-          <li>En el momento en que hayas terminado de ingresar tus fincas y cosechas puedes hacer click en Cerrar Sesión.</li>
+          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu finca, haz click en <b>Registrar Finca</b>.</li>
+          <li>Si ya está registrada tu finca, haz click en <b>Ofertar Cosecha</b> para empezar a ofrecer tus productos.</li>
+          <li>En el momento en que hayas terminado de ingresar tus fincas y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
         </ol>
       </div>
       <!-- Small boxes (Stat box) -->
@@ -137,7 +137,7 @@
       }else{
         Swal.fire({
           icon: 'warning',
-          html: 'Para ofertar una cosecha debes de registrar primero un terreno'
+          html: 'Para ofertar una cosecha debes de registrar primero una finca'
         });
       }
     });
