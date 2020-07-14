@@ -456,7 +456,6 @@
         { data: "fecha_creacion" },
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
-            console.log(oData);
             let mensaje = '';
             if(oData.estado == 2){
               mensaje = `<button class="btn btn-info ml-2" onClick='mensajes(${JSON.stringify(oData)})'><i class="fas fa-comments"></i> Mensajes</button>`;

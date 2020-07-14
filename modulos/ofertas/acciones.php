@@ -58,6 +58,27 @@ function lista(){
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
 }
 
+function listaOfertas(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, usuarios.apellidos AS apellidoCreador, productos.nombre AS producto, cosechas.id ,cosechas.volumen_total, cosechas.precio, cosechas.fecha_inicio, cosechas.fecha_final, cosechas_fotos.ruta FROM cosechas INNER JOIN productos ON cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id INNER JOIN cosechas_fotos ON cosechas.id = cosechas_fotos.fk_cosecha");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
+}
+
 function datosUsuario(){
   $db = new Bd();
   $db->conectar();

@@ -127,6 +127,11 @@
 }
 
 /* Ancho de pantalla */
+
+.w-20 {
+  width: 20% !important;
+}
+
 .w-25 {
   width: 25% !important;
 }
@@ -134,7 +139,6 @@
 .w-30 {
   width: 30% !important;
 }
-
 
 .w-40 {
   width: 40% !important;
