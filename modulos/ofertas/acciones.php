@@ -63,6 +63,9 @@ function listaOfertas(){
   $db = new Bd();
   $db->conectar();
   $resp["success"] = false;
+  $inicio = (int)$_GET['inicio'];
+  $cantidad = (int)$_GET['cantidad'];
+
 
   $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
   usuarios.apellidos AS apellidoCreador, 
@@ -80,7 +83,8 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id order by cosechas.fecha_creacion desc");
+  municipios.fk_departamento = departamentos.id group by id order by cosechas.fecha_creacion desc
+  LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;

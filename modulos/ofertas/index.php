@@ -43,6 +43,7 @@
       echo $lib->datatables();
       echo $lib->lightbox();
       echo $lib->proyecto();
+      echo $lib->infiniteScroll();
     ?>
     <style>
       hr {
@@ -70,9 +71,9 @@
       .card-img-top{
         height: 250px;
       }
-  </style>
+    </style>
   </head>
-  <body class="overflow-hidden h-100">
+  <body id="scroller">
 
     <!-- Content Header (Page header) -->
     <div div class="content-header">
@@ -261,11 +262,24 @@
       </div>
     </div>
   </body>
+  <div class="gooey">
+    <span class="dot"></span>
+    <div class="dots">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 
   <?php 
     echo $lib->cambioPantalla();
   ?>
   <script>
+
+    // contadores Inciales 
+    var inicio = 0;
+    var cantidad = 2;
+
     $(function(){
 
       $("#formMensaje").submit(function(event){
@@ -335,6 +349,7 @@
       cerrarCargando();
       // lista();
       listarOfertas();
+      iniciarScroll();
     });
 
     function lista(){
@@ -419,14 +434,16 @@
         async: false,
         data: {
           accion: "listaOfertas",
-          estado: 1
+          estado: 1,
+          inicio,
+          cantidad
         },
         success: function(data){
           if (data.success) {
             // se guardan ofertas con la data ordenada
             var ofertas = ordenarData(data.msj);
-            console.log(ofertas);
             ofertas.forEach(oferta => { 
+              inicio++;
               $('#contenedorOfertas').append(`
                 <div class="col">
                   <div class="card text-center">
@@ -445,7 +462,10 @@
                     </div>
                     <div class="text-muted p-1">
                       <div class="d-flex justify-content-between">
-                        <div style="font-size: 12px;">${oferta.departamento+' / '+oferta.municipio}</div>
+                        <div style="font-size: 12px;" class="d-flex flex-column">
+                          <span>${oferta.departamento}</span>
+                          <span>${oferta.municipio}<span>
+                        </div>
                         <div style="font-size: 12px;">${moment(oferta.fecha_creacion).locale('es').format('D [de] MMMM')}</div>
                       </div>
                     </div>
@@ -455,9 +475,12 @@
             });
 
           }else{
-            $('#contenedorOfertas').append(`
-              <li>No hay certificados</li>
-            `);
+            if(inicio > 0){
+              $('#contenedorOfertas').append(`
+              <li>FIN</li>
+              `);
+            }
+            
           } 
         },
         error: function(data){
@@ -767,6 +790,22 @@
         }
       });
       return ofertas;
+    }
+
+    function iniciarScroll(){
+   
+      $(window).on("scroll", function() {
+        var scrollHeight = $(document).height();
+        var scrollPos = $(window).height() + $(window).scrollTop();
+
+        if ((scrollHeight - scrollPos) / scrollHeight == 0) {             
+          console.log('final');
+          listarOfertas();
+        }
+
+      });
+
+
     }
   </script>
 </html>
