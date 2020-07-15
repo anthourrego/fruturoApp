@@ -29,38 +29,6 @@
 
 <!DOCTYPE html>
 <html>
-  <style>
-    hr {
-        border-top: 1px solid #007bff;
-        width:70%;
-    }
-
-    a {color: #000;}
-
-    .card{
-        background-color: #FFFFFF;
-        padding:0;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius:4px;
-        box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
-    }
-
-    .card:hover{
-        box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.3);
-        color:black;
-    }
-
-    address{
-      margin-bottom: 0px;
-    }
-
-    #author a{
-      color: #fff;
-      text-decoration: none;
-        
-    }
-  </style>
   <head>
     <title></title>
     <?php  
@@ -76,6 +44,33 @@
       echo $lib->lightbox();
       echo $lib->proyecto();
     ?>
+    <style>
+      hr {
+        border-top: 1px solid #007bff;
+        width:70%;
+      }
+
+      a {color: #000;}
+
+      .card{
+        background-color: #FFFFFF;
+        padding:0;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius:4px;
+        box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+        transition: box-shadow 500ms;
+      }
+
+      .card:hover{
+        box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.3);
+        color:black;
+      }
+
+      .card-img-top{
+        height: 250px;
+      }
+  </style>
   </head>
   <body class="overflow-hidden h-100">
 
@@ -94,40 +89,11 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="card">
-          <!-- <div class="card-header d-flex justify-content-end">
-            <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
-          </div> -->
-          <!-- /.card-header -->
-          <div class="card-body">
-            <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
-              <div class="input-group mb-3 w-md-25 w-100">
-                <select class="custom-select" id="selectEstado" name="status">
-                  <option value="1" selected>Activo</option>
-                  <option value="2">En Proceso</option>
-                  <option value="3">Finalizado</option>
-                  <option value="0">Cancelado</option>
-                </select>
-                <div class="input-group-append">
-                  <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-                </div>
-              </div>
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">Departamento</th>
-                  <th scope="col">Municipio</th>
-                  <th scope="col">Persona</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Volumen total</th>
-                  <th scope="col">Precio KG</th>
-                  <th scope="col">Inicio cosecha</th>
-                  <th scope="col">Fin cosecha</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table> -->
-
+        <!-- <div class="card-header d-flex justify-content-end">
+          <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
+        </div> -->
+        <!-- /.card-header -->
+          <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <div class="input-group mb-3 w-md-25 w-100">
               <select class="custom-select" id="selectEstado" name="status">
                 <option value="1" selected>Activo</option>
@@ -139,32 +105,35 @@
                 <label class="input-group-text" for="inputGroupSelect02">Estado</label>
               </div>
             </div>
-            
-            <div id="contenedorOfertas" style="max-height: 415px;" class="cards-container w-100 d-flex flex-wrap overflow-auto">
-              <!-- <div class="w-25" style="padding:5px;">
-                <div class="card text-center">
-                  <img class="card-img-top" src="https://picsum.photos/1900/1080?image=327" alt="Card image cap">
-                  <div class="card-body" id="card">
-                    <h5 class="card-title">Title</h5>
-                  </div>
-                  <div class="card-footer text-muted">
-                    <div class="row">
-                      <div class="col">
-                        <a href=""><i class="fas fa-map"></i></a>
-                      </div>
-                      <div class="col">
-                        <a href="mailto:test@test.com"><i class="fas fa-envelope"></i></a>
-                      </div>
-                      <div class="col">
-                        <a href="tel:+123456789"><i class="fas fa-phone"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-            </div>
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Departamento</th>
+                <th scope="col">Municipio</th>
+                <th scope="col">Persona</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Volumen total</th>
+                <th scope="col">Precio KG</th>
+                <th scope="col">Inicio cosecha</th>
+                <th scope="col">Fin cosecha</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table> -->
+
+        <div class="input-group mb-3 w-md-25 w-100">
+          <select class="custom-select" id="selectEstado" name="status">
+            <option value="1" selected>Activo</option>
+            <option value="2">En Proceso</option>
+            <option value="3">Finalizado</option>
+            <option value="0">Cancelado</option>
+          </select>
+          <div class="input-group-append">
+            <label class="input-group-text" for="inputGroupSelect02">Estado</label>
           </div>
         </div>
+        
+        <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4"></div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
@@ -459,20 +428,29 @@
             console.log(ofertas);
             ofertas.forEach(oferta => { 
               $('#contenedorOfertas').append(`
-                <div class="w-25" style="padding:5px;">
-                <div class="card text-center">
-                  <img class="card-img-top" src="https://picsum.photos/1900/1080?image=327" alt="Card image cap">
-                  <div class="card-body" id="card">
-                    <h5 class="card-title">${oferta.producto+'/'+oferta.volumen_total+'/ $'+oferta.precio}</h5>
-                  </div>
-                  <div class="card-footer text-muted">
-                    <div class="row">
-                      <div class="col-8">${oferta.departamento+' / '+oferta.municipio}</div>
-                      <div class="col-4">Fecha</div>
+                <div class="col">
+                  <div class="card text-center">
+                    <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.imagenes[0]}" alt="Card image cap">
+                    <div class="p-2" id="card">
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                          <span>${oferta.producto} </span>
+                          <span>${oferta.volumen_total} Kg </span>
+                        </div>
+                        <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
+                          $${oferta.precio}
+                        </div>
+                        
+                      </div>
+                    </div>
+                    <div class="text-muted p-1">
+                      <div class="d-flex justify-content-between">
+                        <div style="font-size: 12px;">${oferta.departamento+' / '+oferta.municipio}</div>
+                        <div style="font-size: 12px;">${moment(oferta.fecha_creacion).locale('es').format('D [de] MMMM')}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
               `);
             });
 
