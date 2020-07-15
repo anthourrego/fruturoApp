@@ -72,7 +72,7 @@
       }
   </style>
   </head>
-  <body class="overflow-hidden h-100">
+  <body>
 
     <!-- Content Header (Page header) -->
     <div div class="content-header">

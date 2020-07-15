@@ -69,6 +69,7 @@ function listaOfertas(){
   productos.nombre AS producto, cosechas.id,
   cosechas.volumen_total,
   cosechas.precio, 
+  cosechas.fecha_creacion,
   cosechas.fecha_inicio, 
   cosechas.fecha_final, 
   cosechas_productos_documentos.ruta, 
@@ -79,7 +80,7 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id");
+  municipios.fk_departamento = departamentos.id order by cosechas.fecha_creacion desc");
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;
