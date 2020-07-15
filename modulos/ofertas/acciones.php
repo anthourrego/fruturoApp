@@ -64,7 +64,22 @@ function listaOfertas(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, usuarios.apellidos AS apellidoCreador, productos.nombre AS producto, cosechas.id ,cosechas.volumen_total, cosechas.precio, cosechas.fecha_inicio, cosechas.fecha_final, cosechas_fotos.ruta FROM cosechas INNER JOIN productos ON cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id INNER JOIN cosechas_fotos ON cosechas.id = cosechas_fotos.fk_cosecha");
+  $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
+  usuarios.apellidos AS apellidoCreador, 
+  productos.nombre AS producto, cosechas.id,
+  cosechas.volumen_total,
+  cosechas.precio, 
+  cosechas.fecha_inicio, 
+  cosechas.fecha_final, 
+  cosechas_fotos.ruta, 
+  fincas.nombre AS nombreFinca,
+  departamentos.nombre as departamento,
+  municipios.nombre AS municipio FROM cosechas INNER JOIN productos ON 
+  cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id
+  INNER JOIN cosechas_fotos ON cosechas.id = cosechas_fotos.fk_cosecha INNER JOIN fincas on 
+  cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
+  fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
+  municipios.fk_departamento = departamentos.id");
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;

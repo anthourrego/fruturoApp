@@ -467,15 +467,8 @@
                   </div>
                   <div class="card-footer text-muted">
                     <div class="row">
-                      <div class="col">
-                        <a href=""><i class="fas fa-map"></i></a>
-                      </div>
-                      <div class="col">
-                        <a href="mailto:test@test.com"><i class="fas fa-envelope"></i></a>
-                      </div>
-                      <div class="col">
-                        <a href="tel:+123456789"><i class="fas fa-phone"></i></a>
-                      </div>
+                      <div class="col-8">${oferta.departamento+' / '+oferta.municipio}</div>
+                      <div class="col-4">Fecha</div>
                     </div>
                   </div>
                 </div>
