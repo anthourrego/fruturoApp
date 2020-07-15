@@ -77,56 +77,78 @@ function registrarse(){
   $db->conectar();
   $resp = array();
 
-  if (validarCorreo($_POST["reCorreo"]) == 0) {
-    $password = cadena_db_insertar($_POST['rePassword']);
-    $repassword = cadena_db_insertar($_POST['rerePassword']);
-
-    if ($password == $repassword) {
-      $password = encriptarPass($password);
-
-      $datos = array(
-        ":fk_tipo_documento" => $_POST["tipo_documento"],
-        ":nro_documento" => $_POST["nro_documento"],
-        ":fk_tipo_persona" => $_POST["tipo_persona"],
-        ":correo" => $_POST["reCorreo"],
-        ":nombres" => $_POST["nombres"],
-        ":apellidos" => $_POST["apellidos"],
-        ":password" => $password,
-        ":fecha_nacimiento" => date("Y-m-d", strtotime($_REQUEST["fecha"])),
-        ":telefono" => $_POST["tel"],
-        ":fk_perfil" => $_POST["perfil"],
-        ":estado" => 1,
-        ":fecha_creacion" => date('Y-m-d H:i:s'),
-        ":confirmado" => 0,
-        ":fk_creador" => 0
-      );
-
-      $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
-
-      if ($id_registro > 0) {
-        $pin = encriptarPass(generarPin());
-        setearPinActivacion($_POST["reCorreo"], $pin);
-        enviarCorrreo($_POST["reCorreo"], $pin, 'activar');
-        $resp['success'] = true;
-        $resp['msj'] = 'Se ha registrado correctamente.';
-      } else {
+  if (validarNroIdentificacion($_POST["tipo_documento"], $_POST["nro_documento"]) == 0) {
+    if (validarCorreo($_POST["reCorreo"]) == 0) {
+      $password = cadena_db_insertar($_POST['rePassword']);
+      $repassword = cadena_db_insertar($_POST['rerePassword']);
+  
+      if ($password == $repassword) {
+        $password = encriptarPass($password);
+  
+        $datos = array(
+          ":fk_tipo_documento" => $_POST["tipo_documento"],
+          ":nro_documento" => $_POST["nro_documento"],
+          ":fk_tipo_persona" => $_POST["tipo_persona"],
+          ":correo" => $_POST["reCorreo"],
+          ":nombres" => $_POST["nombres"],
+          ":apellidos" => $_POST["apellidos"],
+          ":password" => $password,
+          ":fecha_nacimiento" => date("Y-m-d", strtotime($_REQUEST["fecha"])),
+          ":telefono" => $_POST["tel"],
+          ":fk_perfil" => 2,
+          ":estado" => 1,
+          ":fecha_creacion" => date('Y-m-d H:i:s'),
+          ":confirmado" => 0,
+          ":fk_creador" => 0
+        );
+  
+        $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
+  
+        if ($id_registro > 0) {
+          $pin = encriptarPass(generarPin());
+          setearPinActivacion($_POST["reCorreo"], $pin);
+          enviarCorrreo($_POST["reCorreo"], $pin, 'activar');
+          $resp['success'] = true;
+          $resp['msj'] = 'Se ha registrado correctamente.';
+        } else {
+          $resp['success'] = false;
+          $resp['msj'] = 'Error al realizar el registro.';
+        }
+        
+      }else{
         $resp['success'] = false;
-        $resp['msj'] = 'Error al realizar el registro.';
+        $resp['msj'] = 'Las contraseñas no coinciden.';
       }
-      
+  
     }else{
       $resp['success'] = false;
-      $resp['msj'] = 'Las contraseñas no coinciden.';
+      $resp['msj'] = 'El correo <b>' . $_REQUEST["reCorreo"] . '</b> ya se encuentra registrada <a href="?reg=0">Iniciar Sesión</a>.';
     }
-
-  }else{
+  } else {
     $resp['success'] = false;
-    $resp['msj'] = 'El correo <b>' . $_REQUEST["reCorreo"] . '</b> ya se encuentra registrada <a href="?reg=0">Iniciar Sesión</a>.';
+    $resp['msj'] = 'El número de documento <b>' . $_REQUEST["nro_documento"] . '</b> ya se encuentra registrado <a href="?reg=0">Iniciar Sesión</a>.';
   }
+  
 
   $db->desconectar();
 
   return json_encode($resp);
+}
+
+function validarNroIdentificacion($tipoIdentificacion, $nroIdentificacion){
+  $db = new Bd();
+  $db->conectar();
+  $resp = 0;
+
+  $verificar = $db->consulta("SELECT correo FROM usuarios WHERE nro_documento = :nro_documento AND fk_tipo_documento = :fk_tipo_documento", array(":nro_documento" => $nroIdentificacion, ":fk_tipo_documento" => $tipoIdentificacion));
+  
+  if ($verificar["cantidad_registros"] > 0) {
+    $resp = $verificar["cantidad_registros"];
+  }
+
+  $db->desconectar();
+  
+  return $resp;
 }
 
 function validarCorreo($correo){
