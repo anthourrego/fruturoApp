@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-07-2020 a las 03:48:44
+-- Tiempo de generación: 15-07-2020 a las 04:10:31
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -200,105 +200,6 @@ CREATE TABLE `logs` (
   `fk_usuario` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `logs`
---
-
-INSERT INTO `logs` (`id`, `nombre_tabla`, `id_registro`, `accion`, `fk_usuario`, `fecha_creacion`) VALUES
-(1, 'fincas', 1, 'Se crea la finca 21321', 1, '2020-06-25 12:12:11'),
-(2, 'modulos', 3, 'Se edita el modulos productos', 1, '2020-07-06 20:15:41'),
-(3, 'modulos', 13, 'Se ha creado el módulo productos_1', 1, '2020-07-06 20:20:07'),
-(4, 'modulos', 13, 'Se edita el modulos productos_1', 1, '2020-07-06 20:20:44'),
-(5, 'modulos', 14, 'Se ha creado el módulo productos_derivados', 1, '2020-07-06 20:21:54'),
-(6, 'usuarios_modulos', 15, 'El permiso se ha creado', 1, '2020-07-06 20:22:51'),
-(7, 'usuarios_modulos', 16, 'El permiso se ha creado', 1, '2020-07-06 20:22:52'),
-(8, 'modulos', 14, 'Se edita el modulos productos_derivados', 1, '2020-07-06 20:27:15'),
-(9, 'modulos', 13, 'Se edita el modulos productos_1', 1, '2020-07-06 20:30:07'),
-(10, 'modulos', 13, 'Se edita el modulos productos_1', 1, '2020-07-06 20:36:05'),
-(11, 'productos', 1, 'Se crea el derivado guineo', 1, '2020-07-06 21:45:41'),
-(12, 'productos', 2, 'Se crea el derivado banano chonto', 1, '2020-07-06 21:59:06'),
-(13, 'productos', 2, 'Se crea el producto manzana', 1, '2020-07-06 23:16:28'),
-(14, 'productos', 3, 'Se crea el derivado manzana verde', 1, '2020-07-06 23:16:53'),
-(15, 'productos', 3, 'Se edita el producto 1', 1, '2020-07-06 23:32:36'),
-(16, 'productos', 3, 'Se edita el producto 1', 1, '2020-07-06 23:32:55'),
-(17, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:38:13'),
-(18, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:38:20'),
-(19, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:38:43'),
-(20, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:39:47'),
-(21, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:40:36'),
-(22, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:42:52'),
-(23, 'productos_derivados', 2, 'Se edita el producto ', 1, '2020-07-06 23:43:24'),
-(24, 'productos_derivados', 3, 'Se edita el producto manzana verde', 1, '2020-07-06 23:43:59'),
-(25, 'productos_derivados', 3, 'Se edita el producto manzana verde', 1, '2020-07-06 23:44:05'),
-(26, 'productos_derivados', 2, 'Se inhabilita el producto banano chonto', 1, '2020-07-08 18:50:20'),
-(27, 'productos_derivados', 1, 'Se inhabilita el producto guineo', 1, '2020-07-08 18:51:26'),
-(28, 'modulos', 3, 'Se edita el modulos productos', 1, '2020-07-08 19:18:05'),
-(29, 'modulos', 3, 'Se edita el modulos productos', 1, '2020-07-08 19:18:49'),
-(30, 'modulos', 13, 'Se edita el modulos productos_1', 1, '2020-07-08 19:18:57'),
-(31, 'modulos', 3, 'Se edita el modulos productos', 1, '2020-07-08 19:19:40'),
-(32, 'modulos', 13, 'Se edita el modulos productos_1', 1, '2020-07-08 19:19:46'),
-(33, 'modulos', 3, 'Se edita el modulos productos', 1, '2020-07-08 19:20:08'),
-(34, 'municpios', 347, 'Se inhabilita el municipio Río Sucio', 1, '2020-07-08 19:35:10'),
-(35, 'municpios', 347, 'Se inhabilita el municipio Río Sucio', 1, '2020-07-08 19:35:17'),
-(36, 'productos_derivados', 1, 'Se inhabilita el derivado guineo', 1, '2020-07-08 19:57:40'),
-(37, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-08 19:59:39'),
-(38, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-08 19:59:45'),
-(39, 'productos_derivados', 1, 'Se inhabilita el derivado guineo', 1, '2020-07-08 19:59:47'),
-(40, 'productos_derivados', 3, 'Se inhabilita el derivado manzana verde', 1, '2020-07-08 19:59:49'),
-(41, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-08 20:00:06'),
-(42, 'productos_derivados', 1, 'Se inhabilita el derivado guineo', 1, '2020-07-08 20:00:20'),
-(43, 'productos_derivados', 3, 'Se inhabilita el derivado manzana verde', 1, '2020-07-08 20:00:22'),
-(44, 'productos', 2, 'Se inhabilita el producto manzana', 1, '2020-07-08 20:46:15'),
-(45, 'productos_derivados', 3, 'Se inhabilita el derivado manzana verde', 1, '2020-07-09 18:32:46'),
-(46, 'productos_derivados', 3, 'Se inhabilita el derivado manzana verde', 1, '2020-07-09 18:32:52'),
-(47, 'tipo_documento', 5, 'Se crea el tipo de documento lol', 1, '2020-07-09 19:21:37'),
-(48, 'tipo_documento', 5, 'Se inhabilita el tipo documento lol', 1, '2020-07-09 19:21:41'),
-(49, 'tipo_documento', 1, 'Se inhabilita el derivado Cédula de ciudadania', 1, '2020-07-09 19:32:18'),
-(50, 'tipo_documento', 5, 'Se inhabilita el derivado lol', 1, '2020-07-09 19:32:32'),
-(51, 'tipo_documento', 1, 'Se inhabilita el derivado Cédula de ciudadania', 1, '2020-07-09 19:35:20'),
-(52, 'tipo_documento', 5, 'Se inhabilita el derivado lol', 1, '2020-07-09 19:36:09'),
-(53, 'usuarios', 4, 'Se inhabilita el usuario Cordobita Rasca', 1, '2020-07-09 19:46:36'),
-(54, 'usuarios', 1, 'Se inhabilita el derivado ', 1, '2020-07-09 20:21:48'),
-(55, 'usuarios', 3, 'Se inhabilita el derivado ', 1, '2020-07-09 20:22:39'),
-(56, 'usuarios', 2, 'Se inhabilita el derivado ', 1, '2020-07-09 20:23:14'),
-(57, 'usuarios', 3, 'Se inhabilita el usuario Anthony', 1, '2020-07-09 20:24:23'),
-(58, 'usuarios', 3, 'Se inhabilita el usuario Anthony', 1, '2020-07-09 20:24:41'),
-(59, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:25:26'),
-(60, 'usuarios', 4, 'Se inhabilita el usuario Cordobita', 1, '2020-07-09 20:27:10'),
-(61, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:27:19'),
-(62, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:27:24'),
-(63, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:33:16'),
-(64, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:33:26'),
-(65, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:36:50'),
-(66, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 20:36:55'),
-(67, 'certificaciones', 1, 'Se inhabilita el certificado Certificado 1', 1, '2020-07-09 20:38:15'),
-(68, 'certificaciones', 1, 'Se inhabilita el certificado Certificado 1', 1, '2020-07-09 20:38:19'),
-(69, 'tipo_persona', 2, 'Se inhabilita el tipo persona Jurídica', 1, '2020-07-09 20:45:07'),
-(70, 'tipo_persona', 1, 'Se inhabilita el usuario ', 1, '2020-07-09 20:57:14'),
-(71, 'tipo_persona', 1, 'Se inhabilita el usuario ', 1, '2020-07-09 20:57:21'),
-(72, 'tipo_persona', 2, 'Se inhabilita el tipo_persona ', 1, '2020-07-09 21:05:03'),
-(73, 'tipo_persona', 2, 'Se inhabilita el tipo_persona ', 1, '2020-07-09 21:06:23'),
-(74, 'tipo_persona', 2, 'Se inhabilita el tipo_persona ', 1, '2020-07-09 21:06:33'),
-(75, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-09 21:07:27'),
-(76, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-09 21:08:11'),
-(77, 'productos_derivados', 2, 'Se inhabilita el derivado banano chonto', 1, '2020-07-09 21:08:21'),
-(78, 'tipo_persona', 2, 'Se inhabilita el tipo_persona ', 1, '2020-07-09 21:08:48'),
-(79, 'tipo_persona', 2, 'Se inhabilita el tipo_persona Jurídica', 1, '2020-07-09 21:10:38'),
-(80, 'tipo_persona', 2, 'Se inhabilita el tipo_persona Jurídica', 1, '2020-07-09 21:11:00'),
-(81, 'tipo_persona', 2, 'Se inhabilita el tipo_persona Jurídica', 1, '2020-07-09 21:13:27'),
-(82, 'tipo_persona', 1, 'Se inhabilita el tipo_persona Natural', 1, '2020-07-09 21:14:30'),
-(83, 'perfiles', 3, 'Se inhabilita el perfil Comercializador', 1, '2020-07-09 21:22:27'),
-(84, 'perfiles', 1, 'Se inhabilita el perfil Administrador', 1, '2020-07-09 21:25:25'),
-(85, 'perfiles', 1, 'Se inhabilita el perfil Administrador', 1, '2020-07-09 21:25:30'),
-(86, 'perfiles', 3, 'Se inhabilita el perfil Comercializador', 1, '2020-07-09 21:25:31'),
-(87, 'departamentos', 1, 'Se inhabilita el departamento Amazonas', 1, '2020-07-09 21:29:49'),
-(88, 'departamentos', 1, 'Se inhabilita el departamento Amazonas', 1, '2020-07-09 21:29:54'),
-(89, 'certificaciones', 1, 'Se inhabilita el certificado Certificado 1', 1, '2020-07-09 21:30:14'),
-(90, 'certificaciones', 1, 'Se inhabilita el certificado Certificado 1', 1, '2020-07-09 21:30:17'),
-(91, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 21:49:15'),
-(92, 'usuarios', 1, 'Se inhabilita el usuario admin', 1, '2020-07-09 21:49:22'),
-(93, 'usuarios', 5, 'Se crea el usuario lol@lol.es', 1, '2020-07-09 22:00:59');
 
 -- --------------------------------------------------------
 
@@ -1578,8 +1479,7 @@ INSERT INTO `tipo_documento` (`id`, `abreviacion`, `nombre`, `fecha_creacion`, `
 (1, 'CC', 'Cédula de ciudadania', '2020-05-26 19:06:12', 1, 1),
 (2, 'CE', 'Cédula extranjera', '2020-05-26 19:06:12', 1, 1),
 (3, 'PA', 'Pasaporte', '2020-05-26 19:06:33', 1, 1),
-(4, 'NIT', 'Nro. Identif. Tributaria', '2020-05-26 19:06:49', 1, 1),
-(5, 'jj', 'lol', '2020-07-09 19:21:37', 0, 1);
+(4, 'NIT', 'Nro. Identif. Tributaria', '2020-05-26 19:06:49', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1624,6 +1524,8 @@ CREATE TABLE `usuarios` (
   `estado` int(1) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL,
   `confirmado` int(1) NOT NULL DEFAULT 0,
+  `codigo_recuperacion` text NOT NULL,
+  `codigo_activacion` text NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -1631,12 +1533,8 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `fk_creador`) VALUES
-(1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$nMbAlCKj4jwp9QrXyri13ue1.WnTVfHi5d2FpZWF70/353bwF2biq', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, 1),
-(2, 2, '1087996797', 1, 'coo@fruturo.one', 'Juan', 'Londono', '$2y$15$1x/MTYxwaSA7eZ22uL.aqezNyLNmKZE1txFaYGUJisIgtoU1S30Ve', '1988-02-19', '3184663375', 1, 1, '2020-06-02 09:12:18', 1, 0),
-(3, 1, '1225091213', 1, 'antho.120@hotmail.com', 'Anthony', 'Urrego', '$2y$15$BKcVFrenQeIx85cCAr8fPORch/MDxFPBHPyIzlJfpIAsD/kBeR4M.', '2002-06-03', '3103587032', 3, 1, '2020-06-03 11:03:53', 1, 0),
-(4, 1, '1234567', 1, 'cordobita@productor.com', 'Cordobita', 'Rasca', '$2y$15$OxsS/qsIZUpelCbaygq/jujd3jPeyl97i6q2NhEF5Asc20F0zOJoi', '2002-06-06', '3013013011', 2, 1, '2020-06-06 13:04:54', 1, 0),
-(5, 3, '31231231312', 2, 'lol@lol.es', 'prueba', 'prueba', '$2y$15$LZOxGgSMKKm11fwbuyEnpuddZXgbAK7sILHZJKZoQu/x/d/MOmRpy', '2002-02-13', '12312312', 1, 1, '2020-07-09 22:00:59', 1, 1);
+INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `codigo_recuperacion`, `codigo_activacion`, `fk_creador`) VALUES
+(1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$WpgfJ0hjPFRZJFqmdsSUP.RVeoMzXJ8/rUXSrt.XE07oE2fOh5Sti', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -1837,7 +1735,7 @@ ALTER TABLE `fincas`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -1879,7 +1777,7 @@ ALTER TABLE `productos_derivados`
 -- AUTO_INCREMENT de la tabla `tipo_documento`
 --
 ALTER TABLE `tipo_documento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_persona`
@@ -1891,7 +1789,7 @@ ALTER TABLE `tipo_persona`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_modulos`
