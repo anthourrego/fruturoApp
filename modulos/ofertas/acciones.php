@@ -71,12 +71,12 @@ function listaOfertas(){
   cosechas.precio, 
   cosechas.fecha_inicio, 
   cosechas.fecha_final, 
-  cosechas_fotos.ruta, 
+  cosechas_productos_documentos.ruta, 
   fincas.nombre AS nombreFinca,
   departamentos.nombre as departamento,
   municipios.nombre AS municipio FROM cosechas INNER JOIN productos ON 
   cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id
-  INNER JOIN cosechas_fotos ON cosechas.id = cosechas_fotos.fk_cosecha INNER JOIN fincas on 
+  INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
   municipios.fk_departamento = departamentos.id");

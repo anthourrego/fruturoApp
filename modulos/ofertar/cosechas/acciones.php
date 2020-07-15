@@ -122,10 +122,10 @@ function crear(){
                 ":fk_creador" => $usuario['id']
               );
 
-              $id_foto = $db->sentencia("INSERT INTO cosechas_fotos (tipo, ruta, fk_cosecha, fecha_creacion, fk_creador) VALUES (:tipo, :ruta, :fk_cosecha, :fecha_creacion, :fk_creador)", $datos_foto);
+              $id_foto = $db->sentencia("INSERT INTO cosechas_productos_documentos (tipo, ruta, fk_cosecha, fecha_creacion, fk_creador) VALUES (:tipo, :ruta, :fk_cosecha, :fecha_creacion, :fk_creador)", $datos_foto);
               
               if ($id_foto > 0) {
-                $db->insertLogs("cosechas_fotos", $id_foto, "Creacion de fotos de consecha con id: " . $id_registro, $usuario['id']);
+                $db->insertLogs("cosechas_productos_documentos", $id_foto, "Creacion de fotos de consecha con id: " . $id_registro, $usuario['id']);
                 $cont++;
                 $cont1 = $key;
               }
@@ -168,7 +168,7 @@ function crear(){
       }else{
         $resp['msj'] = "Error al subir los archivos" . '' . $mensaje;
 
-        $db->sentencia("DELETE FROM cosechas_fotos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $id_registro));
+        $db->sentencia("DELETE FROM cosechas_productos_documentos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $id_registro));
 
         $db->sentencia("DELETE FROM cosechas WHERE id = :id", array(":id" => $id_registro));
 
@@ -202,7 +202,7 @@ function fotosCosechas(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT * FROM cosechas_fotos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+  $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
 
   if ($datos['cantidad_registros'] > 0) {
     $resp["success"] = true;
