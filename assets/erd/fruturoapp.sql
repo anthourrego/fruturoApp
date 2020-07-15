@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-07-2020 a las 04:10:31
+-- Tiempo de generación: 15-07-2020 a las 04:39:29
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -83,15 +83,8 @@ CREATE TABLE `cosechas_certificaciones` (
 --
 -- Estructura de tabla para la tabla `cosechas_fotos`
 --
-
-CREATE TABLE `cosechas_fotos` (
-  `id` int(11) NOT NULL,
-  `tipo` text NOT NULL,
-  `ruta` text NOT NULL,
-  `fk_cosecha` int(11) NOT NULL DEFAULT 0,
-  `fecha_creacion` datetime NOT NULL,
-  `fk_creador` int(11) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- Error leyendo la estructura de la tabla fruturoapp.cosechas_fotos: #1146 - Tabla 'fruturoapp.cosechas_fotos' no existe
+-- Error leyendo datos de la tabla fruturoapp.cosechas_fotos: #1064 - Algo está equivocado en su sintax cerca 'FROM `fruturoapp`.`cosechas_fotos`' en la linea 1
 
 -- --------------------------------------------------------
 
@@ -1418,18 +1411,22 @@ INSERT INTO `perfiles` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `estado`
 CREATE TABLE `productos` (
   `id` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL DEFAULT '0',
+  `presentacion` varchar(100) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
   `fecha_creacion` datetime NOT NULL,
-  `fk_creador` int(11) NOT NULL DEFAULT 0,
-  `estado` int(11) NOT NULL DEFAULT 0
+  `estado` int(11) NOT NULL DEFAULT 0,
+  `reg_invima` text DEFAULT NULL,
+  `fk_finca` int(11) DEFAULT NULL,
+  `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `estado`) VALUES
-(1, 'Bananos', '2020-06-01 23:16:52', 1, 1),
-(2, 'manzana', '2020-07-06 23:16:28', 1, 0);
+INSERT INTO `productos` (`id`, `nombre`, `presentacion`, `descripcion`, `fecha_creacion`, `estado`, `reg_invima`, `fk_finca`, `fk_creador`) VALUES
+(1, 'Bananos', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
+(2, 'manzana', NULL, NULL, '2020-07-06 23:16:28', 0, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1596,12 +1593,6 @@ ALTER TABLE `cosechas_certificaciones`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `cosechas_fotos`
---
-ALTER TABLE `cosechas_fotos`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
@@ -1705,12 +1696,6 @@ ALTER TABLE `cosechas`
 -- AUTO_INCREMENT de la tabla `cosechas_certificaciones`
 --
 ALTER TABLE `cosechas_certificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `cosechas_fotos`
---
-ALTER TABLE `cosechas_fotos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
