@@ -224,6 +224,56 @@ function finalizar(){
   return json_encode(1);
 }
 
+function listarDepartamentos(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * from departamentos");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
+}
+
+function listarMunicipios(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $query = "SELECT * from municipios";
+
+  if($_GET['idDepto'] != -1){
+    $query .= " where fk_departamento =".$_GET['idDepto'];
+  }
+
+
+  $datos = $db->consulta($query);
+
+  
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
+}
+
 /*****************************************/
 
 /* function crear(){

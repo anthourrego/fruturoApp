@@ -71,9 +71,52 @@
       .card-img-top{
         height: 250px;
       }
+
+      .spinner {
+        margin: 60px auto;
+        width: 200px;
+        text-align: center;
+      }
+
+      .spinner > div {
+        width: 30px;
+        height: 30px;
+        background-color: #333;
+
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      }
+
+      .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+      }
+
+      .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+      }
+
+      @-webkit-keyframes sk-bouncedelay {
+        0%, 80%, 100% { -webkit-transform: scale(0) }
+        40% { -webkit-transform: scale(1.0) }
+      }
+
+      @keyframes sk-bouncedelay {
+        0%, 80%, 100% { 
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        } 40% { 
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+        }
+      }
+
     </style>
   </head>
-  <body id="scroller">
+  <body >
 
     <!-- Content Header (Page header) -->
     <div div class="content-header">
@@ -94,48 +137,109 @@
           <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
         </div> -->
         <!-- /.card-header -->
-          <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
-            <div class="input-group mb-3 w-md-25 w-100">
-              <select class="custom-select" id="selectEstado" name="status">
-                <option value="1" selected>Activo</option>
-                <option value="2">En Proceso</option>
-                <option value="3">Finalizado</option>
-                <option value="0">Cancelado</option>
-              </select>
-              <div class="input-group-append">
-                <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-              </div>
+        <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
+          <div class="input-group mb-3 w-md-25 w-100">
+            <select class="custom-select" id="selectEstado" name="status">
+              <option value="1" selected>Activo</option>
+              <option value="2">En Proceso</option>
+              <option value="3">Finalizado</option>
+              <option value="0">Cancelado</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Estado</label>
             </div>
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Departamento</th>
-                <th scope="col">Municipio</th>
-                <th scope="col">Persona</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Volumen total</th>
-                <th scope="col">Precio KG</th>
-                <th scope="col">Inicio cosecha</th>
-                <th scope="col">Fin cosecha</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table> -->
+          </div>
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Departamento</th>
+              <th scope="col">Municipio</th>
+              <th scope="col">Persona</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Volumen total</th>
+              <th scope="col">Precio KG</th>
+              <th scope="col">Inicio cosecha</th>
+              <th scope="col">Fin cosecha</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table> -->
 
-        <div class="input-group mb-3 w-md-25 w-100">
-          <select class="custom-select" id="selectEstado" name="status">
-            <option value="1" selected>Activo</option>
-            <option value="2">En Proceso</option>
-            <option value="3">Finalizado</option>
-            <option value="0">Cancelado</option>
-          </select>
-          <div class="input-group-append">
-            <label class="input-group-text" for="inputGroupSelect02">Estado</label>
+        <div class="row">
+        
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectEstado" name="status">
+              <option value="1" selected>Activo</option>
+              <option value="2">En Proceso</option>
+              <option value="3">Finalizado</option>
+              <option value="0">Cancelado</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Estado</label>
+            </div>
+          </div>
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectDepartamento" name="status">
+              <option value="-1" selected>Todos</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Depto</label>
+            </div>
+          </div>
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectMunicipio" name="status">
+              <option value="-1" selected>Todos</option>
+              
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Municipio</label>
+            </div>
+          </div>
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectEstado" name="status">
+              <option value="1" selected>Activo</option>
+              <option value="2">En Proceso</option>
+              <option value="3">Finalizado</option>
+              <option value="0">Cancelado</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Fruta</label>
+            </div>
+          </div>
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectEstado" name="status">
+              <option value="-1" selected>Todos</option>
+              <option value="1" selected>Fresco</option>
+              <option value="2">Derivado</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Tipo</label>
+            </div>
+          </div>
+          <div class="input-group mb-3 col-md-4 col-sm-6">
+            <select class="custom-select" id="selectEstado" name="status">
+              <option value="1" selected>Ascendente</option>
+              <option value="2">Descendente</option>
+            </select>
+            <div class="input-group-append">
+              <label class="input-group-text" for="inputGroupSelect02">Precio</label>
+            </div>
           </div>
         </div>
         
-        <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4"></div>
-      </div><!-- /.container-fluid -->
+        <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4">
+        </div>
+
+        <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
+          <div  class="spinner" >
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
+        </div>
+        
+
+      </div>
     </section>
     <!-- /.content -->
     
@@ -261,15 +365,8 @@
         </div>
       </div>
     </div>
+
   </body>
-  <div class="gooey">
-    <span class="dot"></span>
-    <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
 
   <?php 
     echo $lib->cambioPantalla();
@@ -278,7 +375,8 @@
 
     // contadores Inciales 
     var inicio = 0;
-    var cantidad = 2;
+    var cantidad = 5;
+    var terminado = false;
 
     $(function(){
 
@@ -346,8 +444,25 @@
         lista();
       });
 
+      $("#selectDepartamento").change(function () {
+        
+        if($("#selectDepartamento").val() != -1){
+          $("#selectMunicipio").attr('disabled',false);
+          traerMunicipio($("#selectDepartamento").val());
+        }else{
+          $("#selectMunicipio").attr('disabled',true);
+        }
+      });
+
+      $("#selectMunicipio").change(function () {
+        console.log('municipio');
+      });
+
+
+
       cerrarCargando();
       // lista();
+      listarDepartamentos();
       listarOfertas();
       iniciarScroll();
     });
@@ -441,13 +556,17 @@
         success: function(data){
           if (data.success) {
             // se guardan ofertas con la data ordenada
+            if(inicio > 0){
+              $('#spinner-scroll').show(); 
+            }
             var ofertas = ordenarData(data.msj);
+ 
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
                 <div class="col">
                   <div class="card text-center">
-                    <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.imagenes[0]}" alt="Card image cap">
+                    <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.ruta}" alt="Card image cap">
                     <div class="p-2" id="card">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column">
@@ -472,13 +591,17 @@
                   </div>
                 </div>
               `);
-            });
+            }); 
+            
+            setTimeout(() => {
+              $('#spinner-scroll').hide();
+            }, 1500);
 
           }else{
-            if(inicio > 0){
-              $('#contenedorOfertas').append(`
-              <li>FIN</li>
-              `);
+            
+            if(inicio > 0 && !terminado){
+              // fin de resultados de la consulta, no se vuelven a traer datos
+              terminado = true;
             }
             
           } 
@@ -781,10 +904,10 @@
           }else{
             const objTmp = {
               ...valor,
-              imagenes : []
+              //imagenes : []
             }
-            delete objTmp.ruta;
-            objTmp.imagenes.push(valor.ruta);
+            //delete objTmp.ruta;
+            //objTmp.imagenes.push(valor.ruta);
             ofertas.push(objTmp);
           }
         }
@@ -797,15 +920,77 @@
       $(window).on("scroll", function() {
         var scrollHeight = $(document).height();
         var scrollPos = $(window).height() + $(window).scrollTop();
-
         if ((scrollHeight - scrollPos) / scrollHeight == 0) {             
-          console.log('final');
           listarOfertas();
         }
-
       });
 
 
+    }
+
+    function listarDepartamentos(){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "listarDepartamentos"
+        },
+        success: function(data){
+          if (data.success) {
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $("#selectDepartamento").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+            if($('#selectDepartamento').val() == -1){
+              $('#selectMunicipio').attr('disabled',true);
+            }
+
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+    }
+
+    function traerMunicipio(idDepto){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "listarMunicipios",
+          idDepto
+        },
+        success: function(data){
+          if (data.success) {
+            $("#selectMunicipio").empty();
+            $("#selectMunicipio").append(`
+              <option value="-1" selected>Todos</option>
+            `);
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $("#selectMunicipio").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
     }
   </script>
 </html>
