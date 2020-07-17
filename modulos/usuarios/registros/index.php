@@ -820,14 +820,12 @@
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1 btnEditarUsuario" data-toggle="tooltip" title="Editar" data-usuario='${JSON.stringify(oData)}'><i class="fas fa-user-edit"></i></button>
                       <button type="button" class="btn btn-info btn-sm mx-1 btnCambioPass" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Cambiar contraseña"><i class="fas fa-key"></i></button>
+                      <button type="button" class="btn btn-secondary btn-sm mx-1 btnPermisos" data-toggle="tooltip" data-usuario='${JSON.stringify(oData)}' title="Permisos"><i class="fas fa-user-lock"></i></button>
                       <button type="button" data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Desactivar' : 'Activar'}" class="btn ${$("#filtroEstado").val() == 1 ? 'fas fa-user-minus btn-danger' : 'fas fa-user-plus btn-primary'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"></button>
                     </div>`;
           }
         
         }
-        // <button type="button" class="btn ${$("#filtroEstado").val() == 1 ? 'btn-danger' : 'btn-success'} btn-sm mx-1" onClick='cambiarEstado(${JSON.stringify(oData)})' data-toggle="tooltip" title="${$("#filtroEstado").val() == 1 ? 'Inactivar' : 'Activar'}"><i class="fas ${$("#filtroEstado").val() == 1 ? 'fa-trash-alt' : 'fa-check'}"></i></button>
-        // <button type="button" class="btn btn-danger btn-sm mx-1" data-toggle="tooltip" title="Eliminar" onClick='elminarUsuario(${JSON.stringify(oData)})'><i class="fas fa-user-minus" ></i></button>
-
       ],
       dom: 'Bfrtip',
       lengthMenu: [
