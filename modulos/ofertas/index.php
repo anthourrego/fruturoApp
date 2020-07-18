@@ -114,59 +114,70 @@
         }
       }
 
+      .filtros{
+        position: sticky;
+        top: 70px;
+      }
+
+      .form-group{
+        margin-bottom: 5px;
+      }
+
+      /* se oculta scroll horizontal */
+      body{
+        overflow-x: hidden;
+      }
+
     </style>
   </head>
   <body>
     <div class="row">
-      <div class="col-2" style="padding: 0px 4px 0px 20px;">
-        <div class="row" style="margin-top:71px">
-          <div class="input-group mb-3 col-12">
+      <div class="col-2 col-xs-12" style="padding: 0px 4px 0px 20px;">
+        <div class="row filtros" style="margin-top:70px">
+          <!-- <div class="input-group mb-3 col-12">
             <select class="custom-select" id="selectDepartamento" name="status">
               <option value="-1" selected>Todos</option>
             </select>
             <div class="input-group-append">
               <label class="input-group-text" for="inputGroupSelect02">Depto</label>
             </div>
-          </div>
-          <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectMunicipio" name="status">
-              <option value="-1" selected>Todos</option>
-              
-            </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Municipio</label>
-            </div>
-          </div>
-          <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectFruta" name="status">
+          </div> -->
+          <div class="form-group col-12" >
+            <label for="selectDepartamento">Departamento</label>
+            <select class="form-control" id="selectDepartamento">
               <option value="-1" selected>Todos</option>
             </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Fruta</label>
-            </div>
           </div>
-          <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectTipo" name="status">
+          <div class="form-group col-12" >
+            <label for="selectMunicipio">Municipio</label>
+            <select class="form-control" id="selectMunicipio">
+              <option value="-1" selected>Todos</option>
+            </select>
+          </div>
+          <div class="form-group col-12" >
+            <label for="selectFruta">Fruta</label>
+            <select class="form-control" id="selectFruta">
+              <option value="-1" selected>Todos</option>
+            </select>
+          </div>
+          <div class="form-group col-12" >
+            <label for="selectTipo">Tipo</label>
+            <select class="form-control" id="selectTipo">
               <option value="-1" selected>Todos</option>
               <option value="1" selected>Fresco</option>
               <option value="2">Derivado</option>
             </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Tipo</label>
-            </div>
           </div>
-          <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectOrden" name="status">
+          <div class="form-group col-12" >
+            <label for="selectOrden">Precio</label>
+            <select class="form-control" id="selectOrden">
               <option value="1" selected>Ascendente</option>
               <option value="2">Descendente</option>
             </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Precio</label>
-            </div>
           </div>
         </div>
       </div>
-      <div class="col-10 p-1">
+      <div class="col-10 col-xs-12 p-1">
         <!-- Content Header (Page header) -->
         <div div class="content-header">
           <div class="container-fluid">
@@ -368,6 +379,8 @@
     var terminado = false;
 
     $(function(){
+      
+      $('#spinner-scroll').hide();
 
       $("#formMensaje").submit(function(event){
         event.preventDefault();
@@ -545,14 +558,16 @@
           departamento: $('#selectDepartamento').val(),
           municipio: $('#selectMunicipio').val()
         },
-        success: function(data){
+        success: function(data){ 
           if (data.success) {
             // se guardan ofertas con la data ordenada
+            console.log(inicio);
             if(inicio > 0){
-              $('#spinner-scroll').show(); 
+              $('#spinner-scroll').show();
+            }else{
+              top.$("#cargando").modal("show");
             }
             var ofertas = ordenarData(data.msj);
- 
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
@@ -584,7 +599,7 @@
                 </div>
               `);
             }); 
-            
+            cerrarCargando()
             setTimeout(() => {
               $('#spinner-scroll').hide();
             }, 1500);
