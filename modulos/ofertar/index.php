@@ -38,21 +38,21 @@
     <div class="container">
       <div class="alert alert-warning" role="alert">
         <ol class="mb-0">
-          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu finca, haz click en <b>Registrar Finca</b>.</li>
-          <li>Si ya está registrada tu finca, haz click en <b>Ofertar Cosecha</b> para empezar a ofrecer tus productos.</li>
-          <li>En el momento en que hayas terminado de ingresar tus fincas y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
+          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu predio, haz click en <b>Registrar Predio</b>.</li>
+          <li>Si ya está registrada tu predio, haz click en <b>Ofertar Cosecha</b> para empezar a ofrecer tus productos.</li>
+          <li>En el momento en que hayas terminado de ingresar tus predios y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
         </ol>
       </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <!-- small box -->
-          <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="fincas">
+          <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="predios">
             <div class="inner">
-              <h4>Registrar finca</h4>
+              <h4>Registrar Predio</h4>
             </div>
             <div class="icon">
-              <i class="fas fa-mountain"></i>
+              <i class="fas fa-home"></i>
             </div>
           </a>
         </div>
@@ -106,11 +106,11 @@
 
     //Se cargan los terrenos
     $.ajax({
-      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
+      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/predios/acciones',
       type: 'POST',
       dataType: 'json',
       data: {
-        accion: "tusTerrenos"
+        accion: "tusPredios"
       },
       success: function(data){
         if (data.success) {
@@ -137,7 +137,7 @@
       }else{
         Swal.fire({
           icon: 'warning',
-          html: 'Para ofertar una cosecha debes de registrar primero una finca'
+          html: 'Para ofertar debes de registrar primero un predio'
         });
       }
     });

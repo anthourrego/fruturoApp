@@ -47,7 +47,7 @@
     <div class="container">
       <div class="row mb-2">
         <div class="col-12">
-          <h1 class="m-0 text-dark"><i class="fas fa-mountain"></i> Fincas</h1>
+          <h1 class="m-0 text-dark"><i class="fas fa-home"></i> Predios</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -59,13 +59,13 @@
     <div class="container">
       <div class="alert alert-warning" role="alert">
         <ol class="mb-0">
-          <li>Haz click en <b>Crear Finca</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
+          <li>Haz click en <b>Crear Predio</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b>, arriba en esta pagina.</li>
         </ol>
       </div>
       <div class="card">
         <div class="card-header d-flex justify-content-end">
-          <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
+          <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear predio</button>
         </div>
         <!-- /.card-header -->
         <div class="card-body">

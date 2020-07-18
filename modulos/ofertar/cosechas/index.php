@@ -482,7 +482,7 @@
       type: 'POST',
       dataType: 'json',
       data: {
-        accion: "tusTerrenos"
+        accion: "tusPredios"
       },
       success: function(data){
         if (data.success) {
