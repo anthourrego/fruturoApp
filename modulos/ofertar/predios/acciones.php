@@ -173,7 +173,7 @@ function eliminar(){
   return json_encode(1);
 }
 
-function tusTerrenos(){
+function tusPredios(){
   $db = new Bd();
   $db->conectar();
   global $usuario;

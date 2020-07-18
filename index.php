@@ -197,9 +197,8 @@
 
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
-                        <select class="custom-select" name="perfil" id="perfil" required>
-                          <option value="0" selected disabled>Tipo de perfil</option>
-                        </select>
+                        <input type="text" id="fecha" name="fecha" class="form-control datepicker" placeholder="Fecha Nacimiento" autocomplete="off" required>
+                        <label for="fecha">Fecha Nacimiento<span class="text-danger">*</span></label>
                       </div>
                     </div>
 
@@ -219,11 +218,11 @@
                     
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
-                        <input type="text" id="fecha" name="fecha" class="form-control datepicker" placeholder="Fecha Nacimiento" autocomplete="off" required>
-                        <label for="fecha">Fecha Nacimiento<span class="text-danger">*</span></label>
+                        <input type="email" id="reCorreo" name="reCorreo" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
+                        <label for="reCorreo">Correo electrónico<span class="text-danger">*</span></label>
                       </div>
                     </div>
-                    
+
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
                         <input type="tel" minlength="7" id="tel" name="tel" class="form-control" placeholder="Teléfono" autocomplete="off" required onKeyPress="return soloNumeros(event)">
@@ -231,12 +230,6 @@
                       </div>
                     </div>
 
-                    <div class="col-12">
-                      <div class="form-label-group">
-                        <input type="email" id="reCorreo" name="reCorreo" class="form-control" placeholder="Correo electrónico" autocomplete="off" required>
-                        <label for="reCorreo">Correo electrónico<span class="text-danger">*</span></label>
-                      </div>
-                    </div>
 
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
@@ -267,8 +260,7 @@
                 <!-- Formulario de Recuperacion  -->
                 <div id="contentRecuperacion" class="col-12 col-lg-11 col-xl-10 mx-auto">
                   <div class="text-center">
-                    <img class="w-30 " src="assets/img/logo.svg">
-                    <h3 class="mb-5">Cambio de contraseña</h3>
+                    <img class="w-30 mb-5" src="assets/img/logo.svg">
                   </div>
                   <form id="formRecuperacion" class="form-row" autocomplete="off">
                     <input type="hidden" name="accion" value="cambiarClave">
@@ -294,7 +286,7 @@
                       </div>
                     </div>
 
-                    <div class="col-12 col-lg-6 mx-auto text-center">
+                    <div class="col-12 col-xl-6 mx-auto text-center">
                       <button class="btn btn-lg btn-verdeOscuro btn-block btn-login text-uppercase font-weight-bold mb-2" id="btnCambiarClave" type="submit">
                         Cambiar Contraseña <i class="fas fa-sign-in-alt"></i>
                       </button>
@@ -335,8 +327,6 @@
                   </div>
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
                 </div>
-
-
               </div>
             </div>
           </div>
@@ -349,29 +339,26 @@
   <div class="modal fade" id="modalRecuperarClave" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-body text-center">
-          <h3 class="mt-auto mb-auto">Recuperar Contraseña</h3>
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-unlock-alt"></i>&nbsp; Recuperar Contraseña</h5>
         </div>
-        <form id="formRecuperarClave" autocomplete="off" class="w-90 m-auto">
-          <input type="hidden" name="accion" value="recuperarClave">
-          <div class="form-label-group">
-            <input type="email" id="correoRecuperar" name="correo" class="form-control" placeholder="Correo electrónico" required autocomplete="off">
-            <label for="correoRecuperar">Correo electrónico</label>
+        <form id="formRecuperarClave" autocomplete="off">
+          <div class="modal-body mt-3">
+            <input type="hidden" name="accion" value="recuperarClave">
+            <div class="form-label-group">
+              <input type="email" id="correoRecuperar" name="correo" class="form-control" placeholder="Correo electrónico" required autocomplete="off">
+              <label for="correoRecuperar">Correo electrónico</label>
+            </div>
           </div>
-
-          <!-- <button class="btn btn-lg btn-verdeOscuro btn-block btn-login text-uppercase font-weight-bold mb-2" id="btn-inciar" type="submit">
-            Ingresar <i class="fas fa-sign-in-alt"></i>
-          </button> -->
+          <div class="modal-footer d-flex justify-content-between">
+            <button class="btn btn-verdeOscuro rounded-pill w-40 w-md-25" tyspe="submit" id="btnRecuperarClave"><i class="fas fa-paper-plane"></i> Recuperar</button>
+            <button class="btn btn-primary rounded-pill w-40 w-md-25" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+          </div>
         </form>
-
-
-        <div class="modal-footer d-flex justify-content-between">
-          <a class=" btn btn-verdeOscuro w-25 text-white rounded-pill" id="btnRecuperarClave" > Recuperar <i class="fas fa-paper-plane"></i></a>
-          <a class=" btn btn-primary w-25 text-white rounded-pill" id="btnCerrarModal"> Cerrar <i class="fas fa-times-circle"></i></a>
-        </div>
       </div>
     </div>
   </div>
+
 <script type="text/javascript">
   $(function(){
     $("#contentRegistro, #contentLogin, #contentRecuperacion, #contentActivacion").hide();
@@ -525,7 +512,7 @@
             if(data.statusText == 'OK'){
               Swal.fire({
                 icon: 'success',
-                html: 'Enlace de activación enviado cor',
+                html: 'Enlace de activación enviado correo',
                 preConfirm: () => {
                   location.href = '?reg=0'
                 }
@@ -552,16 +539,6 @@
       $("#modalRecuperarClave").modal("show");
     });
 
-    $('#btnCerrarModal').click( function(){
-      $("#modalRecuperarClave").modal("hide");
-    })
-
-    $('#btnRecuperarClave').click(
-      function(){
-        $('#formRecuperarClave').submit();
-      }
-    );
-
     // formulario solo email
     $('#formRecuperarClave').submit(
       function(event){
@@ -576,7 +553,7 @@
             processData: false,
             data: new FormData(this),
             beforeSend: function(){
-              $('#correoRecuperar').attr("disabled", true);
+              $('#formRecuperarClave :input').attr("disabled", true);
               $('#btnRecuperarClave').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`);
               $('#btnRecuperarClave').attr("disabled", true);
             },
@@ -585,9 +562,6 @@
                 Swal.fire({
                   icon: 'success',
                   html: data.msj,
-                  preConfirm: () => {
-                    //location.href = '?reg=0'
-                  }
                 })
               }else{
                 Swal.fire({
@@ -612,7 +586,7 @@
             },
             complete: function(){
               //Habilitamos el botón
-              $('#correoRecuperar').attr("disabled", false);
+              $('#formRecuperarClave :input').attr("disabled", false);
               $('#correoRecuperar').val('');
               $('#btnRecuperarClave').html(`Recuperar <i class="fas fa-paper-plane">`);
               $('#btnRecuperarClave').attr("disabled", false);
@@ -714,12 +688,6 @@
           },
           error: function(data){
             console.log('error: ', data);
-          },
-          complete: function(){
-            //Habilitamos el botón
-            /* $('#formRegistro :input').attr("disabled", false);
-            $('#btn-registro').html(`Registrarse <i class="fas fa-sign-in-alt"></i>`);
-            $("#btn-registro").attr("disabled", false); */
           }
         });
       }
