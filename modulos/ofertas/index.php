@@ -24,7 +24,6 @@
     header('Location: ' . $ruta_raiz . 'modulos/');
   }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +131,7 @@
   </head>
   <body>
     <div class="row">
-      <div class="col-2 col-xs-12" style="padding: 0px 4px 0px 20px;">
+      <div class="col-12 col-md-2" style="padding: 0px 4px 0px 20px;">
         <div class="row filtros" style="margin-top:70px">
           <!-- <div class="input-group mb-3 col-12">
             <select class="custom-select" id="selectDepartamento" name="status">
@@ -177,7 +176,7 @@
           </div>
         </div>
       </div>
-      <div class="col-10 col-xs-12 p-1">
+      <div class="col-12 col-md-10 p-1">
         <!-- Content Header (Page header) -->
         <div div class="content-header">
           <div class="container-fluid">
