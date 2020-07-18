@@ -63,8 +63,20 @@ function listaOfertas(){
   $db = new Bd();
   $db->conectar();
   $resp["success"] = false;
-  $inicio = (int)$_GET['inicio'];
-  $cantidad = (int)$_GET['cantidad'];
+  $inicio = (int)$_POST['inicio'];
+  $cantidad = (int)$_POST['cantidad'];
+
+  $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
+  $filtroTipo = $_POST['tipo'] == -1 ? '' : $_POST['tipo'];
+  $filtroDepartamento = $_POST['departamento'] == -1 ? '' : "departamentos.id = ".$_POST['departamento'];
+  $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
+  $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
+  $where = '';
+
+  if($filtroDepartamento != '' || $filtroMunicipio != ''){
+    $where = 'where';
+  }
+
 
 
   $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
@@ -83,7 +95,7 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id group by id order by cosechas.fecha_creacion desc
+  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {

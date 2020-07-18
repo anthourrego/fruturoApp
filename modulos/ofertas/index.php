@@ -116,69 +116,11 @@
 
     </style>
   </head>
-  <body >
-
-    <!-- Content Header (Page header) -->
-    <div div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-12">
-            <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Ofertas</h1>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- <div class="card-header d-flex justify-content-end">
-          <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
-        </div> -->
-        <!-- /.card-header -->
-        <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
-          <div class="input-group mb-3 w-md-25 w-100">
-            <select class="custom-select" id="selectEstado" name="status">
-              <option value="1" selected>Activo</option>
-              <option value="2">En Proceso</option>
-              <option value="3">Finalizado</option>
-              <option value="0">Cancelado</option>
-            </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-            </div>
-          </div>
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Departamento</th>
-              <th scope="col">Municipio</th>
-              <th scope="col">Persona</th>
-              <th scope="col">Producto</th>
-              <th scope="col">Volumen total</th>
-              <th scope="col">Precio KG</th>
-              <th scope="col">Inicio cosecha</th>
-              <th scope="col">Fin cosecha</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table> -->
-
-        <div class="row">
-        
-          <div class="input-group mb-3 col-md-4 col-sm-6">
-            <select class="custom-select" id="selectEstado" name="status">
-              <option value="1" selected>Activo</option>
-              <option value="2">En Proceso</option>
-              <option value="3">Finalizado</option>
-              <option value="0">Cancelado</option>
-            </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-            </div>
-          </div>
-          <div class="input-group mb-3 col-md-4 col-sm-6">
+  <body>
+    <div class="row">
+      <div class="col-2" style="padding: 0px 4px 0px 20px;">
+        <div class="row" style="margin-top:71px">
+          <div class="input-group mb-3 col-12">
             <select class="custom-select" id="selectDepartamento" name="status">
               <option value="-1" selected>Todos</option>
             </select>
@@ -186,7 +128,7 @@
               <label class="input-group-text" for="inputGroupSelect02">Depto</label>
             </div>
           </div>
-          <div class="input-group mb-3 col-md-4 col-sm-6">
+          <div class="input-group mb-3 col-12">
             <select class="custom-select" id="selectMunicipio" name="status">
               <option value="-1" selected>Todos</option>
               
@@ -195,19 +137,16 @@
               <label class="input-group-text" for="inputGroupSelect02">Municipio</label>
             </div>
           </div>
-          <div class="input-group mb-3 col-md-4 col-sm-6">
-            <select class="custom-select" id="selectEstado" name="status">
-              <option value="1" selected>Activo</option>
-              <option value="2">En Proceso</option>
-              <option value="3">Finalizado</option>
-              <option value="0">Cancelado</option>
+          <div class="input-group mb-3 col-12">
+            <select class="custom-select" id="selectFruta" name="status">
+              <option value="-1" selected>Todos</option>
             </select>
             <div class="input-group-append">
               <label class="input-group-text" for="inputGroupSelect02">Fruta</label>
             </div>
           </div>
-          <div class="input-group mb-3 col-md-4 col-sm-6">
-            <select class="custom-select" id="selectEstado" name="status">
+          <div class="input-group mb-3 col-12">
+            <select class="custom-select" id="selectTipo" name="status">
               <option value="-1" selected>Todos</option>
               <option value="1" selected>Fresco</option>
               <option value="2">Derivado</option>
@@ -216,8 +155,8 @@
               <label class="input-group-text" for="inputGroupSelect02">Tipo</label>
             </div>
           </div>
-          <div class="input-group mb-3 col-md-4 col-sm-6">
-            <select class="custom-select" id="selectEstado" name="status">
+          <div class="input-group mb-3 col-12">
+            <select class="custom-select" id="selectOrden" name="status">
               <option value="1" selected>Ascendente</option>
               <option value="2">Descendente</option>
             </select>
@@ -226,146 +165,196 @@
             </div>
           </div>
         </div>
-        
-        <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4">
-        </div>
-
-        <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
-          <div  class="spinner" >
-            <div class="bounce1"></div>
-            <div class="bounce2"></div>
-            <div class="bounce3"></div>
-          </div>
-        </div>
-        
-
       </div>
-    </section>
-    <!-- /.content -->
-    
-    <!-- Modal Ver Cosecha -->
-    <div class="modal fade" id="modalVer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Ver oferta</h5>
-          </div>
-          <div class="modal-body">
-            <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-datos-tab" data-toggle="tab" href="#nav-datos" role="tab" aria-controls="nav-datos" aria-selected="true">Datos</a>
-                <a class="nav-item nav-link" id="nav-fotos-tab" data-toggle="tab" href="#nav-fotos" role="tab" aria-controls="nav-fotos" aria-selected="fotos">Fotos</a>
-                <a class="nav-item nav-link" id="nav-usuario-tab" data-toggle="tab" href="#nav-usuario" role="tab" aria-controls="nav-usuario" aria-selected="usuario">Usuario</a>
-              </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="nav-datos" role="tabpanel" aria-labelledby="nav-datos-tab">
-                <form class="mt-3" id="formVer" autocomplete="off">
-                  <div class="form-group">
-                    <label for="producto">Producto</label>
-                    <input class="form-control" type="text" required name="producto" placeholder="Escriba el producto" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="terreno">Finca</label>
-                    <input class="form-control" type="text" required name="terreno" placeholder="Escriba el terreno" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
-                    <input type="text" name="fecha_inicio" class="form-control"  placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off" disabled>
-                  </div>
-                  <div class="form-group">
-                    <label for="fecha_fin">Fecha de fin de la cosecha</label>
-                    <input type="text" name="fecha_fin" class="form-control" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off" disabled>
-                  </div>
-                  <div class="form-group">
-                    <label for="volumen_total">Volumen total en Kilogramos</label>
-                    <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
-                  </div>
-                  <div class="form-group">
-                    <label for="precio">Precio por kilogramos</label>
-                    <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
-                  </div>
-                  <div class="form-group">
-                    <label for="certificados">Certificados:</label>
-                    <ul id="certificados_cosecha"></ul>
-                  </div>
-                </form> 
-              </div>
-              <div class="tab-pane fade" id="nav-fotos" role="tabpanel" aria-labelledby="nav-fotos-tab">
-                <div class="row mt-3" id="cosechas_fotos">
+      <div class="col-10 p-1">
+        <!-- Content Header (Page header) -->
+        <div div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-12">
+                <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Ofertas</h1>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <!-- <div class="card-header d-flex justify-content-end">
+              <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
+            </div> -->
+            <!-- /.card-header -->
+            <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
+              <div class="input-group mb-3 w-md-25 w-100">
+                <select class="custom-select" id="selectEstado" name="status">
+                  <option value="1" selected>Activo</option>
+                  <option value="2">En Proceso</option>
+                  <option value="3">Finalizado</option>
+                  <option value="0">Cancelado</option>
+                </select>
+                <div class="input-group-append">
+                  <label class="input-group-text" for="inputGroupSelect02">Estado</label>
                 </div>
               </div>
-              <div class="tab-pane fade" id="nav-usuario" role="tabpanel" aria-labelledby="nav-usuario-tab">
-                <form class="mt-3" id="formUsuario" autocomplete="off">
-                  <div class="form-group">
-                    <label for="producto">Tipo documento</label>
-                    <input class="form-control" type="text" required name="tipo_documento" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="producto">Nro Documento</label>
-                    <input class="form-control" type="text" required name="nro_documento" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="terreno">Tipo usuario</label>
-                    <input class="form-control" type="text" required name="tipo_usuario" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="producto">Nombres</label>
-                    <input class="form-control" type="text" required name="nombres" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="terreno">Apellidos</label>
-                    <input class="form-control" type="text" required name="apellidos" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="terreno">Correo</label>
-                    <input class="form-control" type="text" required name="correo" disabled autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="terreno">Teléfono</label>
-                    <input class="form-control" type="text" required name="telefono" disabled autocomplete="off">
-                  </div>
-                </form> 
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Departamento</th>
+                  <th scope="col">Municipio</th>
+                  <th scope="col">Persona</th>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Volumen total</th>
+                  <th scope="col">Precio KG</th>
+                  <th scope="col">Inicio cosecha</th>
+                  <th scope="col">Fin cosecha</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table> -->
+
+            
+            
+            <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4">
+            </div>
+
+            <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
+              <div  class="spinner" >
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
               </div>
             </div>
           </div>
-          <div class="modal-footer d-flex justify-content-between">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal Mensaje -->
-    <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="height: calc(100vh - 60px)">
-          <div class="modal-header">
-            <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5>
-            <button data-toggle="tooltip" data-placement="top" title="Cargar mensajes" class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i></button>
-          </div>
-          <div id="contenidoMensajes" class="modal-body overflow-auto"></div> 
-          <div class="modal-footer">
-            <form id="formMensaje" class="w-100" action="">
-              <input type="hidden" name="accion" value="enviarMensaje">
-              <input type="hidden" name="idCosecha">
-              <input type="hidden" name="cosechaEstado">
-              <input type="hidden" name="correo">
-              <input type="hidden" name="nombre_usuario">
-              <div class="form-group">
-                <label for="mensaje">Mensaje:</label>
-                <textarea class="form-control" required name="mensaje" rows="3"></textarea>
+        </section>
+        <!-- /.content -->
+        
+        <!-- Modal Ver Cosecha -->
+        <div class="modal fade" id="modalVer" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Ver oferta</h5>
               </div>
-              <div class="w-100 d-flex justify-content-between">
+              <div class="modal-body">
+                <nav>
+                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-datos-tab" data-toggle="tab" href="#nav-datos" role="tab" aria-controls="nav-datos" aria-selected="true">Datos</a>
+                    <a class="nav-item nav-link" id="nav-fotos-tab" data-toggle="tab" href="#nav-fotos" role="tab" aria-controls="nav-fotos" aria-selected="fotos">Fotos</a>
+                    <a class="nav-item nav-link" id="nav-usuario-tab" data-toggle="tab" href="#nav-usuario" role="tab" aria-controls="nav-usuario" aria-selected="usuario">Usuario</a>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-datos" role="tabpanel" aria-labelledby="nav-datos-tab">
+                    <form class="mt-3" id="formVer" autocomplete="off">
+                      <div class="form-group">
+                        <label for="producto">Producto</label>
+                        <input class="form-control" type="text" required name="producto" placeholder="Escriba el producto" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="terreno">Finca</label>
+                        <input class="form-control" type="text" required name="terreno" placeholder="Escriba el terreno" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
+                        <input type="text" name="fecha_inicio" class="form-control"  placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="fecha_fin">Fecha de fin de la cosecha</label>
+                        <input type="text" name="fecha_fin" class="form-control" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="volumen_total">Volumen total en Kilogramos</label>
+                        <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="precio">Precio por kilogramos</label>
+                        <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="certificados">Certificados:</label>
+                        <ul id="certificados_cosecha"></ul>
+                      </div>
+                    </form> 
+                  </div>
+                  <div class="tab-pane fade" id="nav-fotos" role="tabpanel" aria-labelledby="nav-fotos-tab">
+                    <div class="row mt-3" id="cosechas_fotos">
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="nav-usuario" role="tabpanel" aria-labelledby="nav-usuario-tab">
+                    <form class="mt-3" id="formUsuario" autocomplete="off">
+                      <div class="form-group">
+                        <label for="producto">Tipo documento</label>
+                        <input class="form-control" type="text" required name="tipo_documento" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="producto">Nro Documento</label>
+                        <input class="form-control" type="text" required name="nro_documento" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="terreno">Tipo usuario</label>
+                        <input class="form-control" type="text" required name="tipo_usuario" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="producto">Nombres</label>
+                        <input class="form-control" type="text" required name="nombres" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="terreno">Apellidos</label>
+                        <input class="form-control" type="text" required name="apellidos" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="terreno">Correo</label>
+                        <input class="form-control" type="text" required name="correo" disabled autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                        <label for="terreno">Teléfono</label>
+                        <input class="form-control" type="text" required name="telefono" disabled autocomplete="off">
+                      </div>
+                    </form> 
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
-                <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
+
+        <!-- Modal Mensaje -->
+        <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="height: calc(100vh - 60px)">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5>
+                <button data-toggle="tooltip" data-placement="top" title="Cargar mensajes" class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i></button>
+              </div>
+              <div id="contenidoMensajes" class="modal-body overflow-auto"></div> 
+              <div class="modal-footer">
+                <form id="formMensaje" class="w-100" action="">
+                  <input type="hidden" name="accion" value="enviarMensaje">
+                  <input type="hidden" name="idCosecha">
+                  <input type="hidden" name="cosechaEstado">
+                  <input type="hidden" name="correo">
+                  <input type="hidden" name="nombre_usuario">
+                  <div class="form-group">
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea class="form-control" required name="mensaje" rows="3"></textarea>
+                  </div>
+                  <div class="w-100 d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+                    <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-
   </body>
 
   <?php 
@@ -439,26 +428,25 @@
         }
       });
 
-      $("#selectEstado").change(function () {
-        $('#tabla').dataTable().fnDestroy();
-        lista();
-      });
-
       $("#selectDepartamento").change(function () {
         
         if($("#selectDepartamento").val() != -1){
           $("#selectMunicipio").attr('disabled',false);
           traerMunicipio($("#selectDepartamento").val());
         }else{
+          $("#selectMunicipio").val(-1);
           $("#selectMunicipio").attr('disabled',true);
         }
+        //filtrar();
+        reset();
+        listarOfertas();
       });
 
-      $("#selectMunicipio").change(function () {
-        console.log('municipio');
+      $("#selectOrden, #selectTipo, #selectDepartamento, #selectMunicipio, #selectFruta").change(function () {
+        // filtrar();
+        reset();
+        listarOfertas();
       });
-
-
 
       cerrarCargando();
       // lista();
@@ -544,14 +532,18 @@
     function listarOfertas(){
       $.ajax({
         url: "acciones",
-        type: "GET",
+        type: "POST",
         dataType: "json",
         async: false,
         data: {
           accion: "listaOfertas",
           estado: 1,
           inicio,
-          cantidad
+          cantidad,
+          orden: $('#selectOrden').val(),
+          tipo:$('#selectTipo').val(),
+          departamento: $('#selectDepartamento').val(),
+          municipio: $('#selectMunicipio').val()
         },
         success: function(data){
           if (data.success) {
@@ -898,18 +890,7 @@
       const ofertas = []
       $.each(arrayOfertas, function(item, valor){
         if(valor.id){
-          const posicion = ofertas.findIndex( function(el){return el.id == valor.id;});
-          if(posicion != -1){
-            ofertas[posicion].imagenes.push(valor.ruta)
-          }else{
-            const objTmp = {
-              ...valor,
-              //imagenes : []
-            }
-            //delete objTmp.ruta;
-            //objTmp.imagenes.push(valor.ruta);
-            ofertas.push(objTmp);
-          }
+          ofertas.push(valor);
         }
       });
       return ofertas;
@@ -992,5 +973,20 @@
         }
       });
     }
+
+    function filtrar(){
+      console.log('departamento: ', $('#selectDepartamento').val());
+      console.log('municipio: ', $('#selectMunicipio').val());
+      console.log('fruta: ', $('#selectFruta').val());
+      console.log('tipo: ', $('#selectTipo').val());
+      console.log('orden: ', $('#selectOrden').val());
+    }
+
+    // funcion para resetear ofertas cargadas y contador
+    function reset(){
+      inicio = 0; terminado = true;
+      $('#contenedorOfertas').empty();
+    }
+
   </script>
 </html>

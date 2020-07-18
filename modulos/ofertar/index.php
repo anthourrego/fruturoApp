@@ -71,7 +71,7 @@
         <!-- ./col -->
         <div class=" col-12 col-md-6 col-lg-4">
           <!-- small box -->
-          <a id="ofertas" class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="#">
+          <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="<?= $ruta_raiz ?>modulos/ofertas">
             <div class="inner">
               <h4>Ver Ofertas</h4>
             </div>
@@ -141,14 +141,6 @@
         });
       }
     });
-
-    $("#ofertas").on("click", function(evento){
-      evento.preventDefault();
-      
-      window.location = window.location.origin+'/fruturoApp/modulos/ofertas/';
-      
-    });
-
   });
 
 </script>
