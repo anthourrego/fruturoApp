@@ -63,12 +63,28 @@ function listaOfertas(){
   $db = new Bd();
   $db->conectar();
   $resp["success"] = false;
+  $inicio = (int)$_POST['inicio'];
+  $cantidad = (int)$_POST['cantidad'];
+
+  $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
+  $filtroTipo = $_POST['tipo'] == -1 ? '' : $_POST['tipo'];
+  $filtroDepartamento = $_POST['departamento'] == -1 ? '' : "departamentos.id = ".$_POST['departamento'];
+  $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
+  $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
+  $where = '';
+
+  if($filtroDepartamento != '' || $filtroMunicipio != ''){
+    $where = 'where';
+  }
+
+
 
   $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
   usuarios.apellidos AS apellidoCreador, 
   productos.nombre AS producto, cosechas.id,
   cosechas.volumen_total,
   cosechas.precio, 
+  cosechas.fecha_creacion,
   cosechas.fecha_inicio, 
   cosechas.fecha_final, 
   cosechas_productos_documentos.ruta, 
@@ -79,7 +95,8 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id");
+  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ORDER BY cosechas.precio ".$filtroOrden."
+  LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;
@@ -217,6 +234,56 @@ function finalizar(){
   $db->desconectar();
 
   return json_encode(1);
+}
+
+function listarDepartamentos(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * from departamentos");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
+}
+
+function listarMunicipios(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $query = "SELECT * from municipios";
+
+  if($_GET['idDepto'] != -1){
+    $query .= " where fk_departamento =".$_GET['idDepto'];
+  }
+
+
+  $datos = $db->consulta($query);
+
+  
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
 }
 
 /*****************************************/

@@ -270,6 +270,15 @@
       return $this->cadena_libreria;
     }
 
+    public function infiniteScroll(){
+
+      $this->cadena_libreria = '
+       <script type="text/javascript" src="' . $this->ruta_libreria . 'infinite-scroll/infinite-scroll.min.js"></script>
+      ';
+      return $this->cadena_libreria;
+
+    }
+
   
   }
 
