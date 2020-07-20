@@ -66,16 +66,16 @@ function lista(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => '`f`.`id`',                    'dt' => 'id',                  'field' => 'id' ),
-              array( 'db' => '`f`.`nombre`',                'dt' => 'nombre',              'field' => 'nombre' ),
-              array( 'db' => '`f`.`fk_municipio`',          'dt' => 'fk_municipio',        'field' => 'fk_municipio' ),
-              array( 'db' => '`m`.`nombre`',                'dt' => 'municipio',           'field' => 'municipio', 'as' => 'municipio' ),
-              array( 'db' => '`m`.`fk_departamento`',       'dt' => 'fk_departamento',     'field' => 'fk_departamento' ),
-              array( 'db' => '`f`.`direccion`',             'dt' => 'direccion',           'field' => 'direccion' ),
-              array( 'db' => '`f`.`hectareas`',             'dt' => 'hectareas',           'field' => 'hectareas' ),
-              array( 'db' => '`f`.`predio_exportador`',     'dt' => 'predio_exportador',   'field' => 'predio_exportador' ),
-              array( 'db' => '`f`.`registro_ica`',          'dt' => 'registro_ica',        'field' => 'registro_ica' ),
-              array( 'db' => '`f`.`fecha_creacion`',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion')
+              array( 'db' => 'f.id',                    'dt' => 'id',                  'field' => 'id' ),
+              array( 'db' => 'f.nombre',                'dt' => 'nombre',              'field' => 'nombre' ),
+              array( 'db' => 'f.fk_municipio',          'dt' => 'fk_municipio',        'field' => 'fk_municipio' ),
+              array( 'db' => 'm.nombre',                'dt' => 'municipio',           'field' => 'municipio', 'as' => 'municipio' ),
+              array( 'db' => 'm.fk_departamento',       'dt' => 'fk_departamento',     'field' => 'fk_departamento' ),
+              array( 'db' => 'f.direccion',             'dt' => 'direccion',           'field' => 'direccion' ),
+              array( 'db' => 'f.hectareas',             'dt' => 'hectareas',           'field' => 'hectareas' ),
+              array( 'db' => 'f.registro_ica',          'dt' => 'registro_ica',        'field' => 'registro_ica' ),
+              array( 'db' => 'f.fk_finca_tipo',         'dt' => 'fk_finca_tipo',      'field' => 'fk_finca_tipo' ),
+              array( 'db' => 'f.fecha_creacion',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion')
             );
     
   $sql_details = array(
@@ -100,36 +100,27 @@ function crear(){
   $resp['success'] = false;
 
   if (validarNombre(cadena_db_insertar($_POST["nombre"])) == 0) {
-    if ($_POST['hectareas'] > 0) {
-      $registro_ica = NULL;
 
-      if (@$_POST['registro_ica']) {
-        $registro_ica = $_POST['registro_ica'];
-      }
+    $datos = array(
+      ":nombre" => cadena_db_insertar($_POST["nombre"]),
+      ":fk_municipio" => $_POST['municipio'],
+      ":direccion" => cadena_db_insertar($_POST["direccion"]),
+      ":hectareas" => @$_POST['hectareas'],
+      ":registro_ica" => @$_POST['registro_ica'],
+      ":fk_usuario" => $usuario["id"],
+      ":fecha_creacion" => date('Y-m-d H:i:s'),
+      ":estado" => 1,
+      ":fk_finca_tipo" => $_REQUEST['tipo_predio'],
+    );
 
-      $datos = array(
-        ":nombre" => cadena_db_insertar($_POST["nombre"]),
-        ":fk_municipio" => $_POST['municipio'],
-        ":direccion" => cadena_db_insertar($_POST["direccion"]),
-        ":fk_usuario" => $usuario["id"],
-        ":fecha_creacion" => date('Y-m-d H:i:s'),
-        ":estado" => 1,
-        ":predio_exportador" => $_POST["predio_exportador"],
-        ":registro_ica" => $registro_ica,
-        ":hectareas" => $_POST['hectareas']
-      );
-  
-      $id_registro = $db->sentencia("INSERT INTO fincas (nombre, fk_municipio, direccion, hectareas, fk_usuario, fecha_creacion, estado, predio_exportador, registro_ica) VALUES (:nombre, :fk_municipio, :direccion, :hectareas, :fk_usuario, :fecha_creacion, :estado, :predio_exportador, :registro_ica)", $datos);
-  
-      if ($id_registro > 0) {
-        $db->insertLogs("fincas", $id_registro, "Se crea la finca {$_POST['nombre']}", $usuario["id"]);
-        $resp['success'] = true;
-        $resp['msj'] = 'Se ha creado correctamente.';
-      } else {
-        $resp['msj'] = 'Error al realizar el registro.';
-      }
+    $id_registro = $db->sentencia("INSERT INTO fincas (nombre, fk_municipio, direccion, hectareas, fk_usuario, fecha_creacion, estado, registro_ica, fk_finca_tipo) VALUES (:nombre, :fk_municipio, :direccion, :hectareas, :fk_usuario, :fecha_creacion, :estado, :registro_ica, :fk_finca_tipo)", $datos);
+
+    if ($id_registro > 0) {
+      $db->insertLogs("fincas", $id_registro, "Se crea la finca {$_POST['nombre']}", $usuario["id"]);
+      $resp['success'] = true;
+      $resp['msj'] = 'Se ha creado correctamente.';
     } else {
-      $resp["msj"] = "La hectáreas deben ser mayor a 0";
+      $resp['msj'] = 'Error al realizar el registro.';
     }
   }else{
     $resp['msj'] = 'El nombre <b>' . $_REQUEST["nombre"] . '</b> ya se encuentra en uso.';

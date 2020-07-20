@@ -76,7 +76,8 @@
       <script>
         $(function(){
           jQuery.validator.setDefaults({
-            debug: true,
+            debug: false,
+            ignore: ":hidden:not(.chosen-select)",
             errorElement: "em",
             errorPlacement: function (error, element) {
               error.addClass("invalid-feedback");

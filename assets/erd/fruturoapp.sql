@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-07-2020 a las 04:39:29
+-- Tiempo de generación: 20-07-2020 a las 16:05:36
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -64,6 +64,27 @@ CREATE TABLE `cosechas` (
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `cosechas`
+--
+
+INSERT INTO `cosechas` (`id`, `fk_producto`, `fk_finca`, `volumen_total`, `precio`, `fecha_inicio`, `fecha_final`, `estado`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 1, 1, 456465, '9999999999', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:00:31', 1),
+(2, 1, 1, 2321, '23321', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:06:47', 1),
+(3, 1, 2, 5000, '40000', '2020-07-16', '2020-07-25', 1, '2020-07-14 22:15:10', 1),
+(4, 3, 3, 160, '30000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:19:23', 1),
+(5, 4, 2, 10000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:23:00', 1),
+(6, 5, 1, 4000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:23:30', 1),
+(7, 6, 3, 1000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:24:00', 1),
+(8, 7, 1, 5000, '2000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:33:41', 1),
+(9, 8, 2, 50, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:34:15', 1),
+(10, 9, 3, 50, '4000', '2020-07-01', '2020-07-14', 1, '2020-07-14 22:36:58', 1),
+(11, 15, 1, 100, '4000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:03:56', 1),
+(12, 14, 2, 400, '4000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:04:19', 1),
+(13, 12, 3, 100, '7000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:05:01', 1),
+(14, 10, 3, 80, '6000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:06:14', 1),
+(15, 12, 1, 100, '5000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:06:41', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -78,13 +99,79 @@ CREATE TABLE `cosechas_certificaciones` (
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `cosechas_certificaciones`
+--
+
+INSERT INTO `cosechas_certificaciones` (`id`, `fk_cosecha`, `fk_certificacion`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 1, 1, '2020-07-14 00:00:00', 1),
+(2, 2, 1, '2020-07-14 00:00:00', 1),
+(3, 2, 1, '2020-07-13 00:00:00', 1),
+(4, 2, 2, '2020-07-13 00:00:00', 1),
+(5, 3, 1, '2020-07-14 00:00:00', 1),
+(6, 3, 2, '2020-07-14 00:00:00', 1),
+(7, 4, 1, '2020-07-14 00:00:00', 1),
+(8, 4, 2, '2020-07-14 00:00:00', 1),
+(9, 5, 1, '2020-07-14 00:00:00', 1),
+(10, 6, 1, '2020-07-14 00:00:00', 1),
+(11, 7, 1, '2020-07-14 00:00:00', 1),
+(12, 7, 2, '2020-07-14 00:00:00', 1),
+(13, 8, 1, '2020-07-14 00:00:00', 1),
+(14, 9, 1, '2020-07-14 00:00:00', 1),
+(15, 9, 2, '2020-07-14 00:00:00', 1),
+(16, 10, 1, '2020-07-14 00:00:00', 1),
+(17, 11, 1, '2020-07-15 00:00:00', 1),
+(18, 12, 1, '2020-07-15 00:00:00', 1),
+(19, 13, 1, '2020-07-15 00:00:00', 1),
+(20, 14, 1, '2020-07-15 00:00:00', 1),
+(21, 15, 1, '2020-07-15 00:00:00', 1);
+
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cosechas_fotos`
+-- Estructura de tabla para la tabla `cosechas_productos_documentos`
 --
--- Error leyendo la estructura de la tabla fruturoapp.cosechas_fotos: #1146 - Tabla 'fruturoapp.cosechas_fotos' no existe
--- Error leyendo datos de la tabla fruturoapp.cosechas_fotos: #1064 - Algo está equivocado en su sintax cerca 'FROM `fruturoapp`.`cosechas_fotos`' en la linea 1
+
+CREATE TABLE `cosechas_productos_documentos` (
+  `id` int(11) NOT NULL,
+  `tipo` text NOT NULL,
+  `ruta` text NOT NULL,
+  `tipo_documento` int(11) DEFAULT NULL,
+  `fk_producto` int(11) DEFAULT NULL,
+  `fk_cosecha` int(11) DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL,
+  `fk_creador` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosechas_productos_documentos`
+--
+
+INSERT INTO `cosechas_productos_documentos` (`id`, `tipo`, `ruta`, `tipo_documento`, `fk_producto`, `fk_cosecha`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 'jpg', 'almacenamiento/cosechas/1/0.jpg', NULL, NULL, 1, '2020-07-14 22:00:31', 1),
+(2, 'jpg', 'almacenamiento/cosechas/2/0.jpg', NULL, NULL, 2, '2020-07-14 22:06:47', 1),
+(3, 'jpg', 'almacenamiento/cosechas/2/1.jpg', NULL, NULL, 2, '2020-07-13 20:12:33', 1),
+(4, 'jpg', 'almacenamiento/cosechas/2/2.jpg', NULL, NULL, 2, '2020-07-13 20:12:33', 1),
+(5, 'jpg', 'almacenamiento/cosechas/3/0.jpg', NULL, NULL, 3, '2020-07-14 22:15:10', 1),
+(6, 'jpg', 'almacenamiento/cosechas/4/0.jpg', NULL, NULL, 4, '2020-07-14 22:19:23', 1),
+(7, 'jpg', 'almacenamiento/cosechas/4/1.jpg', NULL, NULL, 4, '2020-07-14 22:19:23', 1),
+(8, 'jpg', 'almacenamiento/cosechas/5/0.jpg', NULL, NULL, 5, '2020-07-14 22:23:00', 1),
+(9, 'jpg', 'almacenamiento/cosechas/5/1.jpg', NULL, NULL, 5, '2020-07-14 22:23:00', 1),
+(10, 'jpg', 'almacenamiento/cosechas/6/0.jpg', NULL, NULL, 6, '2020-07-14 22:23:30', 1),
+(11, 'jpg', 'almacenamiento/cosechas/6/1.jpg', NULL, NULL, 6, '2020-07-14 22:23:30', 1),
+(12, 'jpg', 'almacenamiento/cosechas/7/0.jpg', NULL, NULL, 7, '2020-07-14 22:24:00', 1),
+(13, 'jpg', 'almacenamiento/cosechas/8/0.jpg', NULL, NULL, 8, '2020-07-14 22:33:41', 1),
+(14, 'jpg', 'almacenamiento/cosechas/8/1.jpg', NULL, NULL, 8, '2020-07-14 22:33:41', 1),
+(15, 'jpeg', 'almacenamiento/cosechas/9/0.jpeg', NULL, NULL, 9, '2020-07-14 22:34:15', 1),
+(16, 'jpg', 'almacenamiento/cosechas/9/1.jpg', NULL, NULL, 9, '2020-07-14 22:34:15', 1),
+(17, 'jpg', 'almacenamiento/cosechas/10/0.jpg', NULL, NULL, 10, '2020-07-14 22:36:58', 1),
+(18, 'jpg', 'almacenamiento/cosechas/10/1.jpg', NULL, NULL, 10, '2020-07-14 22:36:58', 1),
+(19, 'jpg', 'almacenamiento/cosechas/11/0.jpg', NULL, NULL, 11, '2020-07-15 21:03:56', 1),
+(20, 'jpg', 'almacenamiento/cosechas/12/0.jpg', NULL, NULL, 12, '2020-07-15 21:04:19', 1),
+(21, 'jpg', 'almacenamiento/cosechas/13/0.jpg', NULL, NULL, 13, '2020-07-15 21:05:01', 1),
+(22, 'jpg', 'almacenamiento/cosechas/14/0.jpg', NULL, NULL, 14, '2020-07-15 21:06:14', 1),
+(23, 'jpg', 'almacenamiento/cosechas/14/1.jpg', NULL, NULL, 14, '2020-07-15 21:06:14', 1),
+(24, 'jpg', 'almacenamiento/cosechas/15/0.jpg', NULL, NULL, 15, '2020-07-15 21:06:41', 1);
 
 -- --------------------------------------------------------
 
@@ -164,20 +251,49 @@ CREATE TABLE `fincas` (
   `nombre` varchar(150) NOT NULL,
   `fk_municipio` int(11) NOT NULL DEFAULT 0,
   `direccion` text NOT NULL,
-  `hectareas` float NOT NULL DEFAULT 0,
-  `predio_exportador` int(11) NOT NULL DEFAULT 0,
+  `hectareas` float DEFAULT NULL,
   `registro_ica` mediumtext DEFAULT NULL,
   `fk_usuario` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL,
-  `estado` int(11) NOT NULL DEFAULT 0
+  `estado` int(11) NOT NULL DEFAULT 0,
+  `fk_finca_tipo` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `fincas`
 --
 
-INSERT INTO `fincas` (`id`, `nombre`, `fk_municipio`, `direccion`, `hectareas`, `predio_exportador`, `registro_ica`, `fk_usuario`, `fecha_creacion`, `estado`) VALUES
-(1, '21321', 1, '231312', 321231, 0, NULL, 1, '2020-06-25 12:12:11', 1);
+INSERT INTO `fincas` (`id`, `nombre`, `fk_municipio`, `direccion`, `hectareas`, `registro_ica`, `fk_usuario`, `fecha_creacion`, `estado`, `fk_finca_tipo`) VALUES
+(1, '21321', 1, '231312', 321231, NULL, 1, '2020-06-25 12:12:11', 1, 1),
+(2, 'las bailarinas', 888, 'mz e casa 34 la chimba', 5000, '123124', 1, '2020-07-14 22:14:10', 1, 1),
+(3, 'la esmeralda', 1071, 'la mar&iacute;a valle', 50, '123', 1, '2020-07-14 22:17:23', 1, 1),
+(4, 'Consumer', 888, 'Carrera 35 Nro 72-05', NULL, NULL, 1, '2020-07-20 00:01:17', 1, 2),
+(5, 'Consumer 2', 347, 'funca', 0, '', 1, '2020-07-20 00:05:25', 1, 2),
+(6, 'pruebas', 351, 'funcara', NULL, NULL, 1, '2020-07-20 00:09:56', 1, 2),
+(7, 'La casita', 351, 'funcara\r\n', 4500, NULL, 1, '2020-07-20 00:10:26', 1, 1),
+(8, 'La quinta', 329, 'La finquita de cuqui', 8700, '45000fsdfsa', 1, '2020-07-20 00:10:54', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fincas_tipos`
+--
+
+CREATE TABLE `fincas_tipos` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `estado` int(11) NOT NULL DEFAULT 0,
+  `fk_creador` int(11) NOT NULL DEFAULT 0,
+  `fecha_creacion` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `fincas_tipos`
+--
+
+INSERT INTO `fincas_tipos` (`id`, `nombre`, `estado`, `fk_creador`, `fecha_creacion`) VALUES
+(1, 'Frescos', 1, 1, '2020-07-16 22:01:39'),
+(2, 'Procesados', 1, 1, '2020-07-16 22:30:59');
 
 -- --------------------------------------------------------
 
@@ -193,6 +309,38 @@ CREATE TABLE `logs` (
   `fk_usuario` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `logs`
+--
+
+INSERT INTO `logs` (`id`, `nombre_tabla`, `id_registro`, `accion`, `fk_usuario`, `fecha_creacion`) VALUES
+(1, 'cosechas_productos_documentos', 1, 'Creacion de fotos de consecha con id: 1', 1, '2020-07-14 22:00:31'),
+(2, 'cosechas', 1, 'Se crea la cosecha', 1, '2020-07-14 22:00:31'),
+(3, 'cosechas_certificaciones', 1, 'Se crea la cosecha con el certificado', 1, '2020-07-14 22:00:32'),
+(4, 'cosechas_productos_documentos', 2, 'Creacion de fotos de consecha con id: 2', 1, '2020-07-14 22:06:47'),
+(5, 'cosechas', 2, 'Se crea la cosecha', 1, '2020-07-14 22:06:47'),
+(6, 'cosechas_certificaciones', 2, 'Se crea la cosecha con el certificado', 1, '2020-07-14 22:06:47'),
+(7, 'perfiles', 2, 'Se inhabilita el perfil Productor', 1, '2020-07-14 22:13:49'),
+(8, 'perfiles', 3, 'Se edita el perfil Usuario', 1, '2020-07-14 22:14:04'),
+(9, 'usuarios', 2, 'Se activa usuario', 2, '2020-07-14 22:23:00'),
+(10, 'modulos', 15, 'Se ha creado el módulo predios_tipos', 1, '2020-07-16 21:30:56'),
+(11, 'usuarios_modulos', 17, 'El permiso se ha creado', 1, '2020-07-16 21:37:05'),
+(12, 'fincas_tipos', 1, 'Se crea el finca tipo Frescos', 1, '2020-07-16 22:01:39'),
+(13, 'fincas_tipos', 1, 'Se edita el tipo predios Frescos1', 1, '2020-07-16 22:13:28'),
+(14, 'fincas_tipos', 1, 'Se edita el tipo predios Frescos', 1, '2020-07-16 22:13:32'),
+(15, 'usuarios_modulos', 18, 'El permiso se ha creado', 1, '2020-07-16 22:25:42'),
+(16, 'usuarios_modulos', 19, 'El permiso se ha creado', 1, '2020-07-16 22:25:47'),
+(17, 'fincas_tipos', 1, 'Se inhabilita el fincas_tipos Frescos', 1, '2020-07-16 22:30:25'),
+(18, 'fincas_tipos', 1, 'Se habilita el fincas_tipos Frescos', 1, '2020-07-16 22:30:38'),
+(19, 'fincas_tipos', 2, 'Se crea el predio tipo Procesados', 1, '2020-07-16 22:30:59'),
+(20, 'fincas_tipos', 2, 'Se edita el tipo predios Procesados3', 1, '2020-07-16 22:31:47'),
+(21, 'fincas_tipos', 2, 'Se edita el tipo predios Procesados', 1, '2020-07-16 22:31:50'),
+(22, 'fincas', 4, 'Se crea la finca Consumer', 1, '2020-07-20 00:01:17'),
+(23, 'fincas', 5, 'Se crea la finca Consumer 2', 1, '2020-07-20 00:05:25'),
+(24, 'fincas', 6, 'Se crea la finca pruebas', 1, '2020-07-20 00:09:56'),
+(25, 'fincas', 7, 'Se crea la finca La casita', 1, '2020-07-20 00:10:26'),
+(26, 'fincas', 8, 'Se crea la finca La quinta', 1, '2020-07-20 00:10:54');
 
 -- --------------------------------------------------------
 
@@ -231,7 +379,8 @@ INSERT INTO `modulos` (`id`, `nombre`, `tag`, `icono`, `ruta`, `fk_modulo_tipo`,
 (11, 'provincias_departamentos', 'Departamentos', 'fas fa-city', 'provincias/departamentos/', 1, 10, '2020-06-22 13:05:54', 1, 1),
 (12, 'provincias_municipios', 'Municipios', 'fas fa-city', 'provincias/municipios/', 1, 10, '2020-06-22 13:06:29', 1, 1),
 (13, 'productos_1', 'Productos', 'fas fa-carrot', 'productos/productos', 1, 3, '2020-07-06 20:20:07', 1, 1),
-(14, 'productos_derivados', 'Derivados', 'fas fa-seedling', 'productos/derivados', 1, 3, '2020-07-06 20:21:54', 1, 1);
+(14, 'productos_derivados', 'Derivados', 'fas fa-seedling', 'productos/derivados', 1, 3, '2020-07-06 20:21:54', 1, 1),
+(15, 'predios_tipos', 'Tipos predios', 'fas fa-home', 'predios_tipos', 1, 0, '2020-07-16 21:30:56', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1399,8 +1548,7 @@ CREATE TABLE `perfiles` (
 
 INSERT INTO `perfiles` (`id`, `nombre`, `fecha_creacion`, `fk_creador`, `estado`) VALUES
 (1, 'Administrador', '2020-05-08 01:38:49', 1, 1),
-(2, 'Productor', '2020-05-08 01:38:49', 1, 1),
-(3, 'Comercializador', '2020-05-08 01:39:12', 1, 1);
+(2, 'Usuario', '2020-05-08 01:39:12', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1426,7 +1574,20 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id`, `nombre`, `presentacion`, `descripcion`, `fecha_creacion`, `estado`, `reg_invima`, `fk_finca`, `fk_creador`) VALUES
 (1, 'Bananos', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
-(2, 'manzana', NULL, NULL, '2020-07-06 23:16:28', 0, NULL, NULL, 1);
+(2, 'manzana', NULL, NULL, '2020-07-06 23:16:28', 0, NULL, NULL, 1),
+(3, 'Aguacate', NULL, NULL, '2020-07-14 22:18:13', 1, NULL, NULL, 1),
+(4, 'piña', NULL, NULL, '2020-07-14 22:21:38', 1, NULL, NULL, 1),
+(5, 'mango', NULL, NULL, '2020-07-14 22:21:47', 1, NULL, NULL, 1),
+(6, 'guayaba', NULL, NULL, '2020-07-14 22:22:18', 1, NULL, NULL, 1),
+(7, 'Yuca', NULL, NULL, '2020-07-14 22:32:43', 1, NULL, NULL, 1),
+(8, 'Cilantro', NULL, NULL, '2020-07-14 22:32:49', 1, NULL, NULL, 1),
+(9, 'Durazno', NULL, NULL, '2020-07-14 22:36:15', 1, NULL, NULL, 1),
+(10, 'mamoncillo', NULL, NULL, '2020-07-15 21:01:58', 1, NULL, NULL, 1),
+(11, 'toronja', NULL, NULL, '2020-07-15 21:02:03', 1, NULL, NULL, 1),
+(12, 'sandia', NULL, NULL, '2020-07-15 21:02:17', 1, NULL, NULL, 1),
+(13, 'guanabana', NULL, NULL, '2020-07-15 21:02:29', 1, NULL, NULL, 1),
+(14, 'naranja', NULL, NULL, '2020-07-15 21:02:33', 1, NULL, NULL, 1),
+(15, 'mandarina', NULL, NULL, '2020-07-15 21:02:42', 1, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1531,7 +1692,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `codigo_recuperacion`, `codigo_activacion`, `fk_creador`) VALUES
-(1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$WpgfJ0hjPFRZJFqmdsSUP.RVeoMzXJ8/rUXSrt.XE07oE2fOh5Sti', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, '', '', 1);
+(1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$WpgfJ0hjPFRZJFqmdsSUP.RVeoMzXJ8/rUXSrt.XE07oE2fOh5Sti', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, '', '', 1),
+(3, 1, '1225091213', 1, 'anthourrego@gmail.com', 'Anthony Smidh', 'Urrego Pineda', '$2y$15$45D5QOZXr/O4RLtWAWWLZuNqeQRMBlDnGIHAAl.jecObGPXjgn2S2', '1998-09-11', '3103587032', 2, 1, '2020-07-14 23:31:17', 0, '', '$2y$15$GQR1BywwL4Fdhn9219/p9eaEbtgwtgz5wCOnEeukxln4RDMoGr3uu', 0),
+(9, 1, '1088335957', 1, 'juanfa107@gmail.com', 'juan felipe', 'arenas moreno', '$2y$15$FOeRIdWbOtY8F9/3/HDtEOStGEbUrGbDssFTuxxssNlYJVV5j5gJy', '1993-07-19', '3115509915', 2, 1, '2020-07-12 20:39:39', 1, '$2y$15$B2wTwJkWXY1ydyHUhs2VMuPDv7ie5JqLXwu6SJFJ7l7RXxWSsGbYC', '$2y$15$P49V5la9TbEOYhYlyKN9Ae46SJgA7t2AgFZPomGXLGNWPoOAlpkLO', 0);
 
 -- --------------------------------------------------------
 
@@ -1568,7 +1731,10 @@ INSERT INTO `usuarios_modulos` (`id`, `fk_modulo`, `fk_usuario`, `fecha_creacion
 (13, 11, 1, '2020-06-22 13:06:50', 1, 1),
 (14, 12, 1, '2020-06-22 13:06:52', 1, 1),
 (15, 13, 1, '2020-07-06 20:22:51', 1, 1),
-(16, 14, 1, '2020-07-06 20:22:52', 1, 1);
+(16, 14, 1, '2020-07-06 20:22:52', 1, 1),
+(17, 15, 1, '2020-07-16 21:37:05', 1, 1),
+(18, 1, 9, '2020-07-16 22:25:42', 1, 1),
+(19, 9, 9, '2020-07-16 22:25:47', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -1593,6 +1759,12 @@ ALTER TABLE `cosechas_certificaciones`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `cosechas_productos_documentos`
+--
+ALTER TABLE `cosechas_productos_documentos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
@@ -1608,6 +1780,12 @@ ALTER TABLE `departamentos`
 -- Indices de la tabla `fincas`
 --
 ALTER TABLE `fincas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `fincas_tipos`
+--
+ALTER TABLE `fincas_tipos`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1690,13 +1868,19 @@ ALTER TABLE `certificaciones`
 -- AUTO_INCREMENT de la tabla `cosechas`
 --
 ALTER TABLE `cosechas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_certificaciones`
 --
 ALTER TABLE `cosechas_certificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT de la tabla `cosechas_productos_documentos`
+--
+ALTER TABLE `cosechas_productos_documentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `cosecha_oferta`
@@ -1714,19 +1898,25 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT de la tabla `fincas`
 --
 ALTER TABLE `fincas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `fincas_tipos`
+--
+ALTER TABLE `fincas_tipos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
 --
 ALTER TABLE `modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `modulo_tipo`
@@ -1744,13 +1934,13 @@ ALTER TABLE `municipios`
 -- AUTO_INCREMENT de la tabla `perfiles`
 --
 ALTER TABLE `perfiles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_derivados`
@@ -1774,13 +1964,13 @@ ALTER TABLE `tipo_persona`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_modulos`
 --
 ALTER TABLE `usuarios_modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
