@@ -35,8 +35,8 @@
     echo $lib->fontAwesome();
     echo $lib->sweetAlert2();
     echo $lib->jqueryValidate();
-    echo $lib->bootstrapSelect();
     echo $lib->datatables();
+    echo $lib->chosen();
     echo $lib->proyecto();
   ?>
 </head>
@@ -97,18 +97,23 @@
         </div>
         <form id="formCrear" autocomplete="off">
           <input type="hidden" name="accion" value="crear">
-          <div class="modal-body">
+          <div class="modal-body ">
             <div class="form-group">
-              <label for="nombre">Nombre del terreno o finca <span class="text-danger">*</span></label>
+              <label for="tipo_predio">Tipo de predio</label>
+              <select name="tipo_predio" data-placeholder="Seleccion un tipo de predio" class="chosen-select" tabindex="2"></select>
+            </div>
+
+            <div class="form-group">
+              <label for="nombre">Nombre del terreno o predio <span class="text-danger">*</span></label>
               <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre del terreno o finca" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="departamento">Departamento <span class="text-danger">*</span></label>
-              <select class="selectpicker form-control" name="departamento" required data-live-search="true" data-size="5" title="Seleccione un departamento"></select>
+              <select data-placeholder="Selecione un departamento" class="chosen-select" name="departamento" required></select>
             </div>
             <div class="form-group">
               <label for="municipio">Municipio <span class="text-danger">*</span></label>
-              <select class="selectpicker form-control" name="municipio" disabled required  data-live-search="true" data-size="5" title="Seleccione un municipio"></select>
+              <select data-placeholder="Selecione un municipio" class="chosen-select" name="municipio" disabled required ></select>
             </div>
             <div class="form-group">
               <label for="hectareas">Hectáreas Sembradas <span class="text-danger">*</span></label>
@@ -173,6 +178,45 @@
       }
     });
 
+    //Cargamos los predios
+    $.ajax({
+      url: '<?= $ruta_raiz ?>modulos/predios_tipos/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "listaPredios"
+      },
+      success: function(data){
+        if (data.success) {
+          let select = $("#formCrear :input[name='tipo_predio']");
+          select.empty();
+
+          select.append(`
+              <option value="0" disabled selected>Seleccione un tipo de predio</option>
+            `);
+          for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            select.append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);
+          }
+
+          select.trigger("chosen:updated");
+                    
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se encontrado datos de tipos predios'
+        })
+      }
+    });
+
     //Se cargan los departamentos
     $.ajax({
       url: 'acciones',
@@ -183,13 +227,22 @@
       },
       success: function(data){
         if (data.success) {
-          $("#formCrear :input[name='departamento']").empty();
+          let select = $("#formCrear :input[name='departamento']");
+
+          select.empty();
+
+          select.append(`
+              <option value="0" disabled selected>Seleccione un departamento</option>
+            `);
+
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#formCrear :input[name='departamento']").append(`
+            select.append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
-          $("#formCrear :input[name='departamento']").selectpicker('refresh');
+
+          select.trigger("chosen:updated");
+
         }else{
           Swal.fire({
             icon: 'warning',
@@ -206,8 +259,10 @@
     });
 
     $(document).on("change", "#formCrear :input[name='departamento']", function(){
-      $("#formCrear :input[name='municipio']").prop("disabled", false);
-      $("#formCrear :input[name='municipio']").empty();
+      let select = $("#formCrear :input[name='municipio']");
+
+      select.prop("disabled", false);
+      select.empty();
       if ($(this).val() != 0) {  
         $.ajax({
           async:false,
@@ -220,12 +275,18 @@
           },
           success: function(data){
             if (data.success) {
+              select.append(`
+                  <option selected disabled value="0">Seleccione un municipio</option>
+                `);
+
               for (let i = 0; i < data.msj.cantidad_registros; i++) {
-                $("#formCrear :input[name='municipio']").append(`
+                select.append(`
                   <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
                 `);
               }
-              $("#formCrear :input[name='municipio']").selectpicker('refresh');
+
+              select.trigger("chosen:updated");
+              
             }else{
               Swal.fire({
                 icon: 'warning',

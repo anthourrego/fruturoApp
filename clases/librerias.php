@@ -279,6 +279,19 @@
 
     }
 
+    public function chosen(){
+      $this->cadena_libreria = '
+      <!-- Intranet -->
+      <link rel="stylesheet" href="' . $this->ruta_libreria . 'chosen/css/bootstrap-chosen.css"/>
+      <script type="text/javascript" src="' . $this->ruta_libreria . 'chosen/js/chosen.jquery.min.js"></script>
+      <script type="text/javascript">
+        $(function(){
+          $(".chosen-select").chosen({width: "100%", no_results_text: "Oops, no se ha encontrado!"});
+        });
+      </script>';
+      return $this->cadena_libreria;
+    }
+
   
   }
 

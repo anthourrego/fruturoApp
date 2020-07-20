@@ -171,6 +171,25 @@ function cambiarEstado(){
   return json_encode(1);
 }
 
+function listaPredios(){
+    $db = new Bd();
+    $db->conectar();
+    $msj["success"] = false;
+
+    $sql = $db->consulta("SELECT id, nombre FROM fincas_tipos WHERE estado = 1");
+
+    if ($sql["cantidad_registros"] > 0) {
+      $msj["success"] = true;
+      $msj['msj'] = $sql;
+    }else{
+      $msj['msj'] = "No se han econtrado datos.";
+    }
+
+    $db->desconectar();
+
+    return json_encode($msj);
+}
+
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){
