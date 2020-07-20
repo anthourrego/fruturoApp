@@ -72,11 +72,10 @@
           <table id="tabla" class="table table-bordered table-hover table-sm w-100">
             <thead class="thead-light">
               <tr>
+                <th scope="col">Tipo predio</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Municipio</th>
                 <th scope="col">Dirección</th>
-                <th scope="col">Hectareas</th>
-                <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -425,13 +424,15 @@
           }
       },
       columns: [
+        { data: "finca_tipo" },
         { data: "nombre" },
         { data: "municipio" },
         { data: "direccion" },
-        { data: "hectareas" },
-        { data: "fecha_creacion" },
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
+            console.log(oData);
+            
+
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1" onClick='ver(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Eliminar</button>

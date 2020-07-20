@@ -74,8 +74,9 @@ function lista(){
               array( 'db' => 'f.direccion',             'dt' => 'direccion',           'field' => 'direccion' ),
               array( 'db' => 'f.hectareas',             'dt' => 'hectareas',           'field' => 'hectareas' ),
               array( 'db' => 'f.registro_ica',          'dt' => 'registro_ica',        'field' => 'registro_ica' ),
-              array( 'db' => 'f.fk_finca_tipo',         'dt' => 'fk_finca_tipo',      'field' => 'fk_finca_tipo' ),
-              array( 'db' => 'f.fecha_creacion',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion')
+              array( 'db' => 'ft.nombre',               'dt' => 'finca_tipo',          'field' => 'finca_tipo',   'as' => 'finca_tipo'),
+              array( 'db' => 'f.fk_finca_tipo',         'dt' => 'fk_finca_tipo',       'field' => 'fk_finca_tipo'),
+              array( 'db' => 'f.fecha_creacion',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion'),
             );
     
   $sql_details = array(
@@ -85,8 +86,8 @@ function lista(){
                   'host' => BDSERVER
                 );
       
-  $joinQuery = "FROM `{$table}` AS `f` INNER JOIN  `municipios` AS `m` ON f.fk_municipio = m.id";
-  $extraWhere= "`f`.`estado` = 1 AND f.fk_usuario = " . $usuario["id"];
+  $joinQuery = "FROM {$table} AS f INNER JOIN municipios AS m ON f.fk_municipio = m.id INNER JOIN fincas_tipos AS ft ON ft.id = f.fk_finca_tipo";
+  $extraWhere= "f.estado = 1 AND f.fk_usuario = " . $usuario["id"];
   $groupBy = "";
   $having = "";
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
