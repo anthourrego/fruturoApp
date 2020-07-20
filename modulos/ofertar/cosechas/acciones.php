@@ -74,7 +74,6 @@ function crear(){
       ":estado" => 1,
       ":fecha_creacion" => date('Y-m-d H:i:s'),
       ":fk_creador" => $usuario['id']
-  
     );
   
     $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_finca, volumen_total, precio, fecha_inicio, fecha_final, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_finca, :volumen_total, :precio, :fecha_inicio, :fecha_final, :estado, :fecha_creacion, :fk_creador)", $datos);

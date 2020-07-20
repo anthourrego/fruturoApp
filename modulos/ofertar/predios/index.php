@@ -430,11 +430,14 @@
         { data: "direccion" },
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
-            console.log(oData);
-            
+            let productos = "";
+            if (oData.fk_finca_tipo == 2) {
+              productos = `<a type="button" class="btn btn-info btn-sm mx-1" href="<?= $ruta_raiz ?>modulos/ofertar/productos?fk_finca=${oData.id}&nombre=${oData.nombre}"><i class="fas fa-box"></i> Productos</a>`
+            }
 
             return `<div class="d-flex justify-content-center">
                       <button type="button" class="btn btn-primary btn-sm mx-1" onClick='ver(${JSON.stringify(oData)})'><i class="far fa-eye"></i> Ver</button>
+                      ${productos}
                       <button type="button" class="btn btn-danger btn-sm mx-1" onClick='eliminar(${JSON.stringify(oData)})'><i class="fas fa-trash-alt"></i> Eliminar</button>
                     </div>`;
           }
