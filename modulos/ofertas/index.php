@@ -160,18 +160,30 @@
               <option value="-1" selected>Todos</option>
             </select>
           </div>
-          <div class="form-group col-12" >
+          <div class="form-group col-12">
+            <label for="selectTipo">Tipo</label>
+            <select class="form-control selectTipo">
+              <option value="-1" selected>Todos</option>
+              <option value="1" >Fresco</option>
+              <option value="2">Procesado</option>
+            </select>
+          </div>
+          <div class="form-group col-12" id="divFruta">
             <label for="selectFruta">Fruta</label>
             <select class="form-control selectFruta">
               <option value="-1" selected>Todos</option>
             </select>
           </div>
-          <div class="form-group col-12" >
-            <label for="selectTipo">Tipo</label>
-            <select class="form-control" class="selectTipo">
+          <div class="form-group col-12" id="divDerivado">
+            <label for="selectDerivado">Derivado</label>
+            <select class="form-control selectDerivado">
               <option value="-1" selected>Todos</option>
-              <option value="1" selected>Fresco</option>
-              <option value="2">Derivado</option>
+            </select>
+          </div>
+          <div class="form-group col-12" id="divProcesado">
+            <label for="selectFruta">Procesado</label>
+            <select class="form-control selectProcesado">
+              <option value="-1" selected>Todos</option>
             </select>
           </div>
           <div class="form-group col-12" >
@@ -445,11 +457,15 @@
     var departamento = $('.selectDepartamento').val();
     var municipio = $('.selectMunicipio').val();
     var fruta =  $(".selectFruta").val();
+    var derivado = $(".selectDerivado").val();
 
     $(function(){
       
       $('#spinner-scroll').hide();
-
+      $("#divFruta").hide();
+      $("#divProcesado").hide();
+      $("#divDerivado").hide();
+      
       $("#formMensaje").submit(function(event){
         event.preventDefault();
         if($("#formMensaje").valid()){
@@ -519,6 +535,8 @@
         }else{
           $(".selectMunicipio").val(-1);
           $(".selectMunicipio").attr('disabled',true);
+          municipio = $(".selectMunicipio").val();
+
         }
         reset();
         listarOfertas();
@@ -532,6 +550,23 @@
 
       $(".selectTipo").change(function(){
         tipo = $(this).val();
+        if(tipo == 1){
+          $("#divFruta").show();
+          $("#divProcesado").hide();
+          $(".selectFruta").val(-1);
+          fruta = $(".selectFruta").val();
+        }else if( tipo == 2){
+          $("#divProcesado").show();
+          $("#divFruta").hide();
+          $(".selectProcesado").val(-1);
+        }else{
+          $("#divFruta").hide();
+          $("#divProcesado").hide();
+          $(".selectFruta").val(-1);
+          fruta = $(".selectFruta").val();
+
+        }
+        return;
         reset();
         listarOfertas();
       });
@@ -544,8 +579,29 @@
 
       $(".selectFruta").change(function(){
         fruta = $(this).val();
+        if(fruta == -1 ){
+          $('.selectDerivado').val(-1);
+          derivado = $('.selectDerivado').val(-1);
+          $('.divDerivado').hide();
+          reset();
+          listarOfertas();
+        }else{
+          $('#divDerivado').show();
+          $('.selectDerivado').empty();
+          $(".selectDerivado").append(`
+            <option value="-1" selected>Todos</option>
+          `);
+          listarderivados();
+          reset();
+          listarOfertas();
+        }
+        
+      });
+      
+      $(".selectDerivado").change(function(){
+        derivado = $(this).val();
         reset();
-        listarOfertas();
+        listarOfertas();  
       });
 
       $("#btnReiniciarFiltros").click(function(){
@@ -559,6 +615,7 @@
 
       cerrarCargando();
       // lista();
+      listarFrutas();
       listarDepartamentos();
       listarOfertas();
       iniciarScroll();
@@ -652,9 +709,12 @@
           orden,
           tipo,
           departamento,
-          municipio
+          municipio,
+          fruta,
+          derivado
         },
         success: function(data){ 
+          console.log(data);
           if (data.success) {
             // se guardan ofertas con la data ordenada
             if(inicio > 0){
@@ -1083,13 +1143,13 @@
       });
     }
 
-
     // funcion para resetear ofertas cargadas y contador
     function reset(){
       inicio = 0; terminado = false;
       $('#contenedorOfertas').empty();
     }
 
+    // resetear filtros
     function resetFiltros(){
       $('.selectDepartamento').val(-1);
       departamento = -1;
@@ -1105,6 +1165,66 @@
       reset();
       listarOfertas();
       
+    }
+    
+    // traer frutas
+    function listarFrutas(){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "listarFrutas"
+        },
+        success: function(data){
+          console.log(data);
+          if (data.success) {
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $(".selectFruta").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+    }
+
+    function listarderivados(){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "traerDerivados",
+          fruta
+        },
+        success: function(data){
+          if (data.success) {
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $(".selectDerivado").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+
     }
 
   </script>

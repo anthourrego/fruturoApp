@@ -66,14 +66,26 @@ function listaOfertas(){
   $inicio = (int)$_POST['inicio'];
   $cantidad = (int)$_POST['cantidad'];
 
+  // ---------------- filtros -------------------
   $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
   $filtroTipo = $_POST['tipo'] == -1 ? '' : $_POST['tipo'];
   $filtroDepartamento = $_POST['departamento'] == -1 ? '' : "departamentos.id = ".$_POST['departamento'];
   $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
+  $filtroTipo = $_POST['tipo'];
+  $filtroFruta = $_POST['fruta'] == -1 ? '' : 'cosechas.fk_producto ='.$_POST['fruta'];
+
+  // ----------------- Conector And ---------------------
+  $andTipo = $filtroTipo == -1 ? '' : "and";
   $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
+  $andFruta = ($filtroFruta != '' && $filtroDepartamento != '') ? 'and' : '';
+  
+  // ----------------- Conector Where ---------------------
+
   $where = '';
 
-  if($filtroDepartamento != '' || $filtroMunicipio != ''){
+
+
+  if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != ''){
     $where = 'where';
   }
 
@@ -95,7 +107,7 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ORDER BY cosechas.precio ".$filtroOrden."
+  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
@@ -104,7 +116,6 @@ function listaOfertas(){
   }else{
     $resp["msj"] = "No se han encontrado datos";
   }
-
   $db->desconectar();
 
   return json_encode($resp);
@@ -285,6 +296,48 @@ function listarMunicipios(){
   return json_encode($resp);
   
 }
+
+function listarFrutas(){
+
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * from productos WHERE fk_creador = 1");
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+  
+}
+
+function traerDerivados(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * from productos_derivados WHERE fk_producto = ".$_GET['fruta']);
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+
 
 /*****************************************/
 
