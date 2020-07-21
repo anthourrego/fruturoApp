@@ -175,13 +175,19 @@ function listaProdcutos(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT * FROM productos WHERE estado = 1");
+  $sql = "IS NULL";
+
+  if (@$_REQUEST["fk_finca"] != 0) {
+    $sql = " = " . $_REQUEST['fk_finca'];
+  }
+
+  $datos = $db->consulta("SELECT * FROM productos WHERE estado = 1 AND fk_finca " . $sql);
 
   if ($datos['cantidad_registros'] > 0) {
     $resp["success"] = true;
     $resp["msj"] = $datos;
   }else{
-    $resp['msj'] = "No se han encontrado datos";
+    $resp['msj'] = "No se han encontrado productos asociados";
   }
 
   $db->desconectar();

@@ -53,7 +53,42 @@ function lista(){
   return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
 }
 
-function crear(){
+function crear_procesado(){
+  $db = new Bd();
+  $db->conectar();
+  $resp = array();
+  global $usuario;
+  global $ruta_raiz;
+  $resp['success'] = false;
+
+  if (isset($_POST["producto"]) && isset($_POST['terreno']) && isset($_POST['capacidad_produccion']) && isset($_POST['precio_procesado'])) {
+    $datos = array(
+      ":fk_producto" => $_POST["producto"], 
+      ":fk_finca" => $_POST['terreno'],
+      ":precio" => $_POST['precio_procesado'], 
+      ":estado" => 1, 
+      ":fecha_creacion" => date('Y-m-d H:i:s'), 
+      ":fk_creador" => $usuario['id'], 
+      ":capacidad_produccion" =>$_POST['capacidad_produccion']
+    );
+  
+    $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, precio, estado, fecha_creacion, fk_creador, capacidad_produccion, fk_finca) VALUES (:fk_producto, :precio, :estado, :fecha_creacion, :fk_creador, :capacidad_produccion, :fk_finca)", $datos);
+
+    if ($id_registro > 0) {
+      $db->insertLogs("cosechas", $id_registro, "Se crea la cosecha", $usuario["id"]);
+      $resp['success'] = true;
+      $resp['msj'] = 'Se ha creado correctamente.';
+    } else {
+      $resp['msj'] = 'Error al realizar el registro.';
+    }
+  } else {
+    $resp['msj'] = 'Uno de los campos se encuentra vacio.';
+  }
+
+  return json_encode($resp);
+}
+
+function crear_fresco(){
   $mensaje = '';
   $db = new Bd();
   $db->conectar();
@@ -66,6 +101,7 @@ function crear(){
     
     $datos = array(
       ":fk_producto" => $_POST["producto"],
+      ":fk_productos_derivados" => $_POST["producto_derivado"],
       ":fk_finca" => $_POST['terreno'],
       ":volumen_total" => $_POST["volumen_total"],
       ":precio" => $_POST["precio"],
@@ -76,7 +112,7 @@ function crear(){
       ":fk_creador" => $usuario['id']
     );
   
-    $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_finca, volumen_total, precio, fecha_inicio, fecha_final, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_finca, :volumen_total, :precio, :fecha_inicio, :fecha_final, :estado, :fecha_creacion, :fk_creador)", $datos);
+    $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_productos_derivados, fk_finca, volumen_total, precio, fecha_inicio, fecha_final, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_productos_derivados, :fk_finca, :volumen_total, :precio, :fecha_inicio, :fecha_final, :estado, :fecha_creacion, :fk_creador)", $datos);
   
     if ($id_registro > 0) {
       $cont=-1;

@@ -36,8 +36,8 @@
     echo $lib->sweetAlert2();
     echo $lib->jqueryValidate();
     echo $lib->datatables();
-    echo $lib->bootstrapSelect();
     echo $lib->bsCustomFileInput();
+    echo $lib->chosen();
     echo $lib->lightbox();
     echo $lib->proyecto();
   ?>
@@ -49,7 +49,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-12">
-          <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Ofertar Cosechas</h1>
+          <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Ofertar</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -76,10 +76,7 @@
               <tr>
                 <th scope="col">Producto</th>
                 <th scope="col">Finca</th>
-                <th scope="col">Volumen total</th>
                 <th scope="col">Precio</th>
-                <th scope="col">Inicio cosecha</th>
-                <th scope="col">Fin cosecha</th>
                 <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -97,49 +94,69 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear oferta cosecha</h5>
+          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear oferta</h5>
         </div>
         <form id="formCrear" autocomplete="off">
           <input type="hidden" name="accion" value="crear">
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
+              <label for="terreno">Predio o finca <span class="text-danger">*</span></label>
+              <select class="chosen-select" required name="terreno"></select>
+            </div>
+            <div class="form-group">
               <label for="producto">Producto <span class="text-danger">*</span></label>
-              <select class="selectpicker form-control" required name="producto" required data-live-search="true" data-size="5" title="Seleccione un producto"></select>
+              <select class="chosen-select" data-placeholder="Seleccione un producto" required name="producto">
+                <option value="0" disabled selected>Selecione un producto</option>
+              </select>
             </div>
-            <div class="form-group">
-              <label for="terreno">Finca <span class="text-danger">*</span></label>
-              <select class="selectpicker form-control" required name="terreno" required data-live-search="true" data-size="5" title="Seleccione un terreno"></select>
-            </div>
-            <div class="form-group">
-              <label for="fecha_inicio">Fecha de inicio de la cosecha <span class="text-danger">*</span></label>
-              <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label for="fecha_fin">Fecha de fin de la cosecha <span class="text-danger">*</span></label>
-              <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label for="volumen_total">Volumen total en Kilogramos <span class="text-danger">*</span></label>
-              <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label for="precio">Precio por kilogramos <span class="text-danger">*</span></label>
-              <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label for="fotos">Fotos de la cosecha: <span class="text-danger">*</span></label>
-              <div class="custom-file">
-                <input required type="file" class="custom-file-input" id="fotos" name="fotos[]" accept="image/png, image/jpg, image/jpeg" multiple>
-                <label class="custom-file-label" for="fotos" data-browse="Elegir">Seleccionar Archivo</label>
-                <small id="archivosExtensionesSmall" class="form-text text-muted">
-                  Puedes seleccionar una o más fotos
-                </small>
+            <div id="crear_procesado">
+              <div class="form-group">
+                <label for="capacidad_produccion">Capacidad de producción</label>
+                <input type="text" class="form-control" name="capacidad_produccion" placeholder="Escriba la capacidad de produccion" onKeyPress="return soloNumeros(event)" required>
+              </div>
+              <div class="form-group">
+                <label for="capacidad_produccion">Precio o valor</label>
+                <input type="tel" name="precio_procesado" class="form-control" name="capacidad_produccion" placeholder="Escriba la precio" required>
               </div>
             </div>
-            <div class="form-group">
-              <label for="certificados">Certificados:</label>
-              <div id="certificados" class="row"></div>
+            <div id="crear_fresco">
+              <div class="form-group">
+                <label for="producto_derivado">Producto derivado<span class="text-danger">*</span></label>
+                <select class="chosen-select" data-placeholder="Seleccione un producto derivado" required name="producto_derivado">
+                  <option value="0" disabled selected>Selecione un producto derivado</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fecha_inicio">Fecha de inicio de la cosecha <span class="text-danger">*</span></label>
+                <input type="text" name="fecha_inicio" class="form-control datepicker" placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="fecha_fin">Fecha de fin de la cosecha <span class="text-danger">*</span></label>
+                <input type="text" name="fecha_fin" class="form-control datepicker" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="volumen_total">Volumen total en Kilogramos <span class="text-danger">*</span></label>
+                <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="precio">Precio por kilogramos <span class="text-danger">*</span></label>
+                <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="fotos">Fotos de la cosecha: <span class="text-danger">*</span></label>
+                <div class="custom-file">
+                  <input required type="file" class="custom-file-input" id="fotos" name="fotos[]" accept="image/png, image/jpg, image/jpeg" multiple>
+                  <label class="custom-file-label" for="fotos" data-browse="Elegir">Seleccionar Archivo</label>
+                  <small id="archivosExtensionesSmall" class="form-text text-muted">
+                    Puedes seleccionar una o más fotos
+                  </small>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="certificados">Certificados:</label>
+                <div id="certificados" class="row"></div>
+              </div>
             </div>
           </div>
           <div class="modal-footer d-flex justify-content-between">
@@ -265,9 +282,58 @@
 
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){
-      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear oferta cosecha`);
-      $("#formCrear :input[name='accion']").val('crear');
+      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear oferta`);
+      $("#formCrear :input[name='terreno']").val(0).trigger("chosen:updated");
+      //$("#formCrear :input[name='accion']").val('crear');
+      $("#formCrear :input[name='producto']").val(0).prop("disabled", true).trigger("chosen:updated");
+      $("#formCrear :input[name='capacidad_produccion']").prop("disabled", true);
+      $("#formCrear :input[name='precio_procesado']").prop("disabled", true);
+
+      $("#formCrear :input[name='producto_derivado']").val(0).prop("disabled", true).trigger("chosen:updated");
+      $("#formCrear :input[name='fecha_fin']").prop("disabled", true);
+      $("#formCrear :input[name='fecha_inicio']").prop("disabled", true);
+      $("#formCrear :input[name='volumen_total']").prop("disabled", true);
+      $("#formCrear :input[name='precio']").prop("disabled", true);
+      $("#formCrear :input[name='fotos[]']").prop("disabled", true);
+      $("#formCrear :input[name='certificado[]']").prop("disabled", true);
+      $("#crear_fresco").removeClass("d-none");
+      $("#crear_procesado").removeClass("d-none");
+
       $("#modalCrear").modal("show");
+    });
+
+    $("#formCrear :input[name='terreno']").on("change", function(){      
+      tipo = $("#formCrear :input[name='terreno'] option:selected").data("tipo");
+
+      if (tipo == 1) {
+        $("#formCrear :input[name='accion']").val('crear_fresco');
+        $("#crear_fresco").removeClass("d-none");        
+        $("#crear_procesado").addClass("d-none");
+        listaProductos();
+
+        $("#formCrear :input[name='fecha_fin']").prop("disabled", false);
+        $("#formCrear :input[name='fecha_inicio']").prop("disabled", false);
+        $("#formCrear :input[name='volumen_total']").prop("disabled", false);
+        $("#formCrear :input[name='precio']").prop("disabled", false);
+        $("#formCrear :input[name='fotos[]']").prop("disabled", false);
+        $("#formCrear :input[name='certificado[]']").prop("disabled", false);        
+      }else{
+        $("#formCrear :input[name='accion']").val('crear_procesado');
+        $("#crear_procesado").removeClass("d-none");        
+        $("#crear_fresco").addClass("d-none");   
+        listaProductos($(this).val());
+
+        $("#formCrear :input[name='capacidad_produccion']").prop("disabled", false);
+        $("#formCrear :input[name='precio_procesado']").prop("disabled", false);
+      }
+    
+    });
+
+    $("#formCrear :input[name='producto']").on("change", function(){
+      tipo = $("#formCrear :input[name='terreno'] option:selected").data("tipo");
+      if (tipo == 1) {
+        listaDerivados($(this).val())
+      }
     });
 
     /* ==================================================================== */
@@ -312,8 +378,6 @@
               $("#formCrear")[0].reset();
               $("#formCrear :input").removeClass("is-valid");
               $("#formCrear :input").removeClass("is-invalid");
-              $("#formCrear :input[name='terreno']").selectpicker('render');
-              $("#formCrear :input[name='producto']").selectpicker('render');
               $("#formCrear :input[name='fecha_inicio']").val(moment().format("YYYY-MM-DD"));
               $("#formCrear :input[name='fecha_fin']").val(moment().format("YYYY-MM-DD"));
               $("#modalCrear").modal("hide");
@@ -332,7 +396,8 @@
               })
             }
           },
-          error: function(){
+          error: function(data){
+            console.log(data);
             //Habilitamos el botón
             Swal.fire({
               icon: 'error',
@@ -417,11 +482,10 @@
       }
     });
 
-
     lista();
     listaTerrenos();
-    listaProductos();
     checkCertificaciones();
+
   });
 
   function lista(){
@@ -449,10 +513,7 @@
       columns: [
         { data: "producto" },
         { data: "finca" },
-        { data: "volumen_total" },
         { data: "precio" },
-        { data: "fecha_inicio" },
-        { data: "fecha_final" },
         { data: "fecha_creacion" },
         {
           "render": function (nTd, sData, oData, iRow, iCol) {
@@ -478,7 +539,7 @@
   function listaTerrenos(){
     //Se cargan los terrenos
     $.ajax({
-      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/fincas/acciones',
+      url: '<?php echo($ruta_raiz) ?>modulos/ofertar/predios/acciones',
       type: 'POST',
       dataType: 'json',
       data: {
@@ -486,13 +547,19 @@
       },
       success: function(data){
         if (data.success) {
-          $("#formCrear :input[name='terreno']").empty();
+          let select = $("#formCrear :input[name='terreno']"); 
+          select.empty();
+          select.append(`
+              <option value="0" selected disabled>Seleccione un predio</option>
+            `);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#formCrear :input[name='terreno']").append(`
-              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            select.append(`
+              <option data-tipo="${data.msj[i].fk_finca_tipo}" value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
-          $("#formCrear :input[name='terreno']").selectpicker('refresh');
+
+          select.trigger("chosen:updated");
+
         }else{
           Swal.fire({
             icon: 'warning',
@@ -509,24 +576,30 @@
     });
   }
 
-  function listaProductos(){
+  function listaProductos(fk_finca = 0){
     //Se cargan los productos
     $.ajax({
       url: '<?php echo($ruta_raiz) ?>modulos/productos/productos/acciones',
       type: 'POST',
       dataType: 'json',
       data: {
-        accion: "listaProdcutos"
+        accion: "listaProdcutos",
+        fk_finca: fk_finca
       },
       success: function(data){
         if (data.success) {
-          $("#formCrear :input[name='producto']").empty();
+          let select = $("#formCrear :input[name='producto']");
+          select.empty();
+          select.append(`
+            <option value="0" selected disabled>Seleccione un producto</option>
+          `);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#formCrear :input[name='producto']").append(`
+            select.append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);
           }
-          $("#formCrear :input[name='producto']").selectpicker('refresh');
+
+          select.prop("disabled", false).trigger("chosen:updated");
         }else{
           Swal.fire({
             icon: 'warning',
@@ -620,6 +693,46 @@
         }
       },
       error: function(data){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      }
+    });
+  }
+
+  function listaDerivados(fk_producto){
+    //Se cargan los productos
+    $.ajax({
+      url: '<?php echo($ruta_raiz) ?>modulos/productos/derivados/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "listaDerivados",
+        fk_producto: fk_producto
+      },
+      success: function(data){
+        if (data.success) {
+          let select = $("#formCrear :input[name='producto_derivado']");
+          select.empty();
+          select.append(`
+            <option value="0" selected disabled>Seleccione un producto derivado</option>
+          `);
+          for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            select.append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);
+          }
+
+          select.prop("disabled", false).trigger("chosen:updated");
+        }else{
+          Swal.fire({
+            icon: 'warning',
+            html: data.msj
+          })
+        }
+      },
+      error: function(){
         Swal.fire({
           icon: 'error',
           html: 'No se han enviado los datos'

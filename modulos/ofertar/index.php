@@ -61,7 +61,7 @@
           <!-- small box -->
           <a id="cosecha" class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="#">
             <div class="inner">
-              <h4>Ofertar Cosecha</h4>
+              <h4>Ofertar</h4>
             </div>
             <div class="icon">
               <i class="far fa-lemon"></i>
