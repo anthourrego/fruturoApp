@@ -127,55 +127,63 @@
         overflow-x: hidden;
       }
 
+      /* estilos boton filtros mobile */
+      .btnFiltrosMobile{
+        position: sticky;
+        top: 0px;
+        z-index: 1;
+      }
+
     </style>
   </head>
   <body>
     <div class="row">
-      <div class="col-12 col-md-2" style="padding: 0px 4px 0px 20px;">
+      <div class="col-12 col-md-2 d-none d-md-block" style="padding: 0px 4px 0px 20px;">
         <div class="row filtros" style="margin-top:70px">
-          <!-- <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectDepartamento" name="status">
-              <option value="-1" selected>Todos</option>
-            </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Depto</label>
-            </div>
-          </div> -->
           <div class="form-group col-12" >
             <label for="selectDepartamento">Departamento</label>
-            <select class="form-control" id="selectDepartamento">
+            <select class="form-control selectDepartamento">
               <option value="-1" selected>Todos</option>
             </select>
           </div>
           <div class="form-group col-12" >
             <label for="selectMunicipio">Municipio</label>
-            <select class="form-control" id="selectMunicipio">
+            <select class="form-control selectMunicipio">
               <option value="-1" selected>Todos</option>
             </select>
           </div>
-          <div class="form-group col-12" >
-            <label for="selectFruta">Fruta</label>
-            <select class="form-control" id="selectFruta">
-              <option value="-1" selected>Todos</option>
-            </select>
-          </div>
-          <div class="form-group col-12" >
+          <div class="form-group col-12">
             <label for="selectTipo">Tipo</label>
-            <select class="form-control" id="selectTipo">
+            <select class="form-control selectTipo">
               <option value="-1" selected>Todos</option>
-              <option value="1" selected>Fresco</option>
-              <option value="2">Derivado</option>
+              <option value="1" >Fresco</option>
+              <option value="2">Procesado</option>
+            </select>
+          </div>
+          <div class="form-group col-12 divFruta">
+            <label for="selectFruta">Fruta</label>
+            <select class="form-control selectFruta">
+              <option value="-1" selected>Todos</option>
+            </select>
+          </div>
+          <div class="form-group col-12 divDerivado">
+            <label for="selectDerivado">Derivado</label>
+            <select class="form-control selectDerivado">
+              <option value="-1" selected>Todos</option>
             </select>
           </div>
           <div class="form-group col-12" >
             <label for="selectOrden">Precio</label>
-            <select class="form-control" id="selectOrden">
+            <select class="form-control selectOrden">
               <option value="1" selected>Ascendente</option>
               <option value="2">Descendente</option>
             </select>
           </div>
         </div>
       </div>
+      <button class="btn btn-secondary col-12 d-block d-md-none btnFiltrosMobile"  data-toggle="modal" data-target="#modalFiltros">
+        <i class="fas fa-filter"></i> Filtros 
+      </button>
       <div class="col-12 col-md-10 p-1">
         <!-- Content Header (Page header) -->
         <div div class="content-header">
@@ -226,7 +234,7 @@
 
             
             
-            <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-4">
+            <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-3 row-cols-xl-4">
             </div>
 
             <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
@@ -363,6 +371,65 @@
           </div>
         </div>
 
+        <!-- Modal FIltros Mobile -->
+        <div class="modal fade" id="modalFiltros" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filtrar Busqueda</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group col-12" >
+                  <label for="selectDepartamento">Departamento</label>
+                  <select class="form-control selectDepartamento">
+                    <option value="-1" selected>Todos</option>
+                  </select>
+                </div>
+                <div class="form-group col-12" >
+                  <label for="selectMunicipio">Municipio</label>
+                  <select class="form-control selectMunicipio" id="mija">
+                    <option value="-1" selected>Todos</option>
+                  </select>
+                </div>
+                <div class="form-group col-12">
+                  <label for="selectTipo">Tipo</label>
+                  <select class="form-control selectTipo">
+                    <option value="-1" selected>Todos</option>
+                    <option value="1" >Fresco</option>
+                    <option value="2">Procesado</option>
+                  </select>
+                </div>
+                <div class="form-group col-12 divFruta" >
+                  <label for="selectFruta">Fruta</label>
+                  <select class="form-control selectFruta">
+                    <option value="-1" selected>Todos</option>
+                  </select>
+                </div>
+                <div class="form-group col-12 divDerivado" >
+                  <label for="selectDerivado">Derivado</label>
+                  <select class="form-control selectDerivado">
+                    <option value="-1" selected>Todos</option>
+                  </select>
+                </div>
+                <div class="form-group col-12" >
+                  <label for="selectOrden">Precio</label>
+                  <select class="form-control selectOrden">
+                    <option value="1" selected>Ascendente</option>
+                    <option value="2">Descendente</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer d-flex justify-content-between">
+                <button type="button" id="btnReiniciarFiltros" class="btn btn-primary">  <i class="fas fa-undo-alt"></i> Reiniciar Filtros</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fas fa-times"></i> Cerrar </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </body>
@@ -377,10 +444,19 @@
     var cantidad = 5;
     var terminado = false;
 
+    var orden = $('.selectOrden').val();
+    var tipo = $('.selectTipo').val();
+    var departamento = $('.selectDepartamento').val();
+    var municipio = $('.selectMunicipio').val();
+    var fruta =  $(".selectFruta").val();
+    var derivado = $(".selectDerivado").val();
+
     $(function(){
       
       $('#spinner-scroll').hide();
-
+      $(".divFruta").hide();
+      $(".divDerivado").hide();
+      
       $("#formMensaje").submit(function(event){
         event.preventDefault();
         if($("#formMensaje").valid()){
@@ -440,28 +516,100 @@
         }
       });
 
-      $("#selectDepartamento").change(function () {
+      $(".selectDepartamento").change(function () {
+        departamento = $(this).val();
         
-        if($("#selectDepartamento").val() != -1){
-          $("#selectMunicipio").attr('disabled',false);
-          traerMunicipio($("#selectDepartamento").val());
+        if($(this).val() != -1){
+          
+          $(".selectMunicipio").attr('disabled',false);
+          traerMunicipio($(this).val());
         }else{
-          $("#selectMunicipio").val(-1);
-          $("#selectMunicipio").attr('disabled',true);
+          $(".selectMunicipio").val(-1);
+          $(".selectMunicipio").attr('disabled',true);
+          municipio = $(".selectMunicipio").val();
+
         }
-        //filtrar();
         reset();
         listarOfertas();
       });
 
-      $("#selectOrden, #selectTipo, #selectDepartamento, #selectMunicipio, #selectFruta").change(function () {
-        // filtrar();
+      $(".selectOrden").change(function(){
+        orden = $(this).val();
         reset();
         listarOfertas();
       });
+
+      $(".selectTipo").change(function(){
+        tipo = $(this).val();
+        if(tipo == 1){
+          $(".divFruta").show();
+          $(".selectFruta").val(-1);
+          fruta = $(".selectFruta").val();
+        }else if( tipo == 2){
+          $(".divFruta").hide();
+          $(".selectProcesado").val(-1);
+        }else{
+          $(".divFruta").hide();
+          $(".selectFruta").val(-1);
+          $(".selectDerivado").val(-1);
+          derivado = $(".selectDerivado").val();
+          fruta = $(".selectFruta").val();
+
+        }
+        reset();
+        listarOfertas();
+      });
+
+      $(".selectMunicipio").change(function(){
+        municipio = $(this).val();
+        reset();
+        listarOfertas();
+      });
+
+      $(".selectFruta").change(function(){
+        fruta = $(this).val();
+        if(fruta == -1 ){
+          $('.selectDerivado').val(-1);
+          derivado = $('.selectDerivado').val(-1);
+          $('.divDerivado').hide();
+          reset();
+          listarOfertas();
+        }else{
+          $('.divDerivado').show();
+          $('.selectDerivado').empty();
+          $(".selectDerivado").append(`
+            <option value="-1" selected>Todos</option>
+          `);
+          listarderivados();
+          reset();
+          listarOfertas();
+        }
+        
+      });
+      
+      $(".selectDerivado").change(function(){
+        derivado = $(this).val();
+        reset();
+        listarOfertas();  
+      });
+
+      $("#btnReiniciarFiltros").click(function(){
+        resetFiltros();
+      });
+
+      $(".oferta").click( function(){
+        console.log(this);
+      });
+
+
+      /* $(".selectOrden, .selectTipo, .selectDepartamento, .selectMunicipio, .selectFruta").change(function () {
+        reset();
+        listarOfertas();
+      }); */
 
       cerrarCargando();
       // lista();
+      listarFrutas();
       listarDepartamentos();
       listarOfertas();
       iniciarScroll();
@@ -469,7 +617,7 @@
 
     function lista(){
     
-      var estado = $("#selectEstado").val();
+      var estado = $(".selectEstado").val();
       $("#tabla").DataTable({
         stateSave: false,
         responsive: true,
@@ -552,15 +700,17 @@
           estado: 1,
           inicio,
           cantidad,
-          orden: $('#selectOrden').val(),
-          tipo:$('#selectTipo').val(),
-          departamento: $('#selectDepartamento').val(),
-          municipio: $('#selectMunicipio').val()
+          orden,
+          tipo,
+          departamento,
+          municipio,
+          fruta,
+          derivado
         },
         success: function(data){ 
+          console.log(data);
           if (data.success) {
             // se guardan ofertas con la data ordenada
-            console.log(inicio);
             if(inicio > 0){
               $('#spinner-scroll').show();
             }else{
@@ -570,10 +720,10 @@
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
-                <div class="col">
-                  <div class="card text-center">
+                <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
+                  <div class="card text-center" >
                     <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.ruta}" alt="Card image cap">
-                    <div class="p-2" id="card">
+                    <div class="p-2 oferta">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column">
                           <span>${oferta.producto} </span>
@@ -745,7 +895,6 @@
     }
 
     function mensajes(datos){
-      console.log(datos);
       $("#formMensaje :input[name='idCosecha']").val(datos["id"]);
       $("#formMensaje :input[name='cosechaEstado']").val(datos["cosecha_estado"]);
       $("#formMensaje :input[name='correo']").val(datos["correo"]);
@@ -935,11 +1084,11 @@
         success: function(data){
           if (data.success) {
             for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#selectDepartamento").append(`
+            $(".selectDepartamento").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);}
-            if($('#selectDepartamento').val() == -1){
-              $('#selectMunicipio').attr('disabled',true);
+            if($('.selectDepartamento').val() == -1){
+              $('.selectMunicipio').attr('disabled',true);
             }
 
           }else{
@@ -967,12 +1116,12 @@
         },
         success: function(data){
           if (data.success) {
-            $("#selectMunicipio").empty();
-            $("#selectMunicipio").append(`
+            $(".selectMunicipio").empty();
+            $(".selectMunicipio").append(`
               <option value="-1" selected>Todos</option>
             `);
             for (let i = 0; i < data.msj.cantidad_registros; i++) {
-            $("#selectMunicipio").append(`
+            $(".selectMunicipio").append(`
               <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
             `);}
           }else{
@@ -988,18 +1137,93 @@
       });
     }
 
-    function filtrar(){
-      console.log('departamento: ', $('#selectDepartamento').val());
-      console.log('municipio: ', $('#selectMunicipio').val());
-      console.log('fruta: ', $('#selectFruta').val());
-      console.log('tipo: ', $('#selectTipo').val());
-      console.log('orden: ', $('#selectOrden').val());
-    }
-
     // funcion para resetear ofertas cargadas y contador
     function reset(){
-      inicio = 0; terminado = true;
+      inicio = 0; terminado = false;
       $('#contenedorOfertas').empty();
+    }
+
+    // resetear filtros
+    function resetFiltros(){
+      $('.selectDepartamento').val(-1);
+      departamento = -1;
+      $('.selectMunicipio').val(-1);
+      municipio = -1;
+      $('.selectFruta').val(-1);
+      fruta = -1;
+      $('.selectTipo').val(-1);
+      tipo = -1;
+      $('.selectOrden').val(1);
+      orden = 1; 
+
+      reset();
+      listarOfertas();
+      
+    }
+    
+    // traer frutas
+    function listarFrutas(){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "listarFrutas"
+        },
+        success: function(data){
+          console.log(data);
+          if (data.success) {
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $(".selectFruta").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+    }
+
+    function listarderivados(){
+      $.ajax({
+        url: "acciones",
+        type: "GET",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "traerDerivados",
+          fruta
+        },
+        success: function(data){
+          if (data.success) {
+            for (let i = 0; i < data.msj.cantidad_registros; i++) {
+            $(".selectDerivado").append(`
+              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+            `);}
+          }else{
+            console.log('fail: ', data);
+          } 
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+
+    }
+
+    function verOferta(idOferta){
+      var url = "<?php echo($ruta_raiz); ?>modulos/detallesOferta?id="+idOferta;
+      location.href = url;
     }
 
   </script>
