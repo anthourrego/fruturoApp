@@ -20,9 +20,9 @@
 
   $usuario = $session->get("usuario");
 
-  if ($permisos->validarPermiso($usuario['id'], 'ofertas') == 0) {
+  /* if ($permisos->validarPermiso($usuario['id'], 'ofertas') == 0) {
     header('Location: ' . $ruta_raiz . 'modulos/');
-  }
+  } */
 
 ?>
 
