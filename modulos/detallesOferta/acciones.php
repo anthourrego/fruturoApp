@@ -21,6 +21,35 @@ $session = new Session();
 
 $usuario = $session->get("usuario");
 
+function traerDatosOferta(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
+    cosechas.fecha_inicio, cosechas.fecha_final, productos.nombre AS producto, fincas.nombre AS finca, 
+    fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
+    usuarios.id AS id_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
+    documentos.ruta FROM COSECHAS INNER JOIN productos on cosechas.fk_producto = productos.id 
+    INNER JOIN fincas ON fincas.id = cosechas.fk_finca INNER JOIN usuarios ON 
+    cosechas.fk_creador = usuarios.id inner join cosechas_productos_documentos AS documentos
+    on documentos.fk_cosecha = cosechas.id INNER JOIN municipios 
+    on fincas.fk_municipio = municipios.id INNER JOIN departamentos 
+    ON departamentos.id = municipios.fk_departamento where cosechas.id = :id ", array(":id" => $_GET["id"]));
+
+  
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);  
+}
+
 function lista(){
   global $usuario;
   $table      = 'cosechas';
@@ -107,7 +136,7 @@ function listaOfertas(){
   INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
   cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
   fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
+  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
@@ -246,201 +275,6 @@ function finalizar(){
 
   return json_encode(1);
 }
-
-function listarDepartamentos(){
-
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $datos = $db->consulta("SELECT * from departamentos");
-
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-
-  $db->desconectar();
-
-  return json_encode($resp);
-  
-}
-
-function listarMunicipios(){
-
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $query = "SELECT * from municipios";
-
-  if($_GET['idDepto'] != -1){
-    $query .= " where fk_departamento =".$_GET['idDepto'];
-  }
-
-
-  $datos = $db->consulta($query);
-
-  
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-
-  $db->desconectar();
-
-  return json_encode($resp);
-  
-}
-
-function listarFrutas(){
-
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $datos = $db->consulta("SELECT * from productos WHERE fk_creador = 1");
-
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-
-  $db->desconectar();
-
-  return json_encode($resp);
-  
-}
-
-function traerDerivados(){
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $datos = $db->consulta("SELECT * from productos_derivados WHERE fk_producto = ".$_GET['fruta']);
-
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-
-  $db->desconectar();
-
-  return json_encode($resp);
-}
-
-
-
-/*****************************************/
-
-/* function crear(){
-  $db = new Bd();
-  $db->conectar();
-  $resp = array();
-  global $usuario;
-  $resp['success'] = false;
-
-  $datos = array(
-    ":fk_producto" => $_POST["producto"],
-    ":fk_finca" => $_POST['terreno'],
-    ":volumen_total" => $_POST["volumen_total"],
-    ":precio" => $_POST["precio"],
-    ":fecha_inicio" => date("Y-m-d", strtotime($_POST["fecha_inicio"])),
-    ":fecha_final" => date("Y-m-d", strtotime($_POST["fecha_fin"])),
-    ":estado" => 1,
-    ":fecha_creacion" => date('Y-m-d H:i:s'),
-    ":fk_creador" => $usuario['id']
-
-  );
-
-  $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, fk_finca, volumen_total, precio, fecha_inicio, fecha_final, estado, fecha_creacion, fk_creador) VALUES (:fk_producto, :fk_finca, :volumen_total, :precio, :fecha_inicio, :fecha_final, :estado, :fecha_creacion, :fk_creador)", $datos);
-
-  if ($id_registro > 0) {
-    $db->insertLogs("cosechas", $id_registro, "Se crea la cosecha", $usuario["id"]);
-
-    if (@$_POST["certificado"]) {
-      
-      foreach ($_POST["certificado"] as $certificado) {
-        $datos_certi = array(
-          ":fk_cosecha" => $id_registro, 
-          ":fk_certificacion" => $certificado, 
-          ":fecha_creacion" => date("Y-m-d"), 
-          ":fk_creador" => $usuario["id"]
-        );
-        $id_registro_certi = $db->sentencia("INSERT INTO cosechas_certificaciones (fk_cosecha, fk_certificacion, fecha_creacion, fk_creador) VALUES (:fk_cosecha, :fk_certificacion, :fecha_creacion, :fk_creador)", $datos_certi);
-
-        $db->insertLogs("cosechas_certificaciones", $id_registro_certi, "Se crea la cosecha con el certificado", $usuario["id"]);
-      }
-
-    }
-
-    $resp['success'] = true;
-    $resp['msj'] = 'Se ha creado correctamente.';
-  } else {
-    $resp['msj'] = 'Error al realizar el registro.';
-  }
-
-  $db->desconectar();
-  return json_encode($resp);
-}
-
-function eliminar(){
-  global $usuario;
-  $db = new Bd();
-  $db->conectar();
-
-  $db->sentencia("UPDATE cosechas SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
-  $db->insertLogs("cosechas", $_POST["id"], "Se inhabilita la oferta", $usuario["id"]);
-
-  $db->desconectar();
-
-  return json_encode(1);
-}
-
-function validarNombre($nombre, $id = 0){
-  $db = new Bd();
-  $db->conectar();
-  global $usuario;
-  $resp = 0;
-
-  if ($id == 0) {
-    $verificar = $db->consulta("SELECT nombre FROM terrenos WHERE nombre = :nombre AND estado = 1 AND fk_usuario = :fk_usuario", array(":nombre" => $nombre, ":fk_usuario" => $usuario["id"]));
-  } else {
-    $verificar = $db->consulta("SELECT nombre FROM terrenos WHERE nombre = :nombre AND id != :id AND estado = 1 AND fk_usuario = :fk_usuario", array(":nombre" => $nombre, ':id' => $id, ":fk_usuario" => $usuario["id"]));
-  }
-  
-  if ($verificar["cantidad_registros"] > 0) {
-    $resp = $verificar["cantidad_registros"];
-  }
-
-  $db->desconectar();
-
-  return $resp;
-}
-
-function datos($id){
-  $db = new Bd();
-  $db->conectar();
-  $resp = 0;
-
-  $datos = $db->consulta("SELECT * FROM certificaciones WHERE id = :id", array(":id" => $id));
-
-  if ($datos["cantidad_registros"] == 1) {
-    $resp = $datos[0];
-  }
-
-  $db->desconectar();
-  return $resp;
-} */
-
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){

@@ -140,14 +140,6 @@
     <div class="row">
       <div class="col-12 col-md-2 d-none d-md-block" style="padding: 0px 4px 0px 20px;">
         <div class="row filtros" style="margin-top:70px">
-          <!-- <div class="input-group mb-3 col-12">
-            <select class="custom-select" id="selectDepartamento" name="status">
-              <option value="-1" selected>Todos</option>
-            </select>
-            <div class="input-group-append">
-              <label class="input-group-text" for="inputGroupSelect02">Depto</label>
-            </div>
-          </div> -->
           <div class="form-group col-12" >
             <label for="selectDepartamento">Departamento</label>
             <select class="form-control selectDepartamento">
@@ -168,21 +160,15 @@
               <option value="2">Procesado</option>
             </select>
           </div>
-          <div class="form-group col-12" id="divFruta">
+          <div class="form-group col-12 divFruta">
             <label for="selectFruta">Fruta</label>
             <select class="form-control selectFruta">
               <option value="-1" selected>Todos</option>
             </select>
           </div>
-          <div class="form-group col-12" id="divDerivado">
+          <div class="form-group col-12 divDerivado">
             <label for="selectDerivado">Derivado</label>
             <select class="form-control selectDerivado">
-              <option value="-1" selected>Todos</option>
-            </select>
-          </div>
-          <div class="form-group col-12" id="divProcesado">
-            <label for="selectFruta">Procesado</label>
-            <select class="form-control selectProcesado">
               <option value="-1" selected>Todos</option>
             </select>
           </div>
@@ -408,18 +394,24 @@
                     <option value="-1" selected>Todos</option>
                   </select>
                 </div>
-                <div class="form-group col-12" >
+                <div class="form-group col-12">
+                  <label for="selectTipo">Tipo</label>
+                  <select class="form-control selectTipo">
+                    <option value="-1" selected>Todos</option>
+                    <option value="1" >Fresco</option>
+                    <option value="2">Procesado</option>
+                  </select>
+                </div>
+                <div class="form-group col-12 divFruta" >
                   <label for="selectFruta">Fruta</label>
                   <select class="form-control selectFruta">
                     <option value="-1" selected>Todos</option>
                   </select>
                 </div>
-                <div class="form-group col-12" >
-                  <label for="selectTipo">Tipo</label>
-                  <select class="form-control selectTipo">
+                <div class="form-group col-12 divDerivado" >
+                  <label for="selectDerivado">Derivado</label>
+                  <select class="form-control selectDerivado">
                     <option value="-1" selected>Todos</option>
-                    <option value="1" selected>Fresco</option>
-                    <option value="2">Derivado</option>
                   </select>
                 </div>
                 <div class="form-group col-12" >
@@ -462,9 +454,8 @@
     $(function(){
       
       $('#spinner-scroll').hide();
-      $("#divFruta").hide();
-      $("#divProcesado").hide();
-      $("#divDerivado").hide();
+      $(".divFruta").hide();
+      $(".divDerivado").hide();
       
       $("#formMensaje").submit(function(event){
         event.preventDefault();
@@ -551,22 +542,20 @@
       $(".selectTipo").change(function(){
         tipo = $(this).val();
         if(tipo == 1){
-          $("#divFruta").show();
-          $("#divProcesado").hide();
+          $(".divFruta").show();
           $(".selectFruta").val(-1);
           fruta = $(".selectFruta").val();
         }else if( tipo == 2){
-          $("#divProcesado").show();
-          $("#divFruta").hide();
+          $(".divFruta").hide();
           $(".selectProcesado").val(-1);
         }else{
-          $("#divFruta").hide();
-          $("#divProcesado").hide();
+          $(".divFruta").hide();
           $(".selectFruta").val(-1);
+          $(".selectDerivado").val(-1);
+          derivado = $(".selectDerivado").val();
           fruta = $(".selectFruta").val();
 
         }
-        return;
         reset();
         listarOfertas();
       });
@@ -586,7 +575,7 @@
           reset();
           listarOfertas();
         }else{
-          $('#divDerivado').show();
+          $('.divDerivado').show();
           $('.selectDerivado').empty();
           $(".selectDerivado").append(`
             <option value="-1" selected>Todos</option>
@@ -607,6 +596,11 @@
       $("#btnReiniciarFiltros").click(function(){
         resetFiltros();
       });
+
+      $(".oferta").click( function(){
+        console.log(this);
+      });
+
 
       /* $(".selectOrden, .selectTipo, .selectDepartamento, .selectMunicipio, .selectFruta").change(function () {
         reset();
@@ -726,10 +720,10 @@
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
-                <div class="col">
-                  <div class="card text-center">
+                <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
+                  <div class="card text-center" >
                     <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.ruta}" alt="Card image cap">
-                    <div class="p-2" id="card">
+                    <div class="p-2 oferta">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column">
                           <span>${oferta.producto} </span>
@@ -1225,6 +1219,11 @@
         }
       });
 
+    }
+
+    function verOferta(idOferta){
+      var url = "<?php echo($ruta_raiz); ?>modulos/detallesOferta?id="+idOferta;
+      location.href = url;
     }
 
   </script>
