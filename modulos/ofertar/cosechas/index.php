@@ -189,32 +189,48 @@
             <div class="tab-pane fade show active" id="nav-datos" role="tabpanel" aria-labelledby="nav-datos-tab">
               <form class="mt-3" id="formVer" autocomplete="off">
                 <div class="form-group">
-                  <label for="producto">Producto</label>
-                  <input class="form-control" type="text" required name="producto" placeholder="Escriba el producto" disabled autocomplete="off">
-                </div>
-                <div class="form-group">
                   <label for="terreno">Finca</label>
                   <input class="form-control" type="text" required name="terreno" placeholder="Escriba el terreno" disabled autocomplete="off">
                 </div>
                 <div class="form-group">
-                  <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
-                  <input type="text" name="fecha_inicio" class="form-control"  placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off" disabled>
+                  <label for="producto">Producto</label>
+                  <input class="form-control" type="text" required name="producto" placeholder="Escriba el producto" disabled autocomplete="off">
                 </div>
-                <div class="form-group">
-                  <label for="fecha_fin">Fecha de fin de la cosecha</label>
-                  <input type="text" name="fecha_fin" class="form-control" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off" disabled>
+                <div id="ver_procesado">
+                  <div class="form-group">
+                    <label for="producto">Capacidad de producción</label>
+                    <input class="form-control" type="text" required name="capacidad_produccion" disabled autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label for="producto">Precio o valor</label>
+                    <input class="form-control" type="text" required name="precio_procesado" disabled autocomplete="off">
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label for="volumen_total">Volumen total en Kilogramos</label>
-                  <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
-                </div>
-                <div class="form-group">
-                  <label for="precio">Precio por kilogramos</label>
-                  <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
-                </div>
-                <div class="form-group">
-                  <label for="certificados">Certificados:</label>
-                  <ul id="certificados_cosecha"></ul>
+                <div id="ver_fresco">
+                  <div class="form-group">
+                    <label for="producto">Producto derivado</label>
+                    <input class="form-control" type="text" required name="producto_derivado" placeholder="Escriba el producto derivado" disabled autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label for="fecha_inicio">Fecha de inicio de la cosecha</label>
+                    <input type="text" name="fecha_inicio" class="form-control"  placeholder="Escriba una fecha aproximada del incio de la cosecha" required autocomplete="off" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="fecha_fin">Fecha de fin de la cosecha</label>
+                    <input type="text" name="fecha_fin" class="form-control" placeholder="Escriba una fecha aproximada del final de la cosecha" required autocomplete="off" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="volumen_total">Volumen total en Kilogramos</label>
+                    <input type="tel" name="volumen_total" class="form-control" placeholder="Escriba el número de kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="precio">Precio por kilogramos</label>
+                    <input type="tel" name="precio" class="form-control" placeholder="Escriba el precio de la cosecha por kilogramos" onKeyPress="return soloNumeros(event)" required autocomplete="off" disabled>
+                  </div>
+                  <div class="form-group">
+                    <label for="certificados">Certificados:</label>
+                    <ul id="certificados_cosecha"></ul>
+                  </div>
                 </div>
               </form> 
             </div>
@@ -742,6 +758,7 @@
   }
 
   function verCosecha(datos){
+    let idFotos = 0;
     cargaDatos = 0;
     $("#formVer :input[name='producto']").val(datos["producto"]);
     $("#formVer :input[name='terreno']").val(datos["finca"]);
@@ -749,6 +766,18 @@
     $("#formVer :input[name='fecha_fin']").val(datos["fecha_final"]);
     $("#formVer :input[name='volumen_total']").val(datos["volumen_total"]);
     $("#formVer :input[name='precio']").val(datos["precio"]);
+    $("#formVer :input[name='precio_procesado']").val(datos["precio"]);
+    $("#formVer :input[name='capacidad_produccion']").val(datos["capacidad_produccion"]);
+
+    if (datos["fk_finca_tipo"] == 1) {
+      $("#ver_fresco").removeClass("d-none");
+      $("#ver_procesado").addClass("d-none");
+      idFotos = datos['id'];
+    } else {
+      $("#ver_procesado").removeClass("d-none");
+      $("#ver_fresco").addClass("d-none");
+      idFotos = datos["fk_producto"];
+    }
 
     //Se trae la lista de certificados que tenga
     $.ajax({
@@ -791,7 +820,8 @@
       async: false,
       data: {
         accion: "fotosCosechas",
-        idCosecha: datos['id']
+        idCosecha: idFotos,
+        tipo: datos["fk_finca_tipo"]
       },
       success: function(data){
         cargaDatos++;

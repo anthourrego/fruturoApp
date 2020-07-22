@@ -28,15 +28,19 @@ function lista(){
   $primaryKey = 'id';
   // indexes
   $columns = array(
-              array( 'db' => 'c.id',                    'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => 'p.nombre',                'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => 'f.nombre',                'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => 'c.volumen_total',         'dt' => 'volumen_total',   'field' => 'volumen_total' ),
-              array( 'db' => 'c.estado',                'dt' => 'estado',          'field' => 'estado' ),
-              array( 'db' => 'c.precio',                'dt' => 'precio',          'field' => 'precio'),
-              array( 'db' => 'c.fecha_inicio',          'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
-              array( 'db' => 'c.fecha_final',           'dt' => 'fecha_final',     'field' => 'fecha_final'),
-              array( 'db' => 'c.fecha_creacion',        'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
+              array( 'db' => 'c.id',                    'dt' => 'id',                    'field' => 'id' ),
+              array( 'db' => 'c.fk_producto',           'dt' => 'fk_producto',           'field' => 'fk_producto' ),
+              array( 'db' => 'p.nombre',                'dt' => 'producto',              'field' => 'producto',       'as' => 'producto' ),
+              array( 'db' => 'f.nombre',                'dt' => 'finca',                 'field' => 'finca',          'as' => 'finca'),
+              array( 'db' => 'f.fk_finca_tipo',         'dt' => 'fk_finca_tipo',         'field' => 'fk_finca_tipo'),
+              array( 'db' => 'c.volumen_total',         'dt' => 'volumen_total',         'field' => 'volumen_total' ),
+              array( 'db' => 'c.volumen_total',         'dt' => 'volumen_total',         'field' => 'volumen_total' ),
+              array( 'db' => 'c.estado',                'dt' => 'estado',                'field' => 'estado' ),
+              array( 'db' => 'c.precio',                'dt' => 'precio',                'field' => 'precio'),
+              array( 'db' => 'c.fecha_inicio',          'dt' => 'fecha_inicio',          'field' => 'fecha_inicio'),
+              array( 'db' => 'c.fecha_final',           'dt' => 'fecha_final',           'field' => 'fecha_final'),
+              array( 'db' => 'c.fecha_creacion',        'dt' => 'fecha_creacion',        'field' => 'fecha_creacion'),
+              array( 'db' => 'c.capacidad_produccion',  'dt' => 'capacidad_produccion',  'field' => 'capacidad_produccion'),
             );
     
   $sql_details = array(
@@ -237,7 +241,11 @@ function fotosCosechas(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+  if ($_REQUEST["tipo"] == 1) {
+    $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+  }else{
+    $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_producto = :fk_producto", array(":fk_producto" => $_REQUEST["idCosecha"]));
+  }
 
   if ($datos['cantidad_registros'] > 0) {
     $resp["success"] = true;
