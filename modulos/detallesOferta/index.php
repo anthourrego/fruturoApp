@@ -39,101 +39,10 @@
       echo $lib->fontAwesome();
       echo $lib->sweetAlert2();
       echo $lib->jqueryValidate();
-      echo $lib->datatables();
       echo $lib->lightbox();
       echo $lib->proyecto();
-      echo $lib->infiniteScroll();
     ?>
     <style>
-      hr {
-        border-top: 1px solid #007bff;
-        width:70%;
-      }
-
-      a {color: #000;}
-
-      .card{
-        background-color: #FFFFFF;
-        padding:0;
-        -webkit-border-radius: 4px;
-        -moz-border-radius: 4px;
-        border-radius:4px;
-        box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
-        transition: box-shadow 500ms;
-      }
-
-      .card:hover{
-        box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.3);
-        color:black;
-      }
-
-      .card-img-top{
-        height: 250px;
-      }
-
-      .spinner {
-        margin: 60px auto;
-        width: 200px;
-        text-align: center;
-      }
-
-      .spinner > div {
-        width: 30px;
-        height: 30px;
-        background-color: #333;
-
-        border-radius: 100%;
-        display: inline-block;
-        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-      }
-
-      .spinner .bounce1 {
-        -webkit-animation-delay: -0.32s;
-        animation-delay: -0.32s;
-      }
-
-      .spinner .bounce2 {
-        -webkit-animation-delay: -0.16s;
-        animation-delay: -0.16s;
-      }
-
-      @-webkit-keyframes sk-bouncedelay {
-        0%, 80%, 100% { -webkit-transform: scale(0) }
-        40% { -webkit-transform: scale(1.0) }
-      }
-
-      @keyframes sk-bouncedelay {
-        0%, 80%, 100% { 
-          -webkit-transform: scale(0);
-          transform: scale(0);
-        } 40% { 
-          -webkit-transform: scale(1.0);
-          transform: scale(1.0);
-        }
-      }
-
-      .filtros{
-        position: sticky;
-        top: 70px;
-      }
-
-      .form-group{
-        margin-bottom: 5px;
-      }
-
-      /* se oculta scroll horizontal */
-      body{
-        overflow-x: hidden;
-      }
-
-      /* estilos boton filtros mobile */
-      .btnFiltrosMobile{
-        position: sticky;
-        top: 0px;
-        z-index: 1;
-      }
-
       .info{
         border: 0.1px solid #ddd;
       }
@@ -167,14 +76,26 @@
       .row > button{
         height: 50px;
       } 
+      
+      .carrousel{
+        height: 75vh;
+      }
 
     </style>
   </head>
   <body class="container-fluid">
-
+    <div  class="content-header col-12 text-left">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-12">
+            <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles De Oferta</h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
     <div class="row no-gutter">
       <!-- fotos de oferta -->
-      <div class="text-center col-md-7 col-12">
+      <div class="text-center col-md-7 col-12 carrousel">
 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" id="carrousel">
@@ -192,15 +113,6 @@
       </div>
       <!-- informacion de oferta -->
       <div class="text-center col-md-5 col-12">
-        <div  class="content-header col-12 text-center">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-12">
-                <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles De Oferta</h1>
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-          </div><!-- /.container-fluid -->
-        </div>
         <!-- product section -->
         <h4 class="text-left">Producto: </h4>
         <div class="row">
@@ -254,11 +166,42 @@
         </div>
         <hr>
         <div >
-          <button class="btn btn-verdeOscuro w-100">
+          <button class="btn btn-lg btn-verdeOscuro w-100" data-toggle="modal" data-target="#modalMensajes">
             Chatear con el vendedor
           </button>
         </div>
-        
+
+
+        <!-- Modal Mensaje -->
+        <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" style="height: calc(100vh - 60px)">
+              <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5>
+                <button data-toggle="tooltip" data-placement="top" title="Cargar mensajes" class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i></button>
+              </div>
+              <div id="contenidoMensajes" class="modal-body overflow-auto"></div> 
+              <div class="modal-footer">
+                <form id="formMensaje" class="w-100">
+                  <input type="hidden" name="accion" value="enviarMensaje">
+                  <input type="hidden" name="idCosecha">
+                  <input type="hidden" name="cosechaEstado">
+                  <input type="hidden" name="correo">
+                  <input type="hidden" name="nombre_usuario">
+                  <div class="form-group text-left">
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea class="form-control" required name="mensaje" rows="3"></textarea>
+                  </div>
+                  <div class="w-100 d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+                    <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -272,6 +215,65 @@
     $(function(){
       traerDatosOferta(getUrl('id'));
       cerrarCargando();
+
+      $("#formMensaje").submit(function(event){
+        event.preventDefault();
+        if($("#formMensaje").valid()){
+          $.ajax({
+            type: "POST",
+            url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
+            cache: false,
+            contentType: false,
+            dataType: 'json',
+            processData: false,
+            data: new FormData(this),
+            beforeSend: function(){
+              $('#formMensaje :input').attr("disabled", true);
+              //Desabilitamos el botón
+              $('#btnCrear').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`);
+              $("#btnCrear").attr("disabled" , true);
+            },
+            success: function(data){
+              if (data.success) {
+                cargarMensajes();
+                $("#formMensaje :input[name='mensaje']").val('');
+                $("#formMensaje :input").removeClass("is-valid");
+                $("#formMensaje :input").removeClass("is-invalid");
+                Swal.fire({
+                  toast: true,
+                  position: 'bottom-end',
+                  icon: 'success',
+                  title: data.msj,
+                  showConfirmButton: false,
+                  timer: 5000
+                });
+              }else{
+                Swal.fire({
+                  icon: 'error',
+                  html: data.msj
+                })
+              }
+            },
+            error: function(){
+              //Habilitamos el botón
+              Swal.fire({
+                icon: 'error',
+                html: 'Error al enviar los datos.'
+              });
+              //Habilitamos el botón
+              $('#formMensaje :input').attr("disabled", false);
+              $('#btnCrear').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+              $("#btnCrear").attr("disabled", false);
+            },
+            complete: function(){
+              //Habilitamos el botón
+              $('#formMensaje :input').attr("disabled", false);
+              $('#btnCrear').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+              $("#btnCrear").attr("disabled", false);
+            }
+          });
+        }
+      });
 
     });
 
@@ -416,7 +418,7 @@
         async: false,
         data: {
           accion: "traerMensajes",
-          idCosecha: $("#formMensaje :input[name='idCosecha']").val()
+          idCosecha: getUrl('id')
         },
         success: function(data){
           $("#contenidoMensajes").empty();
@@ -457,19 +459,6 @@
       });
     }
   
-    function iniciarScroll(){
-   
-      $(window).on("scroll", function() {
-        var scrollHeight = $(document).height();
-        var scrollPos = $(window).height() + $(window).scrollTop();
-        if ((scrollHeight - scrollPos) / scrollHeight == 0) {             
-          listarOfertas();
-        }
-      });
-
-
-    }
-
     function traerDatosOferta(id){
       $.ajax({
         url: "acciones",
@@ -482,16 +471,16 @@
         },
         success: function(data){ 
           if (data.success) {
-
             const datos = ordenarData(data.msj);
-            // console.log(datos['imagenes']);
-            const cont = 0;
+            configMensajes(datos);
+            let cont = 0;
             $.each(datos['imagenes'], function(key, value){
               $("#carrousel").append(`
                 <div class="carousel-item ${cont == 0 ? 'active' : ''}">
                   <img class="d-block w-100" src="<?= $ruta_raiz ?>${value}" alt="">
                 </div>
-              `)
+              `);
+              cont ++;
             })
             // se recorren elementos para setear valor correspondiente :)
             $.each(datos, function(key, value){
@@ -513,9 +502,6 @@
           })
         }
       });
-
-
-
     }
 
     function ordenarData(arrayDatos){
@@ -532,6 +518,15 @@
       }
 
       return orderedData;
+    }
+
+    function configMensajes(datos){
+      $("#formMensaje :input[name='idCosecha']").val(datos["id_cosecha"]);
+      $("#formMensaje :input[name='cosechaEstado']").val(datos["estado"]);
+      $("#formMensaje :input[name='correo']").val(datos["correo_vendedor"]);
+      $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre_vendedor"]);
+      cargarMensajes();
+      // $("#modalMensajes").modal("show");
     }
 
   </script>

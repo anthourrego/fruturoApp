@@ -200,40 +200,7 @@
         <!-- Main content -->
         <section class="content">
           <div class="container-fluid">
-            <!-- <div class="card-header d-flex justify-content-end">
-              <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear finca</button>
-            </div> -->
-            <!-- /.card-header -->
-            <!-- <table id="tabla" class="table table-bordered table-hover table-sm w-100">
-              <div class="input-group mb-3 w-md-25 w-100">
-                <select class="custom-select" id="selectEstado" name="status">
-                  <option value="1" selected>Activo</option>
-                  <option value="2">En Proceso</option>
-                  <option value="3">Finalizado</option>
-                  <option value="0">Cancelado</option>
-                </select>
-                <div class="input-group-append">
-                  <label class="input-group-text" for="inputGroupSelect02">Estado</label>
-                </div>
-              </div>
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col">Departamento</th>
-                  <th scope="col">Municipio</th>
-                  <th scope="col">Persona</th>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Volumen total</th>
-                  <th scope="col">Precio KG</th>
-                  <th scope="col">Inicio cosecha</th>
-                  <th scope="col">Fin cosecha</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table> -->
 
-            
-            
             <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-3 row-cols-xl-4">
             </div>
 
@@ -713,7 +680,6 @@
             var ofertas = ordenarData(data.msj);
             ofertas.forEach(oferta => { 
               inicio++;
-              console.log(oferta);
               $('#contenedorOfertas').append(`
                 <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
                   <div class="card text-center" >

@@ -27,9 +27,9 @@ function traerDatosOferta(){
   $resp["success"] = false;
 
   $datos = $db->consulta("SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
-    cosechas.fecha_inicio, cosechas.fecha_final, productos.nombre AS producto, fincas.nombre AS finca, 
+    cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.nombre AS producto, fincas.nombre AS finca, 
     fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
-    usuarios.id AS id_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
+    usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
     documentos.ruta FROM COSECHAS INNER JOIN productos on cosechas.fk_producto = productos.id 
     INNER JOIN fincas ON fincas.id = cosechas.fk_finca INNER JOIN usuarios ON 
     cosechas.fk_creador = usuarios.id inner join cosechas_productos_documentos AS documentos
@@ -48,107 +48,6 @@ function traerDatosOferta(){
   $db->desconectar();
 
   return json_encode($resp);  
-}
-
-function lista(){
-  global $usuario;
-  $table      = 'cosechas';
-  // Table's primary key
-  $primaryKey = 'id';
-  // indexes
-  $columns = array(
-              array( 'db' => 'c.id',                                'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => 'muni.nombre',                         'dt' => 'municipio',       'field' => 'municipio',      'as' => 'municipio' ),
-              array( 'db' => 'dep.nombre',                          'dt' => 'departamento',    'field' => 'departamento',   'as' => 'departamento' ),
-              array( 'db' => 'p.nombre',                            'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => 'u.id',                                'dt' => 'idUsuario',       'field' => 'idUsuario',      'as' => 'idUsuario' ),
-              array( 'db' => 'u.correo',                            'dt' => 'correo',          'field' => 'correo'),
-              array( 'db' => 'concat(u.nombres, " ", u.apellidos)', 'dt' => 'nombre',          'field' => 'nombre',         'as' => 'nombre' ),
-              array( 'db' => 'f.nombre',                            'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => 'c.volumen_total',                     'dt' => 'volumen_total',   'field' => 'volumen_total' ),
-              array( 'db' => 'c.estado',                            'dt' => 'cosecha_estado',  'field' => 'cosecha_estado', 'as' => 'cosecha_estado'),
-              array( 'db' => 'c.precio',                            'dt' => 'precio',          'field' => 'precio'),
-              array( 'db' => 'c.fecha_inicio',                      'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
-              array( 'db' => 'c.fecha_final',                       'dt' => 'fecha_final',     'field' => 'fecha_final'),
-              array( 'db' => 'c.fecha_creacion',                    'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
-            );
-    
-  $sql_details = array(
-                  'user' => BDUSER,
-                  'pass' => BDPASS,
-                  'db'   => BDNAME,
-                  'host' => BDSERVER
-                );
-      
-  $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id INNER JOIN municipios AS muni ON muni.id = f.fk_municipio INNER JOIN departamentos AS dep ON dep.id = muni.fk_departamento INNER JOIN usuarios AS u ON u.id = c.fk_creador";
-  $extraWhere= "c.estado = ".$_GET['estado'];
-  $groupBy = "";
-  $having = "";
-  return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
-}
-
-function listaOfertas(){
-  global $usuario;
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-  $inicio = (int)$_POST['inicio'];
-  $cantidad = (int)$_POST['cantidad'];
-
-  // ---------------- filtros -------------------
-  $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
-  $filtroTipo = $_POST['tipo'] == -1 ? '' : $_POST['tipo'];
-  $filtroDepartamento = $_POST['departamento'] == -1 ? '' : "departamentos.id = ".$_POST['departamento'];
-  $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
-  $filtroTipo = $_POST['tipo'];
-  $filtroFruta = $_POST['fruta'] == -1 ? '' : 'cosechas.fk_producto ='.$_POST['fruta'];
-
-  // ----------------- Conector And ---------------------
-  $andTipo = $filtroTipo == -1 ? '' : "and";
-  $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
-  $andFruta = ($filtroFruta != '' && $filtroDepartamento != '') ? 'and' : '';
-  
-  // ----------------- Conector Where ---------------------
-
-  $where = '';
-
-
-
-  if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != ''){
-    $where = 'where';
-  }
-
-
-
-  $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
-  usuarios.apellidos AS apellidoCreador, 
-  productos.nombre AS producto, cosechas.id,
-  cosechas.volumen_total,
-  cosechas.precio, 
-  cosechas.fecha_creacion,
-  cosechas.fecha_inicio, 
-  cosechas.fecha_final, 
-  cosechas_productos_documentos.ruta, 
-  fincas.nombre AS nombreFinca,
-  departamentos.nombre as departamento,
-  municipios.nombre AS municipio FROM cosechas INNER JOIN productos ON 
-  cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id
-  INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
-  cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
-  fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ORDER BY cosechas.precio ".$filtroOrden."
-  LIMIT ".$inicio.",".$cantidad);
-
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-  $db->desconectar();
-
-  return json_encode($resp);
-  
 }
 
 function datosUsuario(){
