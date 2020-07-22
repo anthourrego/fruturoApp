@@ -720,8 +720,8 @@
                     <img class="card-img-top" src="<?= $ruta_raiz ?>${oferta.ruta}" alt="Card image cap">
                     <div class="p-2 oferta">
                       <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-column">
-                          <span>${oferta.producto} </span>
+                        <div class="d-flex flex-column text-left">
+                          <span>${oferta.producto}</span>
                           <span>${oferta.volumen_total} Kg </span>
                         </div>
                         <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
@@ -732,7 +732,7 @@
                     </div>
                     <div class="text-muted p-1">
                       <div class="d-flex justify-content-between">
-                        <div style="font-size: 12px;" class="d-flex flex-column">
+                        <div style="font-size: 12px;" class="d-flex flex-column text-left">
                           <span>${oferta.departamento}</span>
                           <span>${oferta.municipio}<span>
                         </div>

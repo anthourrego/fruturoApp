@@ -144,10 +144,6 @@
 
       .section{
         margin-bottom: 20px !important;
-        margin: 4px;
-        height: 100px;
-        border-radius: 10px;
-        background-color: #ececec;
       }
 
       .nombreProducto{
@@ -163,12 +159,20 @@
         font-size: 30px;
       }
 
+      hr{
+        width: 90%;
+        border-top: 1px solid gray;
+      }
+
+      .row > button{
+        height: 50px;
+      } 
 
     </style>
   </head>
-  <body>
+  <body class="container-fluid">
 
-    <div class="row">
+    <div class="row no-gutter">
       <!-- fotos de oferta -->
       <div class="text-center col-md-7 col-12">
 
@@ -187,7 +191,7 @@
 
       </div>
       <!-- informacion de oferta -->
-      <div class="text-center col-md-5 col-12 info">
+      <div class="text-center col-md-5 col-12">
         <div  class="content-header col-12 text-center">
           <div class="container-fluid">
             <div class="row mb-2">
@@ -198,50 +202,63 @@
           </div><!-- /.container-fluid -->
         </div>
         <!-- product section -->
-        <div>Producto</div>
-        <div class="info row section">
-          <div class="col-6 m-auto">
-            <div class="row text-center">
-              <div class="col-12 nombreProducto" id="producto"></div>
+        <h4 class="text-left">Producto: </h4>
+        <div class="row">
+          <div class="col m-auto">
+            <div class="row text-left">
+              <div class="col-12 " id="producto"></div>
             </div>
-            <div class="row text-center">
+            <div class="row text-left">
               <div class="col-12 cantidad"><span id="volumen_total"></span> Kg</div>
             </div>
           </div>
-          <div class="col-6 m-auto">
-            <div class="precio">$<span id="precio"></span></div>
-          </div>      
-      
-        </div>
-        <!-- location section -->
-        <div>Ubicación</div>
-        <div class="info row section">
-          <div class="col-8 m-auto">
-            <div class="row">
-              <span class="col nombreProducto" id="finca"></span>
+          <div class="col m-auto">
+            <div class="row text-left">
+              <div class="col-12 ">Precio</div>
             </div>
-            <div>
+            <div class="row text-left">
+              <div class="col-12">$<span id="precio"></span></div>
+            </div>
+          </div>     
+        </div>
+        <hr>
+        <!-- location  -->
+        <h4 class="text-left">Ubicación: </h4>
+        <div class="row">
+          <div class="col-6 m-auto">
+            <div class="row text-left">
+              <span class="col" id="finca"></span>
+            </div>
+            <div class="row text-left">
               <span class="col" id="direccion"></span>
             </div>
           </div>
-          <div class="col-4 m-auto">
-            <div class="row">
+          <div class="col-6 m-auto">
+            <div class="row text-left">
               <span class="col" id="municipio"></span>
             </div>
-            <div>
+            <div class="row text-left">
               <span class="col" id="departamento"></span>
             </div>
           </div>      
       
         </div>
-        <!-- vendedor section -->
-        <div>Vendedor</div>
-        <div class="info section d-flex flex-column justify-content-center">
-          <div id="nombre_vendedor" class="nombreProducto">
+        <hr>
+        <!-- vendedor  -->
+        <h4 class="text-left">Vendedor: </h4>
+        <div class="row">
+          <div class="col-12 text-left" id="nombre_vendedor">
           </div>
-          <div id="telefono">
+          <div class="col-12 text-left" id="telefono">
           </div>
         </div>
+        <hr>
+        <div >
+          <button class="btn btn-verdeOscuro w-100">
+            Chatear con el vendedor
+          </button>
+        </div>
+        
       </div>
     </div>
 
@@ -472,7 +489,7 @@
             $.each(datos['imagenes'], function(key, value){
               $("#carrousel").append(`
                 <div class="carousel-item ${cont == 0 ? 'active' : ''}">
-                  <img class="d-block w-100" src="${value}" alt="First slide">
+                  <img class="d-block w-100" src="<?= $ruta_raiz ?>${value}" alt="">
                 </div>
               `)
             })
