@@ -597,11 +597,6 @@
         resetFiltros();
       });
 
-      $(".oferta").click( function(){
-        console.log(this);
-      });
-
-
       /* $(".selectOrden, .selectTipo, .selectDepartamento, .selectMunicipio, .selectFruta").change(function () {
         reset();
         listarOfertas();
@@ -708,7 +703,6 @@
           derivado
         },
         success: function(data){ 
-          console.log(data);
           if (data.success) {
             // se guardan ofertas con la data ordenada
             if(inicio > 0){
@@ -719,10 +713,11 @@
             var ofertas = ordenarData(data.msj);
             ofertas.forEach(oferta => { 
               inicio++;
+              console.log(oferta);
               $('#contenedorOfertas').append(`
                 <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
                   <div class="card text-center" >
-                    <img class="card-img-top" src="${window.location.origin+'/fruturoApp/'+oferta.ruta}" alt="Card image cap">
+                    <img class="card-img-top" src="<?= $ruta_raiz ?>${oferta.ruta}" alt="Card image cap">
                     <div class="p-2 oferta">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column">

@@ -173,16 +173,7 @@
       <div class="text-center col-md-7 col-12">
 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="../../assets/img/imagen.png" alt="First slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="../../assets/img/imagen.png" alt="Second slide">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="../../assets/img/imagen.png" alt="Third slide">
-          </div>
+        <div class="carousel-inner" id="carrousel">
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -474,9 +465,20 @@
         },
         success: function(data){ 
           if (data.success) {
+
+            const datos = ordenarData(data.msj);
+            // console.log(datos['imagenes']);
+            const cont = 0;
+            $.each(datos['imagenes'], function(key, value){
+              $("#carrousel").append(`
+                <div class="carousel-item ${cont == 0 ? 'active' : ''}">
+                  <img class="d-block w-100" src="${value}" alt="First slide">
+                </div>
+              `)
+            })
             // se recorren elementos para setear valor correspondiente :)
-            $.each(ordenarData(data.msj), function(key, value){
-             
+            $.each(datos, function(key, value){
+              
               if($('#'+key)[0]){
                 $('#'+key)[0].innerText = value;
               }
