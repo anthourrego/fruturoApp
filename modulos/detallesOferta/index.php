@@ -78,7 +78,7 @@
       } 
       
       .carrousel{
-        height: 75vh;
+        max-height: 75vh;
       }
 
     </style>
