@@ -77,18 +77,18 @@ function crear(){
       if ($id_registro > 0) {
 
         $fail = 0;
+        
+        $foto_frente = subirArchivos($_FILES['foto_frente'], $id_registro, 1);
 
-        $tabla = subirArchivos($_FILES['tabla_nutricional'], $id_registro, 1);
+        if ($foto_frente) {
+          
+          $foto_reves = subirArchivos($_FILES['foto_reves'], $id_registro, 2);
+          
+          if ($foto_reves) {
+            
+            $tabla = subirArchivos($_FILES['tabla_nutricional'], $id_registro, 3);
 
-        if ($tabla) {
-
-          $foto_frente = subirArchivos($_FILES['foto_frente'], $id_registro, 2);
-
-          if ($foto_frente) {
-
-            $foto_reves = subirArchivos($_FILES['foto_reves'], $id_registro, 3);
-
-            if ($foto_reves) {
+            if ($tabla) {
 
               $db->insertLogs("productos", $id_registro, "Se crea el producto ", $usuario["id"]);
               $resp['success'] = true;

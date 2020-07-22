@@ -198,7 +198,7 @@ function enviarCorrreo($correo, $codigo, $metodo){
   require($ruta_raiz."librerias/phpmailer/src/Exception.php");
   $mail = new PHPMailer(true); // Passing `true` enables exceptions
   
-  $enlace = 'http://localhost/fruturoApp/?'.$metodo.'='.$codigo;
+  $enlace = 'http://app.fruturo.us/?'.$metodo.'='.$codigo;
   try {		
 		//Create a new PHPMailer instance
     $mail = new PHPMailer;
