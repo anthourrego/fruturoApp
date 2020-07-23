@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-07-2020 a las 16:57:16
+-- Tiempo de generación: 23-07-2020 a las 06:22:31
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -56,35 +56,24 @@ CREATE TABLE `cosechas` (
   `fk_producto` int(11) NOT NULL DEFAULT 0,
   `fk_productos_derivados` int(11) DEFAULT NULL,
   `fk_finca` int(11) NOT NULL DEFAULT 0,
-  `volumen_total` float NOT NULL DEFAULT 0,
+  `volumen_total` float DEFAULT NULL,
   `precio` decimal(10,0) NOT NULL DEFAULT 0,
-  `fecha_inicio` date NOT NULL,
-  `fecha_final` date NOT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_final` date DEFAULT NULL,
   `estado` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL,
-  `fk_creador` int(11) NOT NULL DEFAULT 0
+  `fk_creador` int(11) NOT NULL DEFAULT 0,
+  `capacidad_produccion` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `cosechas`
 --
 
-INSERT INTO `cosechas` (`id`, `fk_producto`, `fk_productos_derivados`, `fk_finca`, `volumen_total`, `precio`, `fecha_inicio`, `fecha_final`, `estado`, `fecha_creacion`, `fk_creador`) VALUES
-(1, 1, 0, 1, 456465, '9999999999', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:00:31', 1),
-(2, 1, 0, 1, 2321, '23321', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:06:47', 1),
-(3, 1, 0, 2, 5000, '40000', '2020-07-16', '2020-07-25', 1, '2020-07-14 22:15:10', 1),
-(4, 3, 0, 3, 160, '30000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:19:23', 1),
-(5, 4, 0, 2, 10000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:23:00', 1),
-(6, 5, 0, 1, 4000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:23:30', 1),
-(7, 6, 0, 3, 1000, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:24:00', 1),
-(8, 7, 0, 1, 5000, '2000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:33:41', 1),
-(9, 8, 0, 2, 50, '5000', '2020-07-14', '2020-07-14', 1, '2020-07-14 22:34:15', 1),
-(10, 9, 0, 3, 50, '4000', '2020-07-01', '2020-07-14', 1, '2020-07-14 22:36:58', 1),
-(11, 15, 0, 1, 100, '4000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:03:56', 1),
-(12, 14, 0, 2, 400, '4000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:04:19', 1),
-(13, 12, 0, 3, 100, '7000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:05:01', 1),
-(14, 10, 0, 3, 80, '6000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:06:14', 1),
-(15, 12, 0, 1, 100, '5000', '2020-07-15', '2020-07-15', 1, '2020-07-15 21:06:41', 1);
+INSERT INTO `cosechas` (`id`, `fk_producto`, `fk_productos_derivados`, `fk_finca`, `volumen_total`, `precio`, `fecha_inicio`, `fecha_final`, `estado`, `fecha_creacion`, `fk_creador`, `capacidad_produccion`) VALUES
+(1, 1, 2, 1, 45000, '200', '2020-07-21', '2020-07-21', 1, '2020-07-21 18:56:24', 1, NULL),
+(2, 3, NULL, 2, NULL, '1500', NULL, NULL, 1, '2020-07-21 18:56:52', 1, '200'),
+(3, 2, 3, 1, 2213, '321312', '2020-07-21', '2020-07-21', 1, '2020-07-21 20:18:55', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -105,27 +94,8 @@ CREATE TABLE `cosechas_certificaciones` (
 --
 
 INSERT INTO `cosechas_certificaciones` (`id`, `fk_cosecha`, `fk_certificacion`, `fecha_creacion`, `fk_creador`) VALUES
-(1, 1, 1, '2020-07-14 00:00:00', 1),
-(2, 2, 1, '2020-07-14 00:00:00', 1),
-(3, 2, 1, '2020-07-13 00:00:00', 1),
-(4, 2, 2, '2020-07-13 00:00:00', 1),
-(5, 3, 1, '2020-07-14 00:00:00', 1),
-(6, 3, 2, '2020-07-14 00:00:00', 1),
-(7, 4, 1, '2020-07-14 00:00:00', 1),
-(8, 4, 2, '2020-07-14 00:00:00', 1),
-(9, 5, 1, '2020-07-14 00:00:00', 1),
-(10, 6, 1, '2020-07-14 00:00:00', 1),
-(11, 7, 1, '2020-07-14 00:00:00', 1),
-(12, 7, 2, '2020-07-14 00:00:00', 1),
-(13, 8, 1, '2020-07-14 00:00:00', 1),
-(14, 9, 1, '2020-07-14 00:00:00', 1),
-(15, 9, 2, '2020-07-14 00:00:00', 1),
-(16, 10, 1, '2020-07-14 00:00:00', 1),
-(17, 11, 1, '2020-07-15 00:00:00', 1),
-(18, 12, 1, '2020-07-15 00:00:00', 1),
-(19, 13, 1, '2020-07-15 00:00:00', 1),
-(20, 14, 1, '2020-07-15 00:00:00', 1),
-(21, 15, 1, '2020-07-15 00:00:00', 1);
+(1, 1, 1, '2020-07-21 00:00:00', 1),
+(2, 3, 1, '2020-07-21 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -149,30 +119,19 @@ CREATE TABLE `cosechas_productos_documentos` (
 --
 
 INSERT INTO `cosechas_productos_documentos` (`id`, `tipo`, `ruta`, `tipo_documento`, `fk_producto`, `fk_cosecha`, `fecha_creacion`, `fk_creador`) VALUES
-(1, 'jpg', 'almacenamiento/cosechas/1/0.jpg', NULL, NULL, 1, '2020-07-14 22:00:31', 1),
-(2, 'jpg', 'almacenamiento/cosechas/2/0.jpg', NULL, NULL, 2, '2020-07-14 22:06:47', 1),
-(3, 'jpg', 'almacenamiento/cosechas/2/1.jpg', NULL, NULL, 2, '2020-07-13 20:12:33', 1),
-(4, 'jpg', 'almacenamiento/cosechas/2/2.jpg', NULL, NULL, 2, '2020-07-13 20:12:33', 1),
-(5, 'jpg', 'almacenamiento/cosechas/3/0.jpg', NULL, NULL, 3, '2020-07-14 22:15:10', 1),
-(6, 'jpg', 'almacenamiento/cosechas/4/0.jpg', NULL, NULL, 4, '2020-07-14 22:19:23', 1),
-(7, 'jpg', 'almacenamiento/cosechas/4/1.jpg', NULL, NULL, 4, '2020-07-14 22:19:23', 1),
-(8, 'jpg', 'almacenamiento/cosechas/5/0.jpg', NULL, NULL, 5, '2020-07-14 22:23:00', 1),
-(9, 'jpg', 'almacenamiento/cosechas/5/1.jpg', NULL, NULL, 5, '2020-07-14 22:23:00', 1),
-(10, 'jpg', 'almacenamiento/cosechas/6/0.jpg', NULL, NULL, 6, '2020-07-14 22:23:30', 1),
-(11, 'jpg', 'almacenamiento/cosechas/6/1.jpg', NULL, NULL, 6, '2020-07-14 22:23:30', 1),
-(12, 'jpg', 'almacenamiento/cosechas/7/0.jpg', NULL, NULL, 7, '2020-07-14 22:24:00', 1),
-(13, 'jpg', 'almacenamiento/cosechas/8/0.jpg', NULL, NULL, 8, '2020-07-14 22:33:41', 1),
-(14, 'jpg', 'almacenamiento/cosechas/8/1.jpg', NULL, NULL, 8, '2020-07-14 22:33:41', 1),
-(15, 'jpeg', 'almacenamiento/cosechas/9/0.jpeg', NULL, NULL, 9, '2020-07-14 22:34:15', 1),
-(16, 'jpg', 'almacenamiento/cosechas/9/1.jpg', NULL, NULL, 9, '2020-07-14 22:34:15', 1),
-(17, 'jpg', 'almacenamiento/cosechas/10/0.jpg', NULL, NULL, 10, '2020-07-14 22:36:58', 1),
-(18, 'jpg', 'almacenamiento/cosechas/10/1.jpg', NULL, NULL, 10, '2020-07-14 22:36:58', 1),
-(19, 'jpg', 'almacenamiento/cosechas/11/0.jpg', NULL, NULL, 11, '2020-07-15 21:03:56', 1),
-(20, 'jpg', 'almacenamiento/cosechas/12/0.jpg', NULL, NULL, 12, '2020-07-15 21:04:19', 1),
-(21, 'jpg', 'almacenamiento/cosechas/13/0.jpg', NULL, NULL, 13, '2020-07-15 21:05:01', 1),
-(22, 'jpg', 'almacenamiento/cosechas/14/0.jpg', NULL, NULL, 14, '2020-07-15 21:06:14', 1),
-(23, 'jpg', 'almacenamiento/cosechas/14/1.jpg', NULL, NULL, 14, '2020-07-15 21:06:14', 1),
-(24, 'jpg', 'almacenamiento/cosechas/15/0.jpg', NULL, NULL, 15, '2020-07-15 21:06:41', 1);
+(1, 'jpg', 'almacenamiento/productos/3/1.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(2, 'jpg', 'almacenamiento/productos/3/2.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(3, 'jpg', 'almacenamiento/productos/3/3.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(4, 'jpg', 'almacenamiento/cosechas/1/0.jpg', NULL, NULL, 1, '2020-07-21 18:56:24', 1),
+(5, 'jpg', 'almacenamiento/cosechas/3/0.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(6, 'jpg', 'almacenamiento/cosechas/3/1.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(7, 'jpg', 'almacenamiento/cosechas/3/2.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(8, 'jpg', 'almacenamiento/cosechas/3/3.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(9, 'jpg', 'almacenamiento/cosechas/3/4.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(10, 'jpg', 'almacenamiento/cosechas/3/5.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(11, 'jpg', 'almacenamiento/cosechas/3/6.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(12, 'png', 'almacenamiento/cosechas/3/7.png', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(13, 'jpg', 'almacenamiento/cosechas/3/8.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1);
 
 -- --------------------------------------------------------
 
@@ -183,11 +142,54 @@ INSERT INTO `cosechas_productos_documentos` (`id`, `tipo`, `ruta`, `tipo_documen
 CREATE TABLE `cosecha_oferta` (
   `id` int(11) NOT NULL,
   `fk_cosecha` int(11) NOT NULL DEFAULT 0,
-  `mensaje` text NOT NULL DEFAULT '0',
-  `oferta` decimal(10,0) NOT NULL DEFAULT 0,
-  `fk_creador` int(11) NOT NULL DEFAULT 0,
+  `fk_vendedor` int(11) NOT NULL DEFAULT 0,
+  `fk_comprador` int(11) NOT NULL DEFAULT 0,
+  `estado` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosecha_oferta`
+--
+
+INSERT INTO `cosecha_oferta` (`id`, `fk_cosecha`, `fk_vendedor`, `fk_comprador`, `estado`, `fecha_creacion`) VALUES
+(1, 1, 1, 2, 1, '2020-07-22 19:57:41'),
+(2, 3, 2, 1, 1, '2020-07-22 20:01:14'),
+(5, 2, 1, 2, 1, '2020-07-22 20:55:38');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cosecha_oferta_mensajes`
+--
+
+CREATE TABLE `cosecha_oferta_mensajes` (
+  `id` int(11) NOT NULL,
+  `fk_cosecha_oferta` int(11) NOT NULL,
+  `mensaje` text NOT NULL,
+  `fk_creador` int(11) NOT NULL,
+  `fecha_creacion` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosecha_oferta_mensajes`
+--
+
+INSERT INTO `cosecha_oferta_mensajes` (`id`, `fk_cosecha_oferta`, `mensaje`, `fk_creador`, `fecha_creacion`) VALUES
+(1, 1, 'Que se la compro', 2, '2020-07-22 19:58:12'),
+(2, 2, 'Que se vendo', 1, '2020-07-22 19:58:12'),
+(4, 3, 'Compro compro', 2, '2020-07-22 20:56:08'),
+(5, 1, 'no se la compro ', 1, '2020-07-22 22:18:13'),
+(6, 1, 'Compremela', 1, '2020-07-22 22:18:25'),
+(7, 1, 'No se la quiero vender', 2, '2020-07-22 22:19:23'),
+(8, 5, 'Puto vendame esa camisa\r\n', 1, '2020-07-22 22:27:51'),
+(9, 5, 'funca\r\n', 1, '2020-07-22 22:28:24'),
+(10, 1, 'funcadasdsad', 1, '2020-07-22 22:29:43'),
+(11, 5, 'Funcaaaaa', 1, '2020-07-22 23:08:32'),
+(12, 1, 'Prueba correo', 1, '2020-07-22 23:09:08'),
+(13, 1, 'Prueba correo', 1, '2020-07-22 23:10:06'),
+(14, 5, 'Pruebas', 1, '2020-07-22 23:10:44'),
+(15, 5, 'Pruebas', 1, '2020-07-22 23:16:07');
 
 -- --------------------------------------------------------
 
@@ -265,14 +267,8 @@ CREATE TABLE `fincas` (
 --
 
 INSERT INTO `fincas` (`id`, `nombre`, `fk_municipio`, `direccion`, `hectareas`, `registro_ica`, `fk_usuario`, `fecha_creacion`, `estado`, `fk_finca_tipo`) VALUES
-(1, '21321', 1, '231312', 321231, NULL, 1, '2020-06-25 12:12:11', 1, 1),
-(2, 'las bailarinas', 888, 'mz e casa 34 la chimba', 5000, '123124', 1, '2020-07-14 22:14:10', 1, 1),
-(3, 'la esmeralda', 1071, 'la mar&iacute;a valle', 50, '123', 1, '2020-07-14 22:17:23', 1, 1),
-(4, 'Consumer', 888, 'Carrera 35 Nro 72-05', NULL, NULL, 1, '2020-07-20 00:01:17', 1, 2),
-(5, 'Consumer 2', 347, 'funca', 0, '', 1, '2020-07-20 00:05:25', 1, 2),
-(6, 'pruebas', 351, 'funcara', NULL, NULL, 1, '2020-07-20 00:09:56', 1, 2),
-(7, 'La casita', 351, 'funcara\r\n', 4500, NULL, 1, '2020-07-20 00:10:26', 1, 1),
-(8, 'La quinta', 329, 'La finquita de cuqui', 8700, '45000fsdfsa', 1, '2020-07-20 00:10:54', 1, 1);
+(1, 'La finquita', 888, 'Carrera 35 ', 4500, NULL, 1, '2020-07-21 18:54:12', 1, 1),
+(2, 'La fabrica', 888, 'Carrera 35', NULL, NULL, 1, '2020-07-21 18:54:36', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -316,32 +312,39 @@ CREATE TABLE `logs` (
 --
 
 INSERT INTO `logs` (`id`, `nombre_tabla`, `id_registro`, `accion`, `fk_usuario`, `fecha_creacion`) VALUES
-(1, 'cosechas_productos_documentos', 1, 'Creacion de fotos de consecha con id: 1', 1, '2020-07-14 22:00:31'),
-(2, 'cosechas', 1, 'Se crea la cosecha', 1, '2020-07-14 22:00:31'),
-(3, 'cosechas_certificaciones', 1, 'Se crea la cosecha con el certificado', 1, '2020-07-14 22:00:32'),
-(4, 'cosechas_productos_documentos', 2, 'Creacion de fotos de consecha con id: 2', 1, '2020-07-14 22:06:47'),
-(5, 'cosechas', 2, 'Se crea la cosecha', 1, '2020-07-14 22:06:47'),
-(6, 'cosechas_certificaciones', 2, 'Se crea la cosecha con el certificado', 1, '2020-07-14 22:06:47'),
-(7, 'perfiles', 2, 'Se inhabilita el perfil Productor', 1, '2020-07-14 22:13:49'),
-(8, 'perfiles', 3, 'Se edita el perfil Usuario', 1, '2020-07-14 22:14:04'),
-(9, 'usuarios', 2, 'Se activa usuario', 2, '2020-07-14 22:23:00'),
-(10, 'modulos', 15, 'Se ha creado el módulo predios_tipos', 1, '2020-07-16 21:30:56'),
-(11, 'usuarios_modulos', 17, 'El permiso se ha creado', 1, '2020-07-16 21:37:05'),
-(12, 'fincas_tipos', 1, 'Se crea el finca tipo Frescos', 1, '2020-07-16 22:01:39'),
-(13, 'fincas_tipos', 1, 'Se edita el tipo predios Frescos1', 1, '2020-07-16 22:13:28'),
-(14, 'fincas_tipos', 1, 'Se edita el tipo predios Frescos', 1, '2020-07-16 22:13:32'),
-(15, 'usuarios_modulos', 18, 'El permiso se ha creado', 1, '2020-07-16 22:25:42'),
-(16, 'usuarios_modulos', 19, 'El permiso se ha creado', 1, '2020-07-16 22:25:47'),
-(17, 'fincas_tipos', 1, 'Se inhabilita el fincas_tipos Frescos', 1, '2020-07-16 22:30:25'),
-(18, 'fincas_tipos', 1, 'Se habilita el fincas_tipos Frescos', 1, '2020-07-16 22:30:38'),
-(19, 'fincas_tipos', 2, 'Se crea el predio tipo Procesados', 1, '2020-07-16 22:30:59'),
-(20, 'fincas_tipos', 2, 'Se edita el tipo predios Procesados3', 1, '2020-07-16 22:31:47'),
-(21, 'fincas_tipos', 2, 'Se edita el tipo predios Procesados', 1, '2020-07-16 22:31:50'),
-(22, 'fincas', 4, 'Se crea la finca Consumer', 1, '2020-07-20 00:01:17'),
-(23, 'fincas', 5, 'Se crea la finca Consumer 2', 1, '2020-07-20 00:05:25'),
-(24, 'fincas', 6, 'Se crea la finca pruebas', 1, '2020-07-20 00:09:56'),
-(25, 'fincas', 7, 'Se crea la finca La casita', 1, '2020-07-20 00:10:26'),
-(26, 'fincas', 8, 'Se crea la finca La quinta', 1, '2020-07-20 00:10:54');
+(1, 'fincas', 1, 'Se crea la finca La finquita', 1, '2020-07-21 18:54:12'),
+(2, 'fincas', 2, 'Se crea la finca La fabrica', 1, '2020-07-21 18:54:36'),
+(3, 'cosechas_productos_documentos', 1, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(4, 'cosechas_productos_documentos', 2, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(5, 'cosechas_productos_documentos', 3, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(6, 'productos', 3, 'Se crea el producto ', 1, '2020-07-21 18:55:27'),
+(7, 'cosechas_productos_documentos', 4, 'Creacion de fotos de consecha con id: 1', 1, '2020-07-21 18:56:24'),
+(8, 'cosechas', 1, 'Se crea la cosecha', 1, '2020-07-21 18:56:24'),
+(9, 'cosechas_certificaciones', 1, 'Se crea la cosecha con el certificado', 1, '2020-07-21 18:56:24'),
+(10, 'cosechas', 2, 'Se crea la cosecha', 1, '2020-07-21 18:56:52'),
+(11, 'cosechas_productos_documentos', 5, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(12, 'cosechas_productos_documentos', 6, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(13, 'cosechas_productos_documentos', 7, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(14, 'cosechas_productos_documentos', 8, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(15, 'cosechas_productos_documentos', 9, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(16, 'cosechas_productos_documentos', 10, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(17, 'cosechas_productos_documentos', 11, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(18, 'cosechas_productos_documentos', 12, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(19, 'cosechas_productos_documentos', 13, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(20, 'cosechas', 3, 'Se crea la cosecha', 1, '2020-07-21 20:18:55'),
+(21, 'cosechas_certificaciones', 2, 'Se crea la cosecha con el certificado', 1, '2020-07-21 20:18:55'),
+(22, 'usuarios', 3, 'Se cambia la contrase del usuario anthourrego@gmail.com', 1, '2020-07-21 21:50:13'),
+(23, 'cosecha_oferta_mensaje', 5, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:18:13'),
+(24, 'cosecha_oferta_mensaje', 6, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:18:25'),
+(25, 'cosecha_oferta_mensaje', 7, 'Se crea mensaje de la oferta 1', 2, '2020-07-22 22:19:23'),
+(26, 'cosecha_oferta_mensaje', 8, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 22:27:51'),
+(27, 'cosecha_oferta_mensaje', 9, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 22:28:24'),
+(28, 'cosecha_oferta_mensaje', 10, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:29:43'),
+(29, 'cosecha_oferta_mensaje', 11, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:08:32'),
+(30, 'cosecha_oferta_mensaje', 12, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 23:09:08'),
+(31, 'cosecha_oferta_mensaje', 13, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 23:10:06'),
+(32, 'cosecha_oferta_mensaje', 14, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:10:44'),
+(33, 'cosecha_oferta_mensaje', 15, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:16:07');
 
 -- --------------------------------------------------------
 
@@ -1575,20 +1578,8 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id`, `nombre`, `presentacion`, `descripcion`, `fecha_creacion`, `estado`, `reg_invima`, `fk_finca`, `fk_creador`) VALUES
 (1, 'Bananos', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
-(2, 'manzana', NULL, NULL, '2020-07-06 23:16:28', 0, NULL, NULL, 1),
-(3, 'Aguacate', NULL, NULL, '2020-07-14 22:18:13', 1, NULL, NULL, 1),
-(4, 'piña', NULL, NULL, '2020-07-14 22:21:38', 1, NULL, NULL, 1),
-(5, 'mango', NULL, NULL, '2020-07-14 22:21:47', 1, NULL, NULL, 1),
-(6, 'guayaba', NULL, NULL, '2020-07-14 22:22:18', 1, NULL, NULL, 1),
-(7, 'Yuca', NULL, NULL, '2020-07-14 22:32:43', 1, NULL, NULL, 1),
-(8, 'Cilantro', NULL, NULL, '2020-07-14 22:32:49', 1, NULL, NULL, 1),
-(9, 'Durazno', NULL, NULL, '2020-07-14 22:36:15', 1, NULL, NULL, 1),
-(10, 'mamoncillo', NULL, NULL, '2020-07-15 21:01:58', 1, NULL, NULL, 1),
-(11, 'toronja', NULL, NULL, '2020-07-15 21:02:03', 1, NULL, NULL, 1),
-(12, 'sandia', NULL, NULL, '2020-07-15 21:02:17', 1, NULL, NULL, 1),
-(13, 'guanabana', NULL, NULL, '2020-07-15 21:02:29', 1, NULL, NULL, 1),
-(14, 'naranja', NULL, NULL, '2020-07-15 21:02:33', 1, NULL, NULL, 1),
-(15, 'mandarina', NULL, NULL, '2020-07-15 21:02:42', 1, NULL, NULL, 1);
+(2, 'Manzana', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
+(3, 'Papas ', 'Paquete 35GR', 'Saborea tu papas', '2020-07-21 18:55:27', 1, NULL, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1694,7 +1685,7 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `codigo_recuperacion`, `codigo_activacion`, `fk_creador`) VALUES
 (1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$WpgfJ0hjPFRZJFqmdsSUP.RVeoMzXJ8/rUXSrt.XE07oE2fOh5Sti', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, '', '', 1),
-(3, 1, '1225091213', 1, 'anthourrego@gmail.com', 'Anthony Smidh', 'Urrego Pineda', '$2y$15$45D5QOZXr/O4RLtWAWWLZuNqeQRMBlDnGIHAAl.jecObGPXjgn2S2', '1998-09-11', '3103587032', 2, 1, '2020-07-14 23:31:17', 0, '', '$2y$15$GQR1BywwL4Fdhn9219/p9eaEbtgwtgz5wCOnEeukxln4RDMoGr3uu', 0),
+(2, 1, '1225091213', 1, 'anthourrego@gmail.com', 'Anthony Smidh', 'Urrego Pineda', '$2y$15$03W5y8SmbGvmpjsTMoiG2eDEVODCN/yjpvGud6vGVipIKdSSoYTKu', '1998-09-11', '3103587032', 2, 1, '2020-07-14 23:31:17', 1, '', '$2y$15$GQR1BywwL4Fdhn9219/p9eaEbtgwtgz5wCOnEeukxln4RDMoGr3uu', 0),
 (9, 1, '1088335957', 1, 'juanfa107@gmail.com', 'juan felipe', 'arenas moreno', '$2y$15$FOeRIdWbOtY8F9/3/HDtEOStGEbUrGbDssFTuxxssNlYJVV5j5gJy', '1993-07-19', '3115509915', 2, 1, '2020-07-12 20:39:39', 1, '$2y$15$B2wTwJkWXY1ydyHUhs2VMuPDv7ie5JqLXwu6SJFJ7l7RXxWSsGbYC', '$2y$15$P49V5la9TbEOYhYlyKN9Ae46SJgA7t2AgFZPomGXLGNWPoOAlpkLO', 0);
 
 -- --------------------------------------------------------
@@ -1769,6 +1760,12 @@ ALTER TABLE `cosechas_productos_documentos`
 -- Indices de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `cosecha_oferta_mensajes`
+--
+ALTER TABLE `cosecha_oferta_mensajes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1869,25 +1866,31 @@ ALTER TABLE `certificaciones`
 -- AUTO_INCREMENT de la tabla `cosechas`
 --
 ALTER TABLE `cosechas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_certificaciones`
 --
 ALTER TABLE `cosechas_certificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_productos_documentos`
 --
 ALTER TABLE `cosechas_productos_documentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `cosecha_oferta_mensajes`
+--
+ALTER TABLE `cosecha_oferta_mensajes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
@@ -1899,7 +1902,7 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT de la tabla `fincas`
 --
 ALTER TABLE `fincas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `fincas_tipos`
@@ -1911,7 +1914,7 @@ ALTER TABLE `fincas_tipos`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -1941,7 +1944,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_derivados`

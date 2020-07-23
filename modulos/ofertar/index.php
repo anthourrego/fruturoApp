@@ -80,6 +80,17 @@
             </div>
           </a>
         </div>
+        <div class=" col-12 col-md-6 col-lg-4">
+          <!-- small box -->
+          <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #6c757d;" href="<?= $ruta_raiz ?>modulos/mensajes">
+            <div class="inner">
+              <h4>Mensajes</h4>
+            </div>
+            <div class="icon">
+              <i class="far fa-comments"></i>
+            </div>
+          </a>
+        </div>
         <!-- ./col -->
         <div class=" col-12 col-md-6 col-lg-4">
           <!-- small box -->
