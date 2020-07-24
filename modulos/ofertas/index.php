@@ -161,7 +161,7 @@
             </select>
           </div>
           <div class="form-group col-12 divFruta">
-            <label for="selectFruta">Fruta</label>
+            <label for="selectFruta">Producto</label>
             <select class="form-control selectFruta">
               <option value="-1" selected>Todos</option>
             </select>
@@ -370,7 +370,7 @@
                   </select>
                 </div>
                 <div class="form-group col-12 divFruta" >
-                  <label for="selectFruta">Fruta</label>
+                  <label for="selectFruta">Producto</label>
                   <select class="form-control selectFruta">
                     <option value="-1" selected>Todos</option>
                   </select>
@@ -514,14 +514,14 @@
           fruta = $(".selectFruta").val();
         }else if( tipo == 2){
           $(".divFruta").hide();
-          $(".selectProcesado").val(-1);
+          $(".selectFruta").val(-1);
+          fruta = -1;
         }else{
           $(".divFruta").hide();
           $(".selectFruta").val(-1);
           $(".selectDerivado").val(-1);
-          derivado = $(".selectDerivado").val();
-          fruta = $(".selectFruta").val();
-
+          derivado = -1;
+          fruta = -1;
         }
         reset();
         listarOfertas();
@@ -535,9 +535,10 @@
 
       $(".selectFruta").change(function(){
         fruta = $(this).val();
+        console.log(fruta);
         if(fruta == -1 ){
           $('.selectDerivado').val(-1);
-          derivado = $('.selectDerivado').val(-1);
+          derivado = $('.selectDerivado').val();
           $('.divDerivado').hide();
           reset();
           listarOfertas();
@@ -683,12 +684,12 @@
               $('#contenedorOfertas').append(`
                 <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
                   <div class="card text-center" >
-                    <img class="card-img-top" src="<?= $ruta_raiz ?>${oferta.ruta}" alt="Card image cap">
+                    <img class="card-img-top" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
                     <div class="p-2 oferta">
                       <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column text-left">
                           <span>${oferta.producto}</span>
-                          <span>${oferta.volumen_total} Kg </span>
+                          <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
                         </div>
                         <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
                           $${oferta.precio}
@@ -1133,7 +1134,6 @@
           accion: "listarFrutas"
         },
         success: function(data){
-          console.log(data);
           if (data.success) {
             for (let i = 0; i < data.msj.cantidad_registros; i++) {
             $(".selectFruta").append(`

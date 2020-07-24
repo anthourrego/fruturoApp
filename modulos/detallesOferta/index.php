@@ -469,7 +469,8 @@
           accion: "traerDatosOferta",
           id
         },
-        success: function(data){ 
+        success: function(data){
+          console.log(data);
           if (data.success) {
             const datos = ordenarData(data.msj);
             configMensajes(datos);

@@ -26,16 +26,27 @@ function traerDatosOferta(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
-    cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.nombre AS producto, fincas.nombre AS finca, 
-    fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
-    usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
-    documentos.ruta FROM COSECHAS INNER JOIN productos on cosechas.fk_producto = productos.id 
-    INNER JOIN fincas ON fincas.id = cosechas.fk_finca INNER JOIN usuarios ON 
-    cosechas.fk_creador = usuarios.id inner join cosechas_productos_documentos AS documentos
-    on documentos.fk_cosecha = cosechas.id INNER JOIN municipios 
-    on fincas.fk_municipio = municipios.id INNER JOIN departamentos 
-    ON departamentos.id = municipios.fk_departamento where cosechas.id = :id ", array(":id" => $_GET["id"]));
+  $datos = $db->consulta("    SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
+  cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.nombre AS producto, fincas.nombre AS finca, 
+  fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
+  usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
+  fincas.fk_finca_tipo as tipoFinca
+
+  FROM   cosechas 
+  INNER JOIN productos 
+    ON cosechas.fk_producto = productos.id
+  LEFT JOIN productos_derivados
+    ON cosechas.fk_productos_derivados = productos_derivados.id
+  INNER JOIN usuarios 
+    ON cosechas.fk_creador = usuarios.id 
+  INNER JOIN fincas 
+    ON cosechas.fk_finca = fincas.id
+  INNER JOIN fincas_tipos
+    ON fincas.fk_finca_tipo = fincas_tipos.id 
+  INNER JOIN municipios 
+    ON fincas.fk_municipio = municipios.id 
+  INNER JOIN departamentos 
+    ON municipios.fk_departamento = departamentos.id where cosechas.id = :id", array(":id" => $_GET["id"]));
 
   
   if ($datos["cantidad_registros"] > 0) {

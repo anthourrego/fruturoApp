@@ -68,46 +68,61 @@ function listaOfertas(){
 
   // ---------------- filtros -------------------
   $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
-  $filtroTipo = $_POST['tipo'] == -1 ? '' : $_POST['tipo'];
   $filtroDepartamento = $_POST['departamento'] == -1 ? '' : "departamentos.id = ".$_POST['departamento'];
   $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
-  $filtroTipo = $_POST['tipo'];
+  $filtroTipo = $_POST['tipo'] == -1 ? '' : 'fincas.fk_finca_tipo ='.$_POST['tipo'];
   $filtroFruta = $_POST['fruta'] == -1 ? '' : 'cosechas.fk_producto ='.$_POST['fruta'];
 
   // ----------------- Conector And ---------------------
-  $andTipo = $filtroTipo == -1 ? '' : "and";
   $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
   $andFruta = ($filtroFruta != '' && $filtroDepartamento != '') ? 'and' : '';
-  
+  $andTipo = ($filtroTipo != '' && ($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != '' )) ? 'and' : '';
+
   // ----------------- Conector Where ---------------------
 
   $where = '';
 
 
 
-  if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != ''){
+  if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != '' || $filtroTipo!= ''){
     $where = 'where';
   }
 
 
 
-  $datos = $db->consulta("SELECT usuarios.nombres AS nombreCreador, 
-  usuarios.apellidos AS apellidoCreador, 
-  productos.nombre AS producto, cosechas.id,
-  cosechas.volumen_total,
+  $datos = $db->consulta("SELECT usuarios.nombres     AS nombreCreador, 
+  usuarios.apellidos   AS apellidoCreador, 
+  productos.nombre     AS producto,
+  productos_derivados.nombre AS producto_derivado,
+  cosechas.id, 
+  cosechas.volumen_total, 
   cosechas.precio, 
-  cosechas.fecha_creacion,
+  cosechas.fecha_creacion, 
   cosechas.fecha_inicio, 
   cosechas.fecha_final, 
-  cosechas_productos_documentos.ruta, 
-  fincas.nombre AS nombreFinca,
-  departamentos.nombre as departamento,
-  municipios.nombre AS municipio FROM cosechas INNER JOIN productos ON 
-  cosechas.fk_producto = productos.id INNER JOIN usuarios ON cosechas.fk_creador = usuarios.id
-  INNER JOIN cosechas_productos_documentos ON cosechas.id = cosechas_productos_documentos.fk_cosecha INNER JOIN fincas on 
-  cosechas.fk_finca = fincas.id INNER JOIN municipios ON 
-  fincas.fk_municipio = municipios.id INNER JOIN departamentos ON 
-  municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
+  cosechas.capacidad_produccion,
+  fincas.nombre        AS nombreFinca, 
+  departamentos.nombre AS departamento, 
+  municipios.nombre    AS municipio,
+  (SELECT ruta FROM cosechas_productos_documentos WHERE fk_cosecha = cosechas.id ORDER BY id ASC limit 1) AS foto_cosecha,
+  (SELECT ruta FROM cosechas_productos_documentos WHERE fk_producto = productos.id ORDER BY id ASC limit 1) AS foto_producto,
+  fincas.fk_finca_tipo as tipoFinca
+
+FROM   cosechas 
+  INNER JOIN productos 
+          ON cosechas.fk_producto = productos.id
+  LEFT JOIN productos_derivados
+         ON cosechas.fk_productos_derivados = productos_derivados.id
+  INNER JOIN usuarios 
+          ON cosechas.fk_creador = usuarios.id 
+  INNER JOIN fincas 
+          ON cosechas.fk_finca = fincas.id
+  INNER JOIN fincas_tipos
+  		  ON fincas.fk_finca_tipo = fincas_tipos.id 
+  INNER JOIN municipios 
+          ON fincas.fk_municipio = municipios.id 
+  INNER JOIN departamentos 
+          ON municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ".$andTipo." ".$filtroTipo."  GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
@@ -303,7 +318,7 @@ function listarFrutas(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("SELECT * from productos WHERE fk_creador = 1");
+  $datos = $db->consulta("SELECT * from productos WHERE fk_creador = 1 AND estado = 1 AND fk_finca IS NULL");
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;
