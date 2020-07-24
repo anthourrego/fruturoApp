@@ -81,6 +81,11 @@
         max-height: 75vh;
       }
 
+      .carousel-inner{
+        max-height: 430px;
+        min-height: 430px;
+      }
+
     </style>
   </head>
   <body class="container-fluid">
@@ -112,7 +117,7 @@
 
       </div>
       <!-- informacion de oferta -->
-      <div class="text-center col-md-5 col-12">
+      <div class="text-center col-md-5 col-12 mt-md-0 mt-2">
         <!-- product section -->
         <h4 class="text-left">Producto: </h4>
         <div class="row">
@@ -166,7 +171,7 @@
         </div>
         <hr>
         <div >
-          <button class="btn btn-lg btn-verdeOscuro w-100" data-toggle="modal" data-target="#modalMensajes">
+          <button class="btn btn-lg btn-verdeOscuro w-100" data-toggle="modal" data-target="#modalMensajes" id="btnChat">
             Chatear con el vendedor
           </button>
         </div>
@@ -185,13 +190,14 @@
                 <form id="formMensaje" class="w-100">
                   <input type="hidden" name="accion" value="enviarMensaje">
                   <input type="hidden" name="idCosecha">
-                  <input type="hidden" name="cosechaEstado">
                   <input type="hidden" name="correo">
-                  <input type="hidden" name="nombre_usuario">
-                  <div class="form-group text-left">
+                  <input type="hidden" required name="asunto">
+
+                  <div class="form-group">
                     <label for="mensaje">Mensaje:</label>
                     <textarea class="form-control" required name="mensaje" rows="3"></textarea>
                   </div>
+
                   <div class="w-100 d-flex justify-content-between">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
                     <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
@@ -221,7 +227,7 @@
         if($("#formMensaje").valid()){
           $.ajax({
             type: "POST",
-            url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
+            url: "<?php echo($ruta_raiz); ?>modulos/mensajes/acciones",
             cache: false,
             contentType: false,
             dataType: 'json',
@@ -412,13 +418,13 @@
     function cargarMensajes(){
       //Se cargan las lista de mnesajes sobre la cosecha
       $.ajax({
-        url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
+        url: "acciones",
         type: "POST",
         dataType: "json",
         async: false,
         data: {
           accion: "traerMensajes",
-          idCosecha: getUrl('id')
+          idOferta: getUrl('id')
         },
         success: function(data){
           $("#contenidoMensajes").empty();
@@ -428,7 +434,7 @@
                 $("#contenidoMensajes").append(`
                   <div class="ml-auto alert alert-warning w-90" role="alert">
                     <p class="font-weight-bold pb-1 border-bottom border-warning text-right">
-                      ${data.msj[i].nombres_usu} ${data.msj[i].apellidos_usu} | <small>${data.msj[i].fecha_creacion}</small>
+                      ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
                     </p>
                     ${data.msj[i].mensaje}
                   </div>`);
@@ -436,7 +442,7 @@
                 $("#contenidoMensajes").append(`
                   <div class="alert alert-info w-90" role="alert">
                     <p class="font-weight-bold pb-1 border-bottom border-info">
-                    ${data.msj[i].nombres_usu} ${data.msj[i].apellidos_usu} | <small>${data.msj[i].fecha_creacion}</small>
+                    ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
                     </p>
                     ${data.msj[i].mensaje}
                   </div>
@@ -470,19 +476,13 @@
           id
         },
         success: function(data){
-          console.log(data);
           if (data.success) {
             const datos = ordenarData(data.msj);
             configMensajes(datos);
-            let cont = 0;
-            $.each(datos['imagenes'], function(key, value){
-              $("#carrousel").append(`
-                <div class="carousel-item ${cont == 0 ? 'active' : ''}">
-                  <img class="d-block w-100" src="<?= $ruta_raiz ?>${value}" alt="">
-                </div>
-              `);
-              cont ++;
-            })
+            validarUsuario(datos.id_vendedor);
+            let id = datos.tipoFinca == 1 ? datos.id_cosecha : datos.id_producto;
+            
+            trerFotos(id,datos.tipoFinca);
             // se recorren elementos para setear valor correspondiente :)
             $.each(datos, function(key, value){
               
@@ -526,8 +526,73 @@
       $("#formMensaje :input[name='cosechaEstado']").val(datos["estado"]);
       $("#formMensaje :input[name='correo']").val(datos["correo_vendedor"]);
       $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre_vendedor"]);
+      $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
       cargarMensajes();
       // $("#modalMensajes").modal("show");
+    }
+
+    function trerFotos(id, tipoFinca){
+      $.ajax({
+        url: "acciones",
+        type: "POST",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "fotosCosechas",
+          idCosecha: id,
+          tipo: tipoFinca
+        },
+        success: function(data){
+          if (data.success) {
+            let cont = 0;
+            $.each(data['msj'], function(key, value){
+              if(value.ruta){
+                $("#carrousel").append(`
+                  <div class="carousel-item ${cont == 0 ? 'active' : ''}">
+                    <img class="d-block w-100" src="<?= $ruta_raiz ?>${value.ruta}" alt="">
+                  </div>
+                `);
+                cont ++;
+              }
+            })
+
+          }else{
+            $('#cosechas_fotos').append(`
+              <p>No hay fotos</p>
+            `);
+          }
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+    }
+
+    function validarUsuario(idUsuario){
+      $.ajax({
+        url: "acciones",
+        type: "POST",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "validarUsuario",
+          idUsuario
+        },
+        success: function(data){
+          if(data.success){
+            $('#btnChat').attr('disabled', true);
+          }
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
     }
 
   </script>

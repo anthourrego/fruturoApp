@@ -168,6 +168,11 @@
   width: 100% !important;
 }
 
+.imagen-oferta{
+  height: 120px !important;
+  width: 120px !important;
+  margin: 0px !important;
+}
 
 @media (min-width: 576px) {
   .w-sm-25 {
@@ -204,6 +209,12 @@
 
   .w-sm-100 {
     width: 100% !important;
+  }
+
+  .imagen-oferta{
+    width: 100% !important;
+    height: 200px !important;
+    margin: 0px !important;
   }
 }
 
@@ -243,6 +254,8 @@
   .w-md-100 {
     width: 100% !important;
   }
+
+  
 }
 
 @media (min-width: 992px) {

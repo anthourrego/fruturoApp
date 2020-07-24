@@ -26,8 +26,8 @@ function traerDatosOferta(){
   $db->conectar();
   $resp["success"] = false;
 
-  $datos = $db->consulta("    SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
-  cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.nombre AS producto, fincas.nombre AS finca, 
+  $datos = $db->consulta("  SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
+  cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.id as id_producto, productos.nombre AS producto, fincas.nombre AS finca, 
   fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
   usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
   fincas.fk_finca_tipo as tipoFinca
@@ -95,70 +95,20 @@ function datosUsuario(){
   return json_encode($resp);
 }
 
-function enviarMensaje(){
-  $db = new Bd();
-  $db->conectar();
+function validarUsuario(){
   global $usuario;
+  $usuarioOferta = $_POST['idUsuario'];
   $resp["success"] = false;
 
-  //Enviamos un correo con la información
-  /* $correo = enviarCorreo($_REQUEST["correo"], $_REQUEST["mensaje"], $_REQUEST["nombre_usuario"]);
-  if ($correo === true) { */
-    $datos = array(
-      ":fk_cosecha" => $_REQUEST["idCosecha"], 
-      ":mensaje" => cadena_db_insertar($_REQUEST["mensaje"]), 
-      ":oferta" => 0, 
-      ":fk_creador" => $usuario["id"], 
-      ":fecha_creacion" => date("Y-m-d H:i:s")
-    );
-
-    $id_registro = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, mensaje, oferta, fk_creador, fecha_creacion) VALUES (:fk_cosecha, :mensaje, :oferta, :fk_creador, :fecha_creacion)", $datos);
-
-    if ($id_registro > 0) {
-      if ($usuario["perfil"] == 1 && $_REQUEST["cosechaEstado"] == 1) {
-        $db->sentencia("UPDATE cosechas SET estado = 2 WHERE id = :id", array(":id" => $_POST["idCosecha"]));
-      }
-
-      $db->insertLogs("cosecha_oferta", $id_registro, "Se crea un oferta o mensaje de la consecha {$_POST['idCosecha']}", $usuario["id"]);
-      $resp['success'] = true;
-      $resp['msj'] = 'Se ha enviado correctamente.';
-    } else {
-      $resp['msj'] = 'Error al realizar el registro.';
-    }
-  /* } else {
-    $resp['msj'] = $correo;
-  } */
-
-  $db->desconectar();
-
-  return json_encode($resp);
-}
-
-function traerMensajes(){
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $mensaje = $db->consulta("SELECT 
-                            co.*,
-                            u.nombres AS nombres_usu,
-                            u.apellidos AS apellidos_usu
-                          FROM cosecha_oferta AS co 
-                            INNER JOIN usuarios AS u ON u.id = co.fk_creador 
-                          WHERE fk_cosecha = :fk_cosecha", 
-                          array(":fk_cosecha" => $_REQUEST["idCosecha"]));
-
-  if ($mensaje["cantidad_registros"] > 0) {
+  if($usuario["id"] == $usuarioOferta){
     $resp["success"] = true;
-    $resp["msj"] = $mensaje;
+    $resp['msj'] = 'deshabilitar boton';
   }else{
-    $resp["msj"] = "No hay mensajes";
+    $resp['msj'] = 'habilitar boton';
   }
-
-  $db->desconectar();
-
   return json_encode($resp);
 }
+
 
 function eliminar(){
   global $usuario;
@@ -185,6 +135,53 @@ function finalizar(){
 
   return json_encode(1);
 }
+
+function fotosCosechas(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  if ($_REQUEST["tipo"] == 1) {
+    $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_cosecha = :fk_cosecha", array(":fk_cosecha" => $_REQUEST["idCosecha"]));
+  }else{
+    $datos = $db->consulta("SELECT * FROM cosechas_productos_documentos WHERE fk_producto = :fk_producto", array(":fk_producto" => $_REQUEST["idCosecha"]));
+  }
+
+  if ($datos['cantidad_registros'] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos;
+  }else{
+    $resp['msj'] = "No se han encontrado datos";
+  }  
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function traerMensajes(){
+  $db = new Bd();
+  $db->conectar();
+
+  $mensaje = $db->consulta("SELECT com.mensaje,
+    com.fecha_creacion, CONCAT(u.nombres, ' ', u.apellidos) AS nombre,
+    com.fk_creador
+  FROM cosecha_oferta_mensajes AS com
+    INNER JOIN usuarios AS u ON com.fk_creador = u.id
+  WHERE com.fk_cosecha_oferta = :oferta", array(":oferta" => $_POST["idOferta"]));
+  
+  if ($mensaje["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $mensaje;
+  }else{
+    $resp["msj"] = "No hay mensajes";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
 
 if(@$_REQUEST['accion']){
   if(function_exists($_REQUEST['accion'])){

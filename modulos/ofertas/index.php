@@ -200,8 +200,7 @@
         <!-- Main content -->
         <section class="content">
           <div class="container-fluid">
-
-            <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-3 row-cols-xl-4">
+            <div id="contenedorOfertas" class="row card-deck row-cols-1 row-cols-md-3 row-cols-xl-4">
             </div>
 
             <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
@@ -682,28 +681,32 @@
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
-                <div class="col" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})" >
-                  <div class="card text-center" >
-                    <img class="card-img-top" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
-                    <div class="p-2 oferta">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-column text-left">
-                          <span>${oferta.producto}</span>
-                          <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
-                        </div>
-                        <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
-                          $${oferta.precio}
-                        </div>
-                        
-                      </div>
+                <div class="col card text-center" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})">
+                  <div class="row no-gutters">
+                    <div class="col-4 col-md-12 m-0 text-left">
+                      <img class="card-img-top imagen-oferta" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
                     </div>
-                    <div class="text-muted p-1">
-                      <div class="d-flex justify-content-between">
-                        <div style="font-size: 12px;" class="d-flex flex-column text-left">
-                          <span>${oferta.departamento}</span>
-                          <span>${oferta.municipio}<span>
+                    <div class="col-8 col-md-12 px-2">
+                      <div class="p-2 oferta">
+                        <div class="d-flex justify-content-between">
+                          <div class="d-flex flex-column text-left">
+                            <span>${oferta.producto}</span>
+                            <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
+                          </div>
+                          <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
+                            $${oferta.precio}
+                          </div>
+                          
                         </div>
-                        <div style="font-size: 12px;">${moment(oferta.fecha_creacion).locale('es').format('D [de] MMMM')}</div>
+                      </div>
+                      <div class="text-muted p-1">
+                        <div class="d-flex justify-content-between">
+                          <div style="font-size: 12px;" class="d-flex flex-column text-left">
+                            <span>${oferta.departamento}</span>
+                            <span>${oferta.municipio}<span>
+                          </div>
+                          <div style="font-size: 12px;">${moment(oferta.fecha_creacion).locale('es').format('D [de] MMMM')}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
