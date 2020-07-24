@@ -20,10 +20,6 @@
 
   $usuario = $session->get("usuario");
 
-  if ($permisos->validarPermiso($usuario['id'], 'ofertas') == 0) {
-    header('Location: ' . $ruta_raiz . 'modulos/');
-  }
-
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +84,9 @@
 
     </style>
   </head>
-  <body class="container-fluid">
+  <body class="container">
     <div  class="content-header col-12 text-left">
-      <div class="container-fluid">
+      <div class="container">
         <div class="row mb-2">
           <div class="col-12">
             <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles De Oferta</h1>
