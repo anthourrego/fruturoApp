@@ -61,40 +61,6 @@ function traerDatosOferta(){
   return json_encode($resp);  
 }
 
-function datosUsuario(){
-  $db = new Bd();
-  $db->conectar();
-  $resp["success"] = false;
-
-  $datos = $db->consulta("SELECT 
-                          u.correo AS correo, 
-                          u.nombres AS nombres, 
-                          u.apellidos AS apellidos, 
-                          u.telefono AS telefono, 
-                          u.nro_documento AS nro_documento,
-                          td.abreviacion AS doc_abreviacion,
-                          td.nombre AS documento,
-                          tp.nombre AS tipo_per,
-                          p.nombre AS perfil
-                        FROM usuarios AS u 
-                          INNER JOIN tipo_documento AS td ON u.fk_tipo_documento = td.id 
-                          INNER JOIN tipo_persona AS tp ON tp.id = u.fk_tipo_persona 
-                          INNER JOIN perfiles AS p ON p.id = u.fk_perfil 
-                        WHERE u.id = :id", 
-                        array(":id" => $_REQUEST["idUsuario"]));
-
-  if ($datos["cantidad_registros"] > 0) {
-    $resp["success"] = true;
-    $resp["msj"] = $datos[0]; 
-  }else{
-    $resp["msj"] = "No se han encontrado datos";
-  }
-
-  $db->desconectar();
-
-  return json_encode($resp);
-}
-
 function validarUsuario(){
   global $usuario;
   $usuarioOferta = $_POST['idUsuario'];
@@ -107,33 +73,6 @@ function validarUsuario(){
     $resp['msj'] = 'habilitar boton';
   }
   return json_encode($resp);
-}
-
-
-function eliminar(){
-  global $usuario;
-  $db = new Bd();
-  $db->conectar();
-
-  $db->sentencia("UPDATE cosechas SET estado = 0 WHERE id = :id", array(":id" => $_POST["id"]));
-  $db->insertLogs("cosechas", $_POST["id"], "Se cancela la oferta por parte del comprador", $usuario["id"]);
-
-  $db->desconectar();
-
-  return json_encode(1);
-}
-
-function finalizar(){
-  global $usuario;
-  $db = new Bd();
-  $db->conectar();
-
-  $db->sentencia("UPDATE cosechas SET estado = 3 WHERE id = :id", array(":id" => $_POST["id"]));
-  $db->insertLogs("cosechas", $_POST["id"], "Se finaliza la oferta por parte del comprador", $usuario["id"]);
-
-  $db->desconectar();
-
-  return json_encode(1);
 }
 
 function fotosCosechas(){
