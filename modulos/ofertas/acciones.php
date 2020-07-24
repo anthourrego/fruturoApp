@@ -80,12 +80,12 @@ function listaOfertas(){
 
   // ----------------- Conector Where ---------------------
 
-  $where = '';
+  $and = '';
 
 
 
   if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != '' || $filtroTipo!= ''){
-    $where = 'where';
+    $and = 'and';
   }
 
 
@@ -122,7 +122,7 @@ FROM   cosechas
   INNER JOIN municipios 
           ON fincas.fk_municipio = municipios.id 
   INNER JOIN departamentos 
-          ON municipios.fk_departamento = departamentos.id ".$where." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ".$andTipo." ".$filtroTipo."  GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
+          ON municipios.fk_departamento = departamentos.id WHERE cosechas.estado != 0 ".$and." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ".$andTipo." ".$filtroTipo."  GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
