@@ -75,7 +75,7 @@ function traerMensajes(){
                           com.fk_creador
                         FROM cosecha_oferta_mensajes AS com
                           INNER JOIN usuarios AS u ON com.fk_creador = u.id
-                        WHERE com.fk_cosecha_oferta = :oferta", array(":oferta" => $_REQUEST["idOferta"]));
+                        WHERE com.fk_cosecha_oferta = :oferta ORDER BY com.fecha_creacion ASC", array(":oferta" => $_REQUEST["idOferta"]));
   
   if ($mensaje["cantidad_registros"] > 0) {
     $resp["success"] = true;

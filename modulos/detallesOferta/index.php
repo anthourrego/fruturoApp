@@ -302,7 +302,7 @@
             for (let i = 0; i < data.msj["cantidad_registros"]; i++) {
               if (data.msj[i].fk_creador == <?php echo($usuario['id']); ?>) {
                 $("#contenidoMensajes").append(`
-                  <div class="ml-auto alert alert-warning w-90" role="alert">
+                  <div class="ml-auto alert alert-warning w-90 text-left" role="alert">
                     <p class="font-weight-bold pb-1 border-bottom border-warning text-right">
                       ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
                     </p>
@@ -310,7 +310,7 @@
                   </div>`);
               }else{
                 $("#contenidoMensajes").append(`
-                  <div class="alert alert-info w-90" role="alert">
+                  <div class="alert alert-info w-90 text-right" role="alert">
                     <p class="font-weight-bold pb-1 border-bottom border-info">
                     ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
                     </p>
