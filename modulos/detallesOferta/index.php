@@ -132,8 +132,17 @@
             <div class="row text-left">
               <div class="col-12">$<span id="precio"></span></div>
             </div>
-          </div>     
+          </div>
         </div>
+
+        <div class="row mt-2 containerCertificaciones">
+          <div class="col text-left">
+            Certificaciones:
+            <ul id="certificados">
+            <ul>
+          </div>
+        </div>
+
         <hr>
         <!-- location  -->
         <h4 class="text-left">Ubicación: </h4>
@@ -219,6 +228,8 @@
 
     $(function(){
       traerDatosOferta(getUrl('id'));
+      $('.containerCertificaciones').hide();
+      trarCertificados();
       cerrarCargando();
 
       $("#formMensaje").submit(function(event){
@@ -466,5 +477,37 @@
         }
       });
     }
+
+    function trarCertificados(){
+      $.ajax({
+        url: "<?php echo($ruta_raiz); ?>modulos/certificados/acciones",
+        type: "POST",
+        dataType: "json",
+        async: false,
+        data: {
+          accion: "certificadosCosechaUsuario",
+          idCosecha: getUrl('id')
+        },
+        success: function(data){
+          if (data.success) {
+            $('.containerCertificaciones').show();
+
+            for (let i = 0; i < data.msj['cantidad_registros']; i++) {
+              $('#certificados').append(`
+                <li>${data.msj[i].nombre}</li>
+              `);
+            }
+          }
+        },
+        error: function(data){
+          Swal.fire({
+            icon: 'error',
+            html: 'No se han enviado los datos'
+          })
+        }
+      });
+
+    }
+
   </script>
 </html>
