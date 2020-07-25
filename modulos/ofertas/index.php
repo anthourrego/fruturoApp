@@ -426,6 +426,7 @@
                           <div class="d-flex justify-content-between">
                             <div class="d-flex flex-column text-left">
                               <span>${oferta.producto}</span>
+                              ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
                               <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
                             </div>
                             <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
