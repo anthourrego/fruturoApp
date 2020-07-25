@@ -82,6 +82,11 @@
         min-height: 430px;
       }
 
+      .carousel-inner img{
+        height: 430px;
+        max-height: 430px;
+      }
+
     </style>
   </head>
   <body class="container">
@@ -192,9 +197,9 @@
                   <input type="hidden" name="idVendedor">
 
 
-                  <div class="form-group">
+                  <div class="form-group text-left">
                     <label for="mensaje">Mensaje:</label>
-                    <textarea class="form-control" required name="mensaje" rows="3"></textarea>
+                    <textarea class="form-control" placeholder="Escriba un mensaje..." required name="mensaje" rows="3"></textarea>
                   </div>
 
                   <div class="w-100 d-flex justify-content-between">

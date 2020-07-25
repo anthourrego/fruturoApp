@@ -449,7 +449,6 @@
                 </div>
               `);
             }); 
-            cerrarCargando()
             setTimeout(() => {
               $('#spinner-scroll').hide();
             }, 1500);
@@ -473,6 +472,9 @@
             icon: 'error',
             html: 'No se han enviado los datos'
           })
+        },
+        complete: function(){
+          cerrarCargando();
         }
       });
     }
