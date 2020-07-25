@@ -25,13 +25,13 @@ function traerDatosOferta(){
   $db = new Bd();
   $db->conectar();
   $resp["success"] = false;
-
+  global $usuario;
   $datos = $db->consulta("  SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
   cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.id as id_producto, productos.nombre AS producto, fincas.nombre AS finca, 
   fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
   usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
-  fincas.fk_finca_tipo as tipoFinca
-
+  fincas.fk_finca_tipo as tipoFinca,
+  (SELECT id FROM cosecha_oferta WHERE fk_cosecha = cosechas.id AND fk_comprador = :id_comprador LIMIT 1) as id_cosecha_oferta
   FROM   cosechas 
   INNER JOIN productos 
     ON cosechas.fk_producto = productos.id
@@ -46,7 +46,7 @@ function traerDatosOferta(){
   INNER JOIN municipios 
     ON fincas.fk_municipio = municipios.id 
   INNER JOIN departamentos 
-    ON municipios.fk_departamento = departamentos.id where cosechas.id = :id", array(":id" => $_GET["id"]));
+    ON municipios.fk_departamento = departamentos.id where cosechas.id = :id", array(":id" => $_GET["id"], ":id_comprador" => $usuario['id'] ));
 
   
   if ($datos["cantidad_registros"] > 0) {

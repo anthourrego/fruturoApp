@@ -534,7 +534,6 @@
 
       $(".selectFruta").change(function(){
         fruta = $(this).val();
-        console.log(fruta);
         if(fruta == -1 ){
           $('.selectDerivado').val(-1);
           derivado = $('.selectDerivado').val();

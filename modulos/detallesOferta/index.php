@@ -186,8 +186,11 @@
                 <form id="formMensaje" class="w-100">
                   <input type="hidden" name="accion" value="enviarMensaje">
                   <input type="hidden" name="idCosecha">
+                  <input type="hidden" name="cosecha">
                   <input type="hidden" name="correo">
-                  <input type="hidden" required name="asunto">
+                  <input type="hidden" name="asunto">
+                  <input type="hidden" name="idVendedor">
+
 
                   <div class="form-group">
                     <label for="mensaje">Mensaje:</label>
@@ -237,6 +240,9 @@
             },
             success: function(data){
               if (data.success) {
+                if(data['idCosecha']){
+                  $("#formMensaje :input[name='idCosecha']").val(data['idCosecha']);
+                }
                 cargarMensajes();
                 $("#formMensaje :input[name='mensaje']").val('');
                 $("#formMensaje :input").removeClass("is-valid");
@@ -282,13 +288,13 @@
     function cargarMensajes(){
       //Se cargan las lista de mnesajes sobre la cosecha
       $.ajax({
-        url: "acciones",
+        url: "<?php echo($ruta_raiz) ?>modulos/mensajes/acciones",
         type: "POST",
         dataType: "json",
         async: false,
         data: {
           accion: "traerMensajes",
-          idOferta: getUrl('id')
+          idOferta: $("#formMensaje :input[name='idCosecha']").val()// getUrl('id')
         },
         success: function(data){
           $("#contenidoMensajes").empty();
@@ -349,13 +355,10 @@
             trerFotos(id,datos.tipoFinca);
             // se recorren elementos para setear valor correspondiente :)
             $.each(datos, function(key, value){
-              
               if($('#'+key)[0]){
                 $('#'+key)[0].innerText = value;
               }
-              
             })
-            
           }else{
             
           } 
@@ -386,12 +389,18 @@
     }
 
     function configMensajes(datos){
-      $("#formMensaje :input[name='idCosecha']").val(datos["id_cosecha"]);
+      $("#formMensaje :input[name='idCosecha']").val(datos["id_cosecha_oferta"]);
       $("#formMensaje :input[name='cosechaEstado']").val(datos["estado"]);
       $("#formMensaje :input[name='correo']").val(datos["correo_vendedor"]);
       $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre_vendedor"]);
       $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
-      cargarMensajes();
+      $("#formMensaje :input[name='idVendedor']").val(datos.id_vendedor);
+      $("#formMensaje :input[name='cosecha']").val(datos.id_cosecha);
+
+
+      if(datos["id_cosecha_oferta"]){
+        cargarMensajes();
+      }
     }
 
     function trerFotos(id, tipoFinca){
