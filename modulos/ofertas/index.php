@@ -111,7 +111,7 @@
       .btnFiltrosMobile{
         position: sticky;
         top: 0px;
-        z-index: 1;
+        z-index: 999;
       }
 
     </style>
@@ -188,7 +188,7 @@
               </div>
             </div>
 
-            <div id="contenedorOfertas" class="row row-cols-1 row-cols-md-3 row-cols-xl-4 card-deck"></div>
+            <div id="contenedorOfertas" class="row row-cols-1 card-deck row-cols-md-3 row-cols-xl-4"></div>
     
             <div id="spinner-scroll" class="w-100" style="height: 130px; position: fixed; bottom: 0px; background-image: linear-gradient( rgba(0, 0, 0, -96.5), rgba(0, 0, 0, 0.5) );">
               <div  class="spinner" >
@@ -415,7 +415,7 @@
             ofertas.forEach(oferta => { 
               inicio++;
               $('#contenedorOfertas').append(`
-                <div class="col p-0 text-center mt-0 mt-md-4" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})">
+                <div class="col p-0 text-center mb-0 mb-md-4" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})">
                   <div class="card">
                     <div class="row no-gutters">
                       <div class="col-4 col-md-12 m-0 text-left">
@@ -427,10 +427,10 @@
                             <div class="d-flex flex-column text-left">
                               <span>${oferta.producto}</span>
                               ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
-                              <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
                             </div>
-                            <div class=" d-flex flex-column justify-content-center" style="font-size: 25px">
-                              $${oferta.precio}
+                            <div class="d-flex flex-column justify-content-end text-right">
+                              <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
+                              <span>$${oferta.precio}</span>
                             </div>
                             
                           </div>
