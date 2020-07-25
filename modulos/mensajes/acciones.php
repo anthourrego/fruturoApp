@@ -39,6 +39,7 @@ function listaChats(){
                           vendedor.correo AS correoVendedor,
                           p.nombre AS producto,
                           pd.nombre AS producto_derivado,
+                          fincas.nombre AS finca,
                           (SELECT ruta FROM cosechas_productos_documentos WHERE fk_producto = c.fk_producto ORDER BY id ASC LIMIT 1) AS foto_producto,
                           (SELECT ruta FROM cosechas_productos_documentos WHERE fk_cosecha = c.id ORDER BY id ASC LIMIT 1) AS foto_cosecha
                         FROM cosecha_oferta AS co 
@@ -47,6 +48,7 @@ function listaChats(){
                           LEFT JOIN productos_derivados AS pd ON pd.id = c.fk_productos_derivados
                           INNER JOIN usuarios AS comprador ON co.fk_comprador = comprador.id
                           INNER JOIN usuarios AS vendedor ON co.fk_vendedor = vendedor.id
+                          INNER JOIN fincas ON c.fk_finca = fincas.id
                         WHERE 
                           co.fk_vendedor = :vendedor OR co.fk_comprador = :comprador", array(":vendedor" => $usuario["id"], ":comprador" => $usuario["id"]));
 
@@ -93,14 +95,33 @@ function enviarMensaje(){
   global $usuario;
   $resp["success"] = false;
   $asunto = 'Respuesta Oferta Fruturo | '.$_POST['asunto'];
-  $mensaje = $_POST['mensaje'];
- 
+  $mensaje = $usuario['nombre']." Te envió un mensaje: <br> ".$_POST['mensaje'];
+  $idVendedor = @$_REQUEST['idVendedor'];
+  $id_cosecha = @$_REQUEST['idCosecha'];  
+
+  
+
+  if(empty(@$_REQUEST['idCosecha']) && @$_REQUEST['idCosecha'] == ""){
+
+    $data = array(
+      ":fk_cosecha" => $_REQUEST['cosecha'], 
+      ":fk_vendedor" => $_REQUEST["idVendedor"], 
+      ":fk_comprador" => $usuario["id"],
+      ":estado" => "1",
+      ":fecha_creacion" => date("Y-m-d H:i:s")
+    );
+
+    $id_cosecha = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, fk_vendedor, fk_comprador, estado ,fecha_creacion) VALUES (:fk_cosecha, :fk_vendedor, :fk_comprador, :estado, :fecha_creacion)", $data);
+    $db->insertLogs("cosecha_oferta", $id_cosecha, "Se inicia chat {$id_cosecha}", $usuario["id"]);
+
+  }
+
   $datos = array(
-            ":fk_cosecha_oferta" => $_REQUEST["idCosecha"], 
-            ":mensaje" => $_REQUEST["mensaje"], 
-            ":fk_creador" => $usuario["id"], 
-            ":fecha_creacion" => date("Y-m-d H:i:s")
-          );
+    ":fk_cosecha_oferta" => $id_cosecha, 
+    ":mensaje" => $_REQUEST["mensaje"], 
+    ":fk_creador" => $usuario["id"], 
+    ":fecha_creacion" => date("Y-m-d H:i:s")
+  );
 
   $id_registro = $db->sentencia("INSERT INTO cosecha_oferta_mensajes (fk_cosecha_oferta, mensaje, fk_creador, fecha_creacion) VALUES (:fk_cosecha_oferta, :mensaje, :fk_creador, :fecha_creacion)", $datos);
 
@@ -110,6 +131,7 @@ function enviarMensaje(){
     if (enviarCorrreo($_REQUEST["correo"], $asunto, $mensaje) == true) {
       $resp['success'] = true;
       $resp['msj'] = 'Se ha enviado correctamente.';
+      $resp['idCosecha'] = $id_cosecha;
     }else{
       $resp['msj'] = 'No se ha enviado correo.';
     }
@@ -165,7 +187,7 @@ function enviarCorrreo($correo, $asunto, $mensaje){
     //convert HTML into a basic plain-text alternative body
     $mail->msgHTML(
       "<div>
-        <p> ' ".$mensaje."'</p>
+        <p> ".$mensaje."</p>
       </div>"
     );
     

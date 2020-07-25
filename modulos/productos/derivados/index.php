@@ -148,7 +148,6 @@
     //Editar derivado
     $(document).on("click", ".btnEditar", function(){
       let derivado = $(this).data("producto");
-      console.log(derivado);
       $("#tituloModal").html(`<i class="fas fa-edit"></i> Editar Derivado | ` + derivado['nombre']);
       $("#formCrear :input").removeClass("is-valid");
       $("#formCrear :input").removeClass("is-invalid");
@@ -187,7 +186,6 @@
             $("#btnCrear").attr("disabled" , true);
           },
           success: function(data){
-            console.log({data});
             if (data.success) {
               $("#tabla").DataTable().ajax.reload();
               $("#formCrear")[0].reset();

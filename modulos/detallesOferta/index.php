@@ -186,8 +186,11 @@
                 <form id="formMensaje" class="w-100">
                   <input type="hidden" name="accion" value="enviarMensaje">
                   <input type="hidden" name="idCosecha">
+                  <input type="hidden" name="cosecha">
                   <input type="hidden" name="correo">
-                  <input type="hidden" required name="asunto">
+                  <input type="hidden" name="asunto">
+                  <input type="hidden" name="idVendedor">
+
 
                   <div class="form-group">
                     <label for="mensaje">Mensaje:</label>
@@ -237,6 +240,9 @@
             },
             success: function(data){
               if (data.success) {
+                if(data['idCosecha']){
+                  $("#formMensaje :input[name='idCosecha']").val(data['idCosecha']);
+                }
                 cargarMensajes();
                 $("#formMensaje :input[name='mensaje']").val('');
                 $("#formMensaje :input").removeClass("is-valid");
@@ -279,148 +285,16 @@
 
     });
 
-    function verCosecha(datos){
-      top.$("#cargando").modal("show");
-      cargaDatos = 0;
-      $("#formVer :input[name='producto']").val(datos["producto"]);
-      $("#formVer :input[name='terreno']").val(datos["finca"]);
-      $("#formVer :input[name='fecha_inicio']").val(datos["fecha_inicio"]);
-      $("#formVer :input[name='fecha_fin']").val(datos["fecha_final"]);
-      $("#formVer :input[name='volumen_total']").val(datos["volumen_total"]);
-      $("#formVer :input[name='precio']").val(datos["precio"]);
-
-      //Se trae la lista de certificados que tenga
-      $.ajax({
-        url: "<?php echo($ruta_raiz); ?>modulos/certificados/acciones",
-        type: "POST",
-        dataType: "json",
-        async: false,
-        data: {
-          accion: "certificadosCosechaUsuario",
-          idCosecha: datos['id']
-        },
-        success: function(data){
-          cargaDatos++;
-          $('#certificados_cosecha').empty();
-          if (data.success) {
-            for (let i = 0; i < data.msj['cantidad_registros']; i++) {
-              $('#certificados_cosecha').append(`
-                <li>${data.msj[i].nombre}</li>
-              `);
-            }
-          }else{
-            $('#certificados_cosecha').append(`
-              <li>No hay certificados</li>
-            `);
-          }
-        },
-        error: function(data){
-          Swal.fire({
-            icon: 'error',
-            html: 'No se han enviado los datos'
-          })
-        }
-      });
-
-      //Se traen las fotos de la cosecha
-      $.ajax({
-        url: "<?php echo($ruta_raiz); ?>modulos/ofertar/cosechas/acciones",
-        type: "POST",
-        dataType: "json",
-        async: false,
-        data: {
-          accion: "fotosCosechas",
-          idCosecha: datos['id']
-        },
-        success: function(data){
-          cargaDatos++;
-          $('#cosechas_fotos').empty();
-          if (data.success) {
-            for (let i = 0; i < data.msj['cantidad_registros']; i++) {
-              $('#cosechas_fotos').append(`
-                <div class="col-6">
-                  <a href="<?php echo($ruta_raiz); ?>${data.msj[i].ruta}" data-lightbox="galeria"><img class="img-thumbnail" src="<?php echo($ruta_raiz); ?>${data.msj[i].ruta}"></a>
-                </div>
-              `);
-            }
-          }else{
-            $('#cosechas_fotos').append(`
-              <p>No hay fotos</p>
-            `);
-          }
-        },
-        error: function(data){
-          Swal.fire({
-            icon: 'error',
-            html: 'No se han enviado los datos'
-          })
-        }
-      });
-
-      //Se traen los datos del usuario
-      $.ajax({
-        url: "<?php echo($ruta_raiz); ?>modulos/ofertas/acciones",
-        type: "POST",
-        dataType: "json",
-        async: false,
-        data: {
-          accion: "datosUsuario",
-          idUsuario: datos['idUsuario']
-        },
-        success: function(data){
-          if (data.success) {
-            cargaDatos++;
-            $("#formUsuario :input[name='tipo_documento']").val(data.msj["doc_abreviacion"] + ' - ' + data.msj["documento"]);
-            $("#formUsuario :input[name='nro_documento']").val(data.msj["nro_documento"]);
-            $("#formUsuario :input[name='tipo_usuario']").val(data.msj["tipo_per"]);
-            $("#formUsuario :input[name='nombres']").val(data.msj["nombres"]);
-            $("#formUsuario :input[name='apellidos']").val(data.msj["apellidos"]);
-            $("#formUsuario :input[name='correo']").val(data.msj["correo"]);
-            $("#formUsuario :input[name='telefono']").val(data.msj["telefono"]);
-          }else{
-            $("#formUsuario :input[name='tipo_documento']").val('');
-            $("#formUsuario :input[name='nro_documento']").val('');
-            $("#formUsuario :input[name='tipo_usuario']").val('');
-            $("#formUsuario :input[name='nombres']").val('');
-            $("#formUsuario :input[name='apellidos']").val('');
-            $("#formUsuario :input[name='correo']").val('');
-            $("#formUsuario :input[name='telefono']").val('');
-          }
-        },
-        error: function(data){
-          Swal.fire({
-            icon: 'error',
-            html: 'No se han enviado los datos'
-          })
-        }
-      });
-
-      if (cargaDatos == 3) {
-        cerrarCargando();
-        $("#modalVer").modal("show");
-        
-      }
-    }
-
-    function mensajes(datos){
-      $("#formMensaje :input[name='idCosecha']").val(datos["id"]);
-      $("#formMensaje :input[name='cosechaEstado']").val(datos["cosecha_estado"]);
-      $("#formMensaje :input[name='correo']").val(datos["correo"]);
-      $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre"]);
-      cargarMensajes();
-      $("#modalMensajes").modal("show");
-    }
-
     function cargarMensajes(){
       //Se cargan las lista de mnesajes sobre la cosecha
       $.ajax({
-        url: "acciones",
+        url: "<?php echo($ruta_raiz) ?>modulos/mensajes/acciones",
         type: "POST",
         dataType: "json",
         async: false,
         data: {
           accion: "traerMensajes",
-          idOferta: getUrl('id')
+          idOferta: $("#formMensaje :input[name='idCosecha']").val()// getUrl('id')
         },
         success: function(data){
           $("#contenidoMensajes").empty();
@@ -481,13 +355,10 @@
             trerFotos(id,datos.tipoFinca);
             // se recorren elementos para setear valor correspondiente :)
             $.each(datos, function(key, value){
-              
               if($('#'+key)[0]){
                 $('#'+key)[0].innerText = value;
               }
-              
             })
-            
           }else{
             
           } 
@@ -518,13 +389,18 @@
     }
 
     function configMensajes(datos){
-      $("#formMensaje :input[name='idCosecha']").val(datos["id_cosecha"]);
+      $("#formMensaje :input[name='idCosecha']").val(datos["id_cosecha_oferta"]);
       $("#formMensaje :input[name='cosechaEstado']").val(datos["estado"]);
       $("#formMensaje :input[name='correo']").val(datos["correo_vendedor"]);
       $("#formMensaje :input[name='nombre_usuario']").val(datos["nombre_vendedor"]);
       $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
-      cargarMensajes();
-      // $("#modalMensajes").modal("show");
+      $("#formMensaje :input[name='idVendedor']").val(datos.id_vendedor);
+      $("#formMensaje :input[name='cosecha']").val(datos.id_cosecha);
+
+
+      if(datos["id_cosecha_oferta"]){
+        cargarMensajes();
+      }
     }
 
     function trerFotos(id, tipoFinca){
@@ -590,6 +466,5 @@
         }
       });
     }
-
   </script>
 </html>

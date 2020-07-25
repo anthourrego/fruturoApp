@@ -336,7 +336,6 @@
   }
 
   function cambiarEstado(datos){
-    console.log('datos ', datos);
     Swal.fire({
       title: `¿Estas seguro de ${ $("#selectEstado").val() == 1 ? 'inhabilitar' : 'habilitar'} el certificado  ${datos['nombre']}?`,
       icon: 'warning',

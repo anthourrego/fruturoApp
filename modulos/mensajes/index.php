@@ -223,7 +223,6 @@
   }
 
   function mensajes(datos, nombre, correo, imagen){
-    console.log(datos);
     $("#urlProducto").removeClass("d-none");
     $("#urlProducto").addClass("d-flex");
     if(datos.idOferta){
@@ -276,9 +275,12 @@
         if(correo){
           $("#formMensaje :input[name='correo']").val(correo);
         }
+        if(datos.producto){
+          $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
+        }
+
         $("#formMensaje :input[name='idCosecha']").val(datos.idOferta);
         $("#formMensaje :input").prop("disabled", false);
-        // $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
        
       },
       error: function(data){

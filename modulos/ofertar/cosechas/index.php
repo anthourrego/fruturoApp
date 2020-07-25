@@ -413,7 +413,6 @@
             }
           },
           error: function(data){
-            console.log(data);
             //Habilitamos el botón
             Swal.fire({
               icon: 'error',

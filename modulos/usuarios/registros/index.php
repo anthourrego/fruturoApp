@@ -345,7 +345,6 @@
     //Editar Usuario
     $(document).on("click", ".btnEditarUsuario", function(){
       let usuario = $(this).data("usuario");
-      console.log(usuario);
       $("#formEditarUsuario :input").removeClass("is-valid");
       $("#formEditarUsuario :input").removeClass("is-invalid");
       $("#formEditarUsuario :input[name='id']").val(usuario['id']);
