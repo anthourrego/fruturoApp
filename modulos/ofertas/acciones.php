@@ -65,6 +65,10 @@ function listaOfertas(){
   $resp["success"] = false;
   $inicio = (int)$_POST['inicio'];
   $cantidad = (int)$_POST['cantidad'];
+  $buscar = $_REQUEST['buscar'];
+  
+  // ---------------- filtro de buscar -------------
+  $filtrarBuscar = $_REQUEST['buscar'] == '' ? '' : "AND productos.nombre LIKE '%$buscar%'";
 
   // ---------------- filtros -------------------
   $filtroOrden = $_POST['orden'] == 1 ? 'asc' : 'desc'; 
@@ -72,6 +76,7 @@ function listaOfertas(){
   $filtroMunicipio = $_POST['municipio'] == -1 ? '' : "municipios.id =".$_POST['municipio'];
   $filtroTipo = $_POST['tipo'] == -1 ? '' : 'fincas.fk_finca_tipo ='.$_POST['tipo'];
   $filtroFruta = $_POST['fruta'] == -1 ? '' : 'cosechas.fk_producto ='.$_POST['fruta'];
+  $filtroDerivado = $_POST['derivado'] == -1 ? '' : 'AND cosechas.fk_productos_derivados ='.$_POST['derivado'];
 
   // ----------------- Conector And ---------------------
   $andMunicipio = $filtroMunicipio == '' ? '' : 'and'; 
@@ -85,7 +90,7 @@ function listaOfertas(){
 
 
   if($filtroDepartamento != '' || $filtroMunicipio != '' || $filtroFruta != '' || $filtroTipo!= ''){
-    $and = 'and';
+    $and = 'AND';
   }
 
 
@@ -122,7 +127,7 @@ FROM   cosechas
   INNER JOIN municipios 
           ON fincas.fk_municipio = municipios.id 
   INNER JOIN departamentos 
-          ON municipios.fk_departamento = departamentos.id WHERE cosechas.estado != 0 ".$and." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ".$andTipo." ".$filtroTipo."  GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
+          ON municipios.fk_departamento = departamentos.id WHERE cosechas.estado != 0 ".$and." ".$filtroDepartamento." ".$andMunicipio ." ".$filtroMunicipio." ".$andFruta." ".$filtroFruta." ".$andTipo." ".$filtroTipo." " . $filtroDerivado ." " . $filtrarBuscar . "  GROUP BY id ORDER BY cosechas.precio ".$filtroOrden."
   LIMIT ".$inicio.",".$cantidad);
 
   if ($datos["cantidad_registros"] > 0) {
@@ -339,6 +344,25 @@ function traerDerivados(){
   $resp["success"] = false;
 
   $datos = $db->consulta("SELECT * from productos_derivados WHERE fk_producto = ".$_GET['fruta']);
+
+  if ($datos["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $datos; 
+  }else{
+    $resp["msj"] = "No se han encontrado datos";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
+function traerTipoProducto(){
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $datos = $db->consulta("SELECT * from fincas_tipos WHERE estado = 1");
 
   if ($datos["cantidad_registros"] > 0) {
     $resp["success"] = true;
