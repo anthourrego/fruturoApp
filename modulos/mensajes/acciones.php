@@ -163,7 +163,7 @@ function enviarCorrreo($correo, $asunto, $mensaje){
     //Ask for HTML-friendly debug output
     $mail->Debugoutput = 'html';
     //Set the hostname of the mail server
-    $mail->Host = 'smtp.hostinger.co';
+    $mail->Host = 'smtp.gmail.com';
     //Set the SMTP port number - likely to be 25, 465 or 587
     $mail->Port = 587;
   
@@ -171,11 +171,11 @@ function enviarCorrreo($correo, $asunto, $mensaje){
     //Whether to use SMTP authentication
     $mail->SMTPAuth = true;
     //Username to use for SMTP authentication
-    $mail->Username = 'info@fruturo.us';
+    $mail->Username = 'info.fruturo@gmail.com';
     //Password to use for SMTP authentication
-    $mail->Password = 'Fruturo123*-+';
+    $mail->Password = 'fruturo2020';
     //Set who the message is to be sent from
-    $mail->setFrom('info@fruturo.us', 'Prueba Fruturo');
+    $mail->setFrom('info.fruturo@gmail.com', 'Prueba Fruturo');
     //Set an alternative reply-to address
     //$mail->addReplyTo('lider.servicioalcliente@hyundailatinoamerica.com', 'Alejandro Gaviria');
     //Set who the message is to be sent to

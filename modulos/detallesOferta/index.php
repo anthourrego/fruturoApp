@@ -127,7 +127,7 @@
               <div class="col-12 " id="producto"></div>
             </div>
             <div class="row text-left">
-              <div class="col-12 cantidad"><span id="volumen_total"></span> Kg</div>
+              <div class="col-12 cantidad"><span id="volumen_total"></span><p id="unidad_medida"></p></div>
             </div>
           </div>
           <div class="col m-auto">
@@ -363,7 +363,12 @@
         },
         success: function(data){
           if (data.success) {
+            
             const datos = ordenarData(data.msj);
+            // se reemplaza el volumen total por la capacidad de producción para mostrarse en productos procesados
+            if(datos.capacidad_produccion){
+              datos.volumen_total = datos.capacidad_produccion;
+            }
             configMensajes(datos);
             validarUsuario(datos.id_vendedor);
             let id = datos.tipoFinca == 1 ? datos.id_cosecha : datos.id_producto;

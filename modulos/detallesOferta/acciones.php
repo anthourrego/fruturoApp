@@ -26,7 +26,7 @@ function traerDatosOferta(){
   $db->conectar();
   $resp["success"] = false;
   global $usuario;
-  $datos = $db->consulta("  SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, 
+  $datos = $db->consulta("  SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, cosechas.unidad_medida, cosechas.capacidad_produccion,
   cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.id as id_producto, productos.nombre AS producto, fincas.nombre AS finca, 
   fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
   usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 

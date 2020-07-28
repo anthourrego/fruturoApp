@@ -41,6 +41,7 @@ function lista(){
               array( 'db' => 'c.fecha_final',           'dt' => 'fecha_final',           'field' => 'fecha_final'),
               array( 'db' => 'c.fecha_creacion',        'dt' => 'fecha_creacion',        'field' => 'fecha_creacion'),
               array( 'db' => 'c.capacidad_produccion',  'dt' => 'capacidad_produccion',  'field' => 'capacidad_produccion'),
+              array( 'db' => 'c.unidad_medida',         'dt' => 'unidad_medida',         'field' => 'unidad_medida')
             );
     
   $sql_details = array(
@@ -65,7 +66,7 @@ function crear_procesado(){
   global $ruta_raiz;
   $resp['success'] = false;
 
-  if (isset($_POST["producto"]) && isset($_POST['terreno']) && isset($_POST['capacidad_produccion']) && isset($_POST['precio_procesado'])) {
+  if (isset($_POST["producto"]) && isset($_POST['terreno']) && isset($_POST['capacidad_produccion']) && isset($_POST['precio_procesado'])  && isset($_POST['unidad_medida'])) {
     $datos = array(
       ":fk_producto" => $_POST["producto"], 
       ":fk_finca" => $_POST['terreno'],
@@ -73,10 +74,11 @@ function crear_procesado(){
       ":estado" => 1, 
       ":fecha_creacion" => date('Y-m-d H:i:s'), 
       ":fk_creador" => $usuario['id'], 
-      ":capacidad_produccion" =>$_POST['capacidad_produccion']
+      ":capacidad_produccion" =>$_POST['capacidad_produccion'],
+      ":unidad_medida" =>$_POST['unidad_medida']
     );
   
-    $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, precio, estado, fecha_creacion, fk_creador, capacidad_produccion, fk_finca) VALUES (:fk_producto, :precio, :estado, :fecha_creacion, :fk_creador, :capacidad_produccion, :fk_finca)", $datos);
+    $id_registro = $db->sentencia("INSERT INTO cosechas (fk_producto, precio, estado, fecha_creacion, fk_creador, capacidad_produccion, unidad_medida, fk_finca) VALUES (:fk_producto, :precio, :estado, :fecha_creacion, :fk_creador, :capacidad_produccion, :unidad_medida, :fk_finca)", $datos);
 
     if ($id_registro > 0) {
       $db->insertLogs("cosechas", $id_registro, "Se crea la cosecha", $usuario["id"]);

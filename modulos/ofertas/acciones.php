@@ -21,43 +21,6 @@ $session = new Session();
 
 $usuario = $session->get("usuario");
 
-function lista(){
-  global $usuario;
-  $table      = 'cosechas';
-  // Table's primary key
-  $primaryKey = 'id';
-  // indexes
-  $columns = array(
-              array( 'db' => 'c.id',                                'dt' => 'id',              'field' => 'id' ),
-              array( 'db' => 'muni.nombre',                         'dt' => 'municipio',       'field' => 'municipio',      'as' => 'municipio' ),
-              array( 'db' => 'dep.nombre',                          'dt' => 'departamento',    'field' => 'departamento',   'as' => 'departamento' ),
-              array( 'db' => 'p.nombre',                            'dt' => 'producto',        'field' => 'producto',       'as' => 'producto' ),
-              array( 'db' => 'u.id',                                'dt' => 'idUsuario',       'field' => 'idUsuario',      'as' => 'idUsuario' ),
-              array( 'db' => 'u.correo',                            'dt' => 'correo',          'field' => 'correo'),
-              array( 'db' => 'concat(u.nombres, " ", u.apellidos)', 'dt' => 'nombre',          'field' => 'nombre',         'as' => 'nombre' ),
-              array( 'db' => 'f.nombre',                            'dt' => 'finca',           'field' => 'finca',          'as' => 'finca'),
-              array( 'db' => 'c.volumen_total',                     'dt' => 'volumen_total',   'field' => 'volumen_total' ),
-              array( 'db' => 'c.estado',                            'dt' => 'cosecha_estado',  'field' => 'cosecha_estado', 'as' => 'cosecha_estado'),
-              array( 'db' => 'c.precio',                            'dt' => 'precio',          'field' => 'precio'),
-              array( 'db' => 'c.fecha_inicio',                      'dt' => 'fecha_inicio',    'field' => 'fecha_inicio'),
-              array( 'db' => 'c.fecha_final',                       'dt' => 'fecha_final',     'field' => 'fecha_final'),
-              array( 'db' => 'c.fecha_creacion',                    'dt' => 'fecha_creacion',  'field' => 'fecha_creacion')
-            );
-    
-  $sql_details = array(
-                  'user' => BDUSER,
-                  'pass' => BDPASS,
-                  'db'   => BDNAME,
-                  'host' => BDSERVER
-                );
-      
-  $joinQuery = "FROM {$table} AS c INNER JOIN productos AS p ON c.fk_producto = p.id INNER JOIN fincas AS f ON c.fk_finca = f.id INNER JOIN municipios AS muni ON muni.id = f.fk_municipio INNER JOIN departamentos AS dep ON dep.id = muni.fk_departamento INNER JOIN usuarios AS u ON u.id = c.fk_creador";
-  $extraWhere= "c.estado = ".$_GET['estado'];
-  $groupBy = "";
-  $having = "";
-  return json_encode(SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns, $joinQuery, $extraWhere, $groupBy, $having));
-}
-
 function listaOfertas(){
   global $usuario;
   $db = new Bd();
@@ -100,7 +63,8 @@ function listaOfertas(){
   productos.nombre     AS producto,
   productos_derivados.nombre AS producto_derivado,
   cosechas.id, 
-  cosechas.volumen_total, 
+  cosechas.volumen_total,
+  cosechas.unidad_medida,
   cosechas.precio, 
   cosechas.fecha_creacion, 
   cosechas.fecha_inicio, 

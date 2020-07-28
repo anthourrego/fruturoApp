@@ -92,18 +92,18 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear finca</h5>
+          <h5 class="modal-title" id="tituloModal"><i class="fas fa-plus"></i> Crear Predio</h5>
         </div>
         <form id="formCrear" autocomplete="off">
           <input type="hidden" name="accion" value="crear">
           <div class="modal-body ">
             <div class="form-group">
-              <label for="tipo_predio">Tipo de predio</label>
+              <label for="tipo_predio">Tipo de producto</label>
               <select name="tipo_predio" data-placeholder="Seleccion un tipo de predio" required class="chosen-select" tabindex="2"></select>
             </div>
             <div class="form-group">
-              <label for="nombre">Nombre del terreno o predio <span class="text-danger">*</span></label>
-              <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre del terreno o finca" required autocomplete="off">
+              <label for="nombre" id="labelTipo">Nombre del terreno o predio<span class="text-danger">*</span></label>
+              <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre del terreno o predio" required autocomplete="off">
             </div>
             <div class="form-group">
               <label for="departamento">Departamento <span class="text-danger">*</span></label>
@@ -136,6 +136,16 @@
               <label for="direccion">Dirección <span class="text-danger">*</span></label>
               <textarea class="form-control" required name="direccion" rows="3" placeholder="Escriba una dirección"></textarea>
             </div>
+
+            <div class="alert alert-warning" role="alert" id="instruccionProcesados">
+              <h5 class="text-center">Agregar Productos Procesados</h5>
+              <ol class="mb-0">
+                <li>Crear la <b>Fabrica</b></li>
+                <li>Buscar la fabrica creada en la tabla de predios</li>
+                <li>Seleccionar el botón  <b>Productos</b>.</li>
+              </ol>
+            </div>
+
           </div>
           <div class="modal-footer d-flex justify-content-between">
             <button id="btnCerrar" type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
@@ -151,6 +161,8 @@
 ?>
 <script>
   $(function(){
+    $("#instruccionProcesados").hide();
+
     //Se abre la modal para crear productos
     $('.btnCrear').on("click", function(){
       $("#formCrear :input").removeClass("is-valid");
@@ -168,7 +180,7 @@
       $("#contenedor_predio_exportador").addClass("d-none");
       $("#registro_ica").addClass("d-none");
 
-      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear finca`);
+      $("#tituloModal").html(`<i class="fas fa-plus"></i> Crear predio`);
 
       $("#btnCrear").prop("disabled", false).removeClass("d-none");
       $("#formCrear :input[name='accion']").val('crear');
@@ -177,6 +189,19 @@
 
     //Cuando cambie el tipo de predio
     $("#formCrear :input[name='tipo_predio']").on("change", function(){
+      // cambio de label
+      if($("#formCrear :input[name='tipo_predio']").val() == 2){
+        $('#labelTipo')[0].innerHTML = 'Nombre de la fabrica';
+        $("#formCrear :input[name='nombre']").attr("placeholder", 'Escriba el nombre de la fabrica');
+        $("#instruccionProcesados").show();
+        
+      }else{
+        $('#labelTipo')[0].innerHTML = 'Nombre del terreno o predio';
+        $("#formCrear :input[name='nombre']").attr("placeholder", 'Escriba el nombre del terreno o predio');
+        $("#instruccionProcesados").hide();
+
+      }
+
       $("#formCrear :input[name='nombre']").removeAttr("disabled");
       $("#formCrear :input[name='departamento']").removeAttr("disabled").trigger("chosen:updated");
       $("#formCrear :input[name='direccion']").removeAttr("disabled");
@@ -221,7 +246,7 @@
           select.empty();
 
           select.append(`
-              <option value="0" disabled selected>Seleccione un tipo de predio</option>
+              <option value="0" disabled selected>Seleccione un tipo de producto</option>
             `);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             select.append(`
@@ -452,7 +477,7 @@
 
   function eliminar(datos){
     Swal.fire({
-      title: "¿Estas seguro de eliminar la finca " + datos['nombre'] + "?",
+      title: "¿Estas seguro de eliminar el predio " + datos['nombre'] + "?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -477,14 +502,14 @@
                 toast: true,
                 position: 'bottom-end',
                 icon: 'success',
-                title: "Se ha eliminado la finca " + datos['nombre'],
+                title: "Se ha eliminado el predio " + datos['nombre'],
                 showConfirmButton: false,
                 timer: 5000
               });
             }else{
               Swal.fire({
                 icon: 'warning',
-                html: "Error al eliminar la finca " + datos['nombre']
+                html: "Error al eliminar el predio " + datos['nombre']
               })
             }
           },

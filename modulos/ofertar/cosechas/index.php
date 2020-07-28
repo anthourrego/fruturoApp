@@ -101,7 +101,7 @@
           <input type="hidden" name="id" value="0">
           <div class="modal-body">
             <div class="form-group">
-              <label for="terreno">Predio o finca <span class="text-danger">*</span></label>
+              <label for="terreno"> Predio o fabrica <span class="text-danger">*</span></label>
               <select class="chosen-select" required name="terreno"></select>
             </div>
             <div class="form-group">
@@ -116,8 +116,12 @@
                 <input type="text" class="form-control" name="capacidad_produccion" placeholder="Escriba la capacidad de produccion" onKeyPress="return soloNumeros(event)" required>
               </div>
               <div class="form-group">
+                <label for="unidad_medida">Unidad de medida</label>
+                <input type="text" class="form-control" name="unidad_medida" placeholder="Lb, Kg, Paquete ...,etc" required>
+              </div>
+              <div class="form-group">
                 <label for="capacidad_produccion">Precio o valor</label>
-                <input type="tel" name="precio_procesado" class="form-control" name="capacidad_produccion" placeholder="Escriba la precio" required>
+                <input type="tel" name="precio_procesado" class="form-control"  placeholder="Escriba el precio" required>
               </div>
             </div>
             <div id="crear_fresco">
@@ -200,6 +204,10 @@
                   <div class="form-group">
                     <label for="producto">Capacidad de producción</label>
                     <input class="form-control" type="text" required name="capacidad_produccion" disabled autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label for="producto">Unidad de medida</label>
+                    <input class="form-control" type="text" required name="unidad_medida" disabled autocomplete="off">
                   </div>
                   <div class="form-group">
                     <label for="producto">Precio o valor</label>
@@ -303,8 +311,8 @@
       //$("#formCrear :input[name='accion']").val('crear');
       $("#formCrear :input[name='producto']").val(0).prop("disabled", true).trigger("chosen:updated");
       $("#formCrear :input[name='capacidad_produccion']").prop("disabled", true);
+      $("#formCrear :input[name='unidad_medida']").prop("disabled", true);
       $("#formCrear :input[name='precio_procesado']").prop("disabled", true);
-
       $("#formCrear :input[name='producto_derivado']").val(0).prop("disabled", true).trigger("chosen:updated");
       $("#formCrear :input[name='fecha_fin']").prop("disabled", true);
       $("#formCrear :input[name='fecha_inicio']").prop("disabled", true);
@@ -338,8 +346,9 @@
         $("#crear_procesado").removeClass("d-none");        
         $("#crear_fresco").addClass("d-none");   
         listaProductos($(this).val());
-
+        
         $("#formCrear :input[name='capacidad_produccion']").prop("disabled", false);
+        $("#formCrear :input[name='unidad_medida']").prop("disabled", false);
         $("#formCrear :input[name='precio_procesado']").prop("disabled", false);
       }
     
@@ -767,6 +776,7 @@
     $("#formVer :input[name='precio']").val(datos["precio"]);
     $("#formVer :input[name='precio_procesado']").val(datos["precio"]);
     $("#formVer :input[name='capacidad_produccion']").val(datos["capacidad_produccion"]);
+    $("#formVer :input[name='unidad_medida']").val(datos["unidad_medida"]);
 
     if (datos["fk_finca_tipo"] == 1) {
       $("#ver_fresco").removeClass("d-none");

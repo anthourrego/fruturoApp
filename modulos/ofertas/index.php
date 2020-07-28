@@ -429,7 +429,7 @@
                               ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
                             </div>
                             <div class="d-flex flex-column justify-content-end text-right">
-                              <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : oferta.capacidad_produccion }</span>
+                              <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
                               <span>$${oferta.precio}</span>
                             </div>
                             
