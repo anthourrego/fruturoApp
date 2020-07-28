@@ -50,6 +50,10 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container">
+      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="far fa-comments"></i> Mensajes</h1>
@@ -65,10 +69,10 @@
       <div class="card">
         <!-- /.card-header -->
         <div class="card-body row">
-          <div class="col-4 border-right overflow-auto" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
+          <div class="col-12 col-md-4 border-right overflow-auto" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
             <div class="list-group" id="listaChats"></div>
           </div>
-          <div class="col-8 d-flex flex-column" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
+          <div class="col-12 col-md-8 d-none d-md-flex flex-column" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
             <a href="#" id="urlProducto" class="list-group-item list-group-item-action list-group-item-light d-none px-1">
               <img class="rounded-circle" id="fotoProducto" width="50px" height="50px" src="" alt="">
               <div class="ml-2 w-80">
@@ -97,6 +101,37 @@
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
+
+  <!-- Modal Mensaje -->
+  <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="height: calc(100vh - 60px)">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-comments"></i> Mensajes</h5>
+          <button data-toggle="tooltip" data-placement="top" title="Cargar mensajes" class="btn btn-primary" onClick="cargarMensajes()"><i class="fas fa-redo-alt"></i></button>
+        </div>
+        <div id="contenidoMensajesModal" class="modal-body overflow-auto"></div> 
+        <div class="modal-footer">
+          <form id="formMensajeModal" class="w-100">
+            <input type="hidden" required name="accion" value="enviarMensaje">
+            <input type="hidden" required name="idCosecha">
+            <input type="hidden" required name="correo">
+            <input type="hidden" required name="asunto">
+
+            <div class="form-group text-left">
+              <label for="mensaje">Mensaje:</label>
+              <textarea class="form-control" placeholder="Escriba un mensaje..." required name="mensaje" rows="3"></textarea>
+            </div>
+
+            <div class="w-100 d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> Cerrar</button>
+              <button id="btnCrear" type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 <?php 
@@ -160,6 +195,65 @@
             $('#formMensaje :input').attr("disabled", false);
             $('#btnCrearMensaje').html(`<i class="fas fa-paper-plane"></i> Enviar`);
             $("#btnCrearMensaje").attr("disabled", false);
+          }
+        });
+      }
+    });
+
+    $("#formMensajeModal").submit(function(event){
+      event.preventDefault();
+      if($("#formMensajeModal").valid()){
+        $.ajax({
+          type: "POST",
+          url: "<?php echo($ruta_raiz); ?>modulos/mensajes/acciones",
+          cache: false,
+          contentType: false,
+          dataType: 'json',
+          processData: false,
+          data: new FormData(this),
+          beforeSend: function(){
+            $('#formMensajeModal :input').attr("disabled", true);
+            //Desabilitamos el botón
+            $('#btnCrear').html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...`);
+            $("#btnCrear").attr("disabled" , true);
+          },
+          success: function(data){
+            if (data.success) {
+              mensajes({idOferta :$("#formMensajeModal :input[name='idCosecha']").val()});
+              $("#formMensajeModal :input[name='mensaje']").val('');
+              $("#formMensajeModal :input").removeClass("is-valid");
+              $("#formMensajeModal :input").removeClass("is-invalid");
+              Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                icon: 'success',
+                title: data.msj,
+                showConfirmButton: false,
+                timer: 5000
+              });
+            }else{
+              Swal.fire({
+                icon: 'error',
+                html: data.msj
+              })
+            }
+          },
+          error: function(){
+            //Habilitamos el botón
+            Swal.fire({
+              icon: 'error',
+              html: 'Error al enviar los datos.'
+            });
+            //Habilitamos el botón
+            $('#formMensajeModal :input').attr("disabled", false);
+            $('#btnCrear').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+            $("#btnCrear").attr("disabled", false);
+          },
+          complete: function(){
+            //Habilitamos el botón
+            $('#formMensajeModal :input').attr("disabled", false);
+            $('#btnCrear').html(`<i class="fas fa-paper-plane"></i> Enviar`);
+            $("#btnCrear").attr("disabled", false);
           }
         });
       }
@@ -242,11 +336,11 @@
         idOferta: datos.idOferta
       },
       success: function(data){
-        $("#mensajes").empty();
+        $("#mensajes, #contenidoMensajesModal").empty();
         if (data.success) {
           for (let i = 0; i < data.msj["cantidad_registros"]; i++) {
             if (data.msj[i].fk_creador == <?php echo($usuario['id']); ?>) {
-              $("#mensajes").append(`
+              $("#mensajes, #contenidoMensajesModal").append(`
                 <div class="ml-auto alert alert-warning w-90" role="alert">
                   <p class="font-weight-bold pb-1 border-bottom border-warning text-right">
                     ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
@@ -254,7 +348,7 @@
                   ${data.msj[i].mensaje}
                 </div>`);
             }else{
-              $("#mensajes").append(`
+              $("#mensajes, #contenidoMensajesModal").append(`
                 <div class="alert alert-info w-90" role="alert">
                   <p class="font-weight-bold pb-1 border-bottom border-info">
                   ${data.msj[i].nombre} | <small>${moment(data.msj[i].fecha_creacion).format('DD/MM/YYYY hh:mm a')}</small>
@@ -265,23 +359,26 @@
             }
           }
           setTimeout(() => { 
-            $("#mensajes").scrollTop($("#mensajes")[0].scrollHeight);
+            $("#mensajes, #contenidoMensajesModal").scrollTop($("#mensajes")[0].scrollHeight);
           }, 200);
 
         }else{
-          $("#mensajes").append(`<p class="text-center">No hay mensajes</p>`);
+          $("#mensajes, #contenidoMensajesModal").append(`<p class="text-center">No hay mensajes</p>`);
         }
-        $("#formMensaje :input[name='accion']").val('enviarMensaje');
+        $("#formMensaje :input[name='accion'], #formMensajeModal :input[name='accion']").val('enviarMensaje');
         if(correo){
-          $("#formMensaje :input[name='correo']").val(correo);
+          $("#formMensaje :input[name='correo'], #formMensajeModal :input[name='correo']").val(correo);
         }
         if(datos.producto){
-          $("#formMensaje :input[name='asunto']").val(datos.producto+' - '+datos.finca);
+          $("#formMensaje :input[name='asunto'], #formMensajeModal :input[name='asunto']").val(datos.producto+' - '+datos.finca);
         }
 
-        $("#formMensaje :input[name='idCosecha']").val(datos.idOferta);
-        $("#formMensaje :input").prop("disabled", false);
-       
+        $("#formMensaje :input[name='idCosecha'], #formMensajeModal :input[name='idCosecha']").val(datos.idOferta);
+        $("#formMensaje :input, #formMensajeModal :input").prop("disabled", false);
+        
+        if (screen.width < 768){
+          $("#modalMensajes").modal("show");
+        }
       },
       error: function(data){
         Swal.fire({

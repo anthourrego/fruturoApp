@@ -49,7 +49,7 @@
           <!-- small box -->
           <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="predios">
             <div class="inner">
-              <h4>Registrar Predio</h4>
+              <h4><i class="fas fa-home d-block d-md-none"></i>Registrar Predio</h4>
             </div>
             <div class="icon">
               <i class="fas fa-home"></i>
@@ -61,7 +61,7 @@
           <!-- small box -->
           <a id="cosecha" class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="#">
             <div class="inner">
-              <h4>Ofertar</h4>
+              <h4><i class="far fa-lemon d-block d-md-none"></i> Ofertar</h4>
             </div>
             <div class="icon">
               <i class="far fa-lemon"></i>
@@ -73,7 +73,7 @@
           <!-- small box -->
           <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="<?= $ruta_raiz ?>modulos/ofertas">
             <div class="inner">
-              <h4>Ver Ofertas</h4>
+              <h4><i class="fas fa-shopping-cart d-block d-md-none"></i> Ver Ofertas</h4>
             </div>
             <div class="icon">
               <i class="fas fa-shopping-cart"></i>
@@ -84,7 +84,7 @@
           <!-- small box -->
           <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #6c757d;" href="<?= $ruta_raiz ?>modulos/mensajes">
             <div class="inner">
-              <h4>Mensajes</h4>
+            <h4><i class="far fa-comments d-block d-md-none"></i> Mensajes</h4>
             </div>
             <div class="icon">
               <i class="far fa-comments"></i>
@@ -96,7 +96,7 @@
           <!-- small box -->
           <a class="small-box bg-danger d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="javascript:top.cerrarSesion();">
             <div class="inner">
-              <h4>Cerrar Sesión</h4>
+              <h4><i class="fas fa-sign-in-alt d-block d-md-none"></i> Cerrar Sesión</h4>
             </div>
             <div class="icon">
             <i class="fas fa-sign-in-alt"></i>
