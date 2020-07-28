@@ -58,9 +58,9 @@ function listaOfertas(){
 
 
 
-  $datos = $db->consulta("SELECT usuarios.nombres     AS nombreCreador, 
-  usuarios.apellidos   AS apellidoCreador, 
-  productos.nombre     AS producto,
+  $datos = $db->consulta("SELECT
+  CONCAT( usuarios.nombres ,' ', usuarios.apellidos ) AS nombre,
+  productos.nombre AS producto,
   productos_derivados.nombre AS producto_derivado,
   cosechas.id, 
   cosechas.volumen_total,

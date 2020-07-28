@@ -39,6 +39,10 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header mt-3">
     <div class="container">
+      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="row mb-2">
         <div class="col-12">
           <h2 class="m-0 text-dark">Editar perfil</h2>

@@ -47,6 +47,10 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container-fluid">
+      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Ofertar</h1>
@@ -619,7 +623,7 @@
           `);
           for (let i = 0; i < data.msj.cantidad_registros; i++) {
             select.append(`
-              <option value="${data.msj[i].id}">${data.msj[i].nombre}</option>
+              <option value="${data.msj[i].id}">${data.msj[i].nombre + (data.msj[i].presentacion ? ' - '+data.msj[i].presentacion : '')}</option>
             `);
           }
 

@@ -90,8 +90,13 @@
     </style>
   </head>
   <body class="container">
+    
     <div  class="content-header col-12 text-left">
       <div class="container">
+        <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+          <i class="fas fa-arrow-left"></i>
+          Volver
+        </button>
         <div class="row mb-2">
           <div class="col-12">
             <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles De Oferta</h1>
@@ -101,7 +106,7 @@
     </div>
     <div class="row no-gutter">
       <!-- fotos de oferta -->
-      <div class="text-center col-md-7 col-12 carrousel">
+      <div class="text-center col-md-7 col-12 ">
 
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" id="carrousel">
@@ -122,15 +127,18 @@
         <!-- product section -->
         <h4 class="text-left">Producto: </h4>
         <div class="row">
-          <div class="col m-auto">
+          <div class="col-6 ">
             <div class="row text-left">
               <div class="col-12 " id="producto"></div>
             </div>
             <div class="row text-left">
-              <div class="col-12 cantidad"><span id="volumen_total"></span><p id="unidad_medida"></p></div>
+              <div class="col-12 cantidad d-flex">
+                <span id="volumen_total"></span>
+                <p class="ml-1"id="unidad_medida"></p>
+              </div>
             </div>
           </div>
-          <div class="col m-auto">
+          <div class="col-6">
             <div class="row text-left">
               <div class="col-12 ">Precio</div>
             </div>

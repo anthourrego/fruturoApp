@@ -113,6 +113,13 @@
         top: 0px;
         z-index: 999;
       }
+      
+      .punticos{
+        text-align:left;
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis;
+      }
 
     </style>
   </head>
@@ -121,6 +128,10 @@
   <!-- Content Header (Page header) -->
     <div div class="content-header">
       <div class="container-fluid">
+        <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+          <i class="fas fa-arrow-left"></i>
+          Volver
+        </button>
         <div class="row mb-2 mt-2">
           <div class="col-12">
             <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Ofertas</h1>
@@ -423,16 +434,21 @@
                       </div>
                       <div class="col-8 col-md-12 px-2">
                         <div class="py-2 oferta">
-                          <div class="d-flex justify-content-between">
-                            <div class="d-flex flex-column text-left">
+                          <div class="row">
+                            <div class=" col-12 d-flex justify-content-between">
                               <span>${oferta.producto}</span>
-                              ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
-                            </div>
-                            <div class="d-flex flex-column justify-content-end text-right">
                               <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
+                            </div>
+
+                            <div class="col-12 d-flex justify-content-between">
+                              ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
                               <span>$${oferta.precio}</span>
                             </div>
-                            
+
+                            <div class="col-12 punticos">
+                              <small>${oferta.nombre}</small>
+                            </div>                            
+
                           </div>
                         </div>
                         <div class="text-muted p-1">

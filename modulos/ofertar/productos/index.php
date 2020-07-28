@@ -56,6 +56,10 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
+      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="card">
         <div class="card-header d-flex justify-content-end">
           <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear producto</button>
@@ -66,6 +70,7 @@
             <thead class="thead-light">
               <tr>
                 <th scope="col">Nombre</th>
+                <th scope="col">Presentación</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
@@ -375,6 +380,7 @@
       },
       columns: [
         { data: "nombre" },
+        { data: "presentacion"},
         { data: "descripcion" },
         { data: "fecha_creacion" },
         {

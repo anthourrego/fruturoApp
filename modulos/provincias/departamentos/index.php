@@ -47,6 +47,10 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container">
+      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="fas fa-user-tag"></i> Departamentos</h1>
