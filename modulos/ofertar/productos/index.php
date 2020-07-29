@@ -56,7 +56,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+      <button type="button" class="btn btn-secondary mb-1" onclick="back()">
         <i class="fas fa-arrow-left"></i>
         Volver
       </button>
@@ -508,6 +508,11 @@
     if (cargaDatos == 1) {
       $("#modalVer").modal("show");
     }
+  }
+
+  function back(){
+    var url = "<?php echo($ruta_raiz); ?>modulos/ofertar/predios";
+    location.href = url;
   }
 </script>
 </html>

@@ -39,7 +39,7 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header mt-3">
     <div class="container">
-      <button type="button" class="btn btn-secondary mb-1" onclick="window.history.back()">
+      <button type="button" class="btn btn-secondary mb-1" onclick="back()">
         <i class="fas fa-arrow-left"></i>
         Volver
       </button>
@@ -288,6 +288,11 @@
         cerrarCargando();
       }
     });
+  }
+
+  function back(){
+    var url = "<?php echo($ruta_raiz); ?>modulos/ofertar";
+    location.href = url;
   }
   
 </script>

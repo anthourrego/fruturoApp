@@ -50,6 +50,10 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container">
+      <button type="button" class="btn btn-secondary mb-1" onclick="back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
       <div class="row mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="far fa-comments"></i> Mensajes</h1>
@@ -290,6 +294,11 @@
         })
       }
     });
+  }
+
+  function back(){
+    var url = "<?php echo($ruta_raiz); ?>modulos/ofertar";
+    location.href = url;
   }
 </script>
 </html>
