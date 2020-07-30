@@ -43,6 +43,21 @@
       overflow: hidden; 
       text-overflow: ellipsis;
     }
+
+    .notify-badge{
+     
+      position: absolute;
+      right: -2px;
+      top: -3px;
+      background: red;
+      text-align: center;
+      border-radius: 30px 30px 30px 30px;
+      color: white;
+      padding: 1px 6px;
+      font-size: 14px;
+
+    }
+          
   </style>
 </head>
 <body>
@@ -271,7 +286,6 @@
       success: function(data){
         if (data.success) {
           $("#listaChats").empty();
-
           for (let i = 0; i < data.msj["cantidad_registros"]; i++) {
             if (data.msj[i].foto_producto != null) {
               imagen = data.msj[i].foto_producto;
@@ -290,11 +304,14 @@
               correo = data.msj[i].correoComprador;
             }
 
+            let user_actual = <?= $usuario['id'] ?>;
+
             $("#listaChats").append(`
               <a href="#" class="list-group-item list-group-item-action d-flex px-1" onClick='mensajes(${JSON.stringify(data.msj[i])}, "${nombreUsuario}", "${correo}", "${imagen}")'>
+                <span class="${(data.msj[i].leido == 0 && data.msj[i].ultimo_emisor != user_actual) ? 'notify-badge' : 'd-none' }">•</span>
                 <img class="rounded-circle" width="50px" height="50px" src="<?= $ruta_raiz ?>${imagen}" alt="">
                 <div class="ml-2 w-75">
-                  <h6 class="mb-1 punticos">${nombreUsuario}</h6>
+                  <h6 class="mb-1 ">${nombreUsuario}</h6>
                   <p class="mb-1 punticos">${data.msj[i].producto}</p>
                 </div>
               </a>
@@ -333,10 +350,12 @@
       async: false,
       data: {
         accion: "traerMensajes",
-        idOferta: datos.idOferta
+        idOferta: datos.idOferta,
+        ultimo_emisor: datos.ultimo_emisor
       },
       success: function(data){
         $("#mensajes, #contenidoMensajesModal").empty();
+        cargarChats();
         if (data.success) {
           for (let i = 0; i < data.msj["cantidad_registros"]; i++) {
             if (data.msj[i].fk_creador == <?php echo($usuario['id']); ?>) {
