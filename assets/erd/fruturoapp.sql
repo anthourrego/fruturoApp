@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2020 a las 05:30:29
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.3
+-- Servidor: localhost
+-- Tiempo de generación: 30-07-2020 a las 05:16:23
+-- Versión del servidor: 10.4.13-MariaDB
+-- Versión de PHP: 7.2.32
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `fruturoapp`
+-- Base de datos: `fruturoApp`
 --
 
 -- --------------------------------------------------------
@@ -63,8 +62,19 @@ CREATE TABLE `cosechas` (
   `estado` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 0,
-  `capacidad_produccion` mediumtext DEFAULT NULL
+  `capacidad_produccion` mediumtext DEFAULT NULL,
+  `unidad_medida` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosechas`
+--
+
+INSERT INTO `cosechas` (`id`, `fk_producto`, `fk_productos_derivados`, `fk_finca`, `volumen_total`, `precio`, `fecha_inicio`, `fecha_final`, `estado`, `fecha_creacion`, `fk_creador`, `capacidad_produccion`, `unidad_medida`) VALUES
+(1, 1, 2, 1, 200, '200', '2020-07-21', '2020-07-21', 1, '2020-07-21 18:56:24', 1, NULL, 'Kilos'),
+(2, 3, NULL, 2, NULL, '1500', NULL, NULL, 1, '2020-07-21 18:56:52', 1, '200', ''),
+(3, 2, 3, 1, 2213, '321312', '2020-07-21', '2020-07-21', 1, '2020-07-21 20:18:55', 2, NULL, ''),
+(6, 3, NULL, 2, NULL, '4000', NULL, NULL, 1, '2020-07-27 20:59:47', 1, '2342', 'Paquetes');
 
 -- --------------------------------------------------------
 
@@ -79,6 +89,14 @@ CREATE TABLE `cosechas_certificaciones` (
   `fecha_creacion` datetime NOT NULL,
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosechas_certificaciones`
+--
+
+INSERT INTO `cosechas_certificaciones` (`id`, `fk_cosecha`, `fk_certificacion`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 1, 1, '2020-07-21 00:00:00', 1),
+(2, 3, 1, '2020-07-21 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -97,6 +115,25 @@ CREATE TABLE `cosechas_productos_documentos` (
   `fk_creador` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `cosechas_productos_documentos`
+--
+
+INSERT INTO `cosechas_productos_documentos` (`id`, `tipo`, `ruta`, `tipo_documento`, `fk_producto`, `fk_cosecha`, `fecha_creacion`, `fk_creador`) VALUES
+(1, 'jpg', 'almacenamiento/productos/3/1.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(2, 'jpg', 'almacenamiento/productos/3/2.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(3, 'jpg', 'almacenamiento/productos/3/3.jpg', NULL, 3, NULL, '2020-07-21 18:55:27', 1),
+(4, 'jpg', 'almacenamiento/cosechas/1/0.jpg', NULL, NULL, 1, '2020-07-21 18:56:24', 1),
+(5, 'jpg', 'almacenamiento/cosechas/3/0.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(6, 'jpg', 'almacenamiento/cosechas/3/1.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(7, 'jpg', 'almacenamiento/cosechas/3/2.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(8, 'jpg', 'almacenamiento/cosechas/3/3.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(9, 'jpg', 'almacenamiento/cosechas/3/4.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(10, 'jpg', 'almacenamiento/cosechas/3/5.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(11, 'jpg', 'almacenamiento/cosechas/3/6.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(12, 'png', 'almacenamiento/cosechas/3/7.png', NULL, NULL, 3, '2020-07-21 20:18:55', 1),
+(13, 'jpg', 'almacenamiento/cosechas/3/8.jpg', NULL, NULL, 3, '2020-07-21 20:18:55', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -109,8 +146,20 @@ CREATE TABLE `cosecha_oferta` (
   `fk_vendedor` int(11) NOT NULL DEFAULT 0,
   `fk_comprador` int(11) NOT NULL DEFAULT 0,
   `estado` int(11) NOT NULL DEFAULT 0,
-  `fecha_creacion` datetime NOT NULL
+  `fecha_creacion` datetime NOT NULL,
+  `leido` tinyint(1) NOT NULL,
+  `ultimo_emisor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosecha_oferta`
+--
+
+INSERT INTO `cosecha_oferta` (`id`, `fk_cosecha`, `fk_vendedor`, `fk_comprador`, `estado`, `fecha_creacion`, `leido`, `ultimo_emisor`) VALUES
+(16, 3, 2, 1, 1, '2020-07-24 21:53:51', 1, 1),
+(17, 3, 2, 9, 1, '2020-07-27 21:33:06', 1, 9),
+(18, 3, 2, 9, 1, '2020-07-27 21:38:43', 1, 9),
+(19, 1, 1, 9, 1, '2020-07-29 18:44:09', 0, 9);
 
 -- --------------------------------------------------------
 
@@ -125,6 +174,51 @@ CREATE TABLE `cosecha_oferta_mensajes` (
   `fk_creador` int(11) NOT NULL,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cosecha_oferta_mensajes`
+--
+
+INSERT INTO `cosecha_oferta_mensajes` (`id`, `fk_cosecha_oferta`, `mensaje`, `fk_creador`, `fecha_creacion`) VALUES
+(13, 16, 'kiubo perra', 1, '2020-07-24 21:53:51'),
+(14, 16, 'chao', 1, '2020-07-24 21:54:00'),
+(15, 16, 'chao x2', 1, '2020-07-24 21:54:47'),
+(16, 17, 'hola', 9, '2020-07-27 21:33:06'),
+(17, 18, 'hola', 9, '2020-07-27 21:38:43'),
+(18, 17, 'oe', 9, '2020-07-27 21:38:58'),
+(19, 17, 'oeoeoe', 9, '2020-07-27 21:46:01'),
+(20, 19, 'hola prrooo', 9, '2020-07-29 18:44:09'),
+(21, 19, 'hola', 1, '2020-07-29 19:28:24'),
+(22, 19, 'hlalala', 9, '2020-07-29 20:03:20'),
+(23, 19, 'hola', 9, '2020-07-29 20:43:06'),
+(24, 19, 'afafasf', 9, '2020-07-29 20:44:05'),
+(25, 16, 'chaooooasdasdas', 1, '2020-07-29 20:47:44'),
+(26, 16, 'chaooooasdasdas', 1, '2020-07-29 20:48:01'),
+(27, 16, 'holalalala', 1, '2020-07-29 21:07:31'),
+(28, 19, 'holalala', 1, '2020-07-29 21:08:09'),
+(29, 19, 'nada', 1, '2020-07-29 21:08:47'),
+(30, 19, 'hola', 1, '2020-07-29 21:09:54'),
+(31, 16, 'oeoeoe', 1, '2020-07-29 21:11:40'),
+(32, 16, 'oeoeoe', 1, '2020-07-29 21:12:24'),
+(33, 17, 'oeoeoeasfafasfas', 9, '2020-07-29 21:13:33'),
+(34, 16, '12345', 1, '2020-07-29 21:14:39'),
+(35, 19, 'hola que más', 9, '2020-07-29 21:27:46'),
+(36, 19, 'que de que', 9, '2020-07-29 21:28:23'),
+(37, 19, '12312', 1, '2020-07-29 21:28:54'),
+(38, 19, 'oeoe', 1, '2020-07-29 21:29:50'),
+(39, 19, 'jaja', 9, '2020-07-29 21:30:11'),
+(40, 19, 'hola', 1, '2020-07-29 21:31:02'),
+(41, 19, 'hola', 1, '2020-07-29 21:31:39'),
+(42, 16, 'hola', 1, '2020-07-29 21:34:08'),
+(43, 19, 'hola', 1, '2020-07-29 21:37:05'),
+(44, 19, 'como le va?', 9, '2020-07-29 21:43:27'),
+(45, 19, 'bien y usted?', 1, '2020-07-29 21:44:42'),
+(46, 19, 'nada de nada', 9, '2020-07-29 21:45:37'),
+(47, 19, 'jaja', 1, '2020-07-29 21:45:49'),
+(48, 19, 'oeoeoeoeoe', 9, '2020-07-29 21:46:15'),
+(49, 19, 'hola', 1, '2020-07-29 21:49:58'),
+(50, 19, 'hola', 1, '2020-07-29 21:51:02'),
+(51, 19, 'jajaja', 9, '2020-07-29 21:51:27');
 
 -- --------------------------------------------------------
 
@@ -197,6 +291,15 @@ CREATE TABLE `fincas` (
   `fk_finca_tipo` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `fincas`
+--
+
+INSERT INTO `fincas` (`id`, `nombre`, `fk_municipio`, `direccion`, `hectareas`, `registro_ica`, `fk_usuario`, `fecha_creacion`, `estado`, `fk_finca_tipo`) VALUES
+(1, 'La finquita', 888, 'Carrera 35 ', 4500, NULL, 1, '2020-07-21 18:54:12', 1, 1),
+(2, 'La fabrica', 888, 'Carrera 35', NULL, NULL, 1, '2020-07-21 18:54:36', 1, 2),
+(3, 'prueba', 888, 'lejos', NULL, NULL, 9, '2020-07-27 21:58:01', 1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -233,6 +336,220 @@ CREATE TABLE `logs` (
   `fk_usuario` int(11) NOT NULL DEFAULT 0,
   `fecha_creacion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `logs`
+--
+
+INSERT INTO `logs` (`id`, `nombre_tabla`, `id_registro`, `accion`, `fk_usuario`, `fecha_creacion`) VALUES
+(1, 'fincas', 1, 'Se crea la finca La finquita', 1, '2020-07-21 18:54:12'),
+(2, 'fincas', 2, 'Se crea la finca La fabrica', 1, '2020-07-21 18:54:36'),
+(3, 'cosechas_productos_documentos', 1, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(4, 'cosechas_productos_documentos', 2, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(5, 'cosechas_productos_documentos', 3, 'Creacion de fotos de producto con id: 3', 1, '2020-07-21 18:55:27'),
+(6, 'productos', 3, 'Se crea el producto ', 1, '2020-07-21 18:55:27'),
+(7, 'cosechas_productos_documentos', 4, 'Creacion de fotos de consecha con id: 1', 1, '2020-07-21 18:56:24'),
+(8, 'cosechas', 1, 'Se crea la cosecha', 1, '2020-07-21 18:56:24'),
+(9, 'cosechas_certificaciones', 1, 'Se crea la cosecha con el certificado', 1, '2020-07-21 18:56:24'),
+(10, 'cosechas', 2, 'Se crea la cosecha', 1, '2020-07-21 18:56:52'),
+(11, 'cosechas_productos_documentos', 5, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(12, 'cosechas_productos_documentos', 6, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(13, 'cosechas_productos_documentos', 7, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(14, 'cosechas_productos_documentos', 8, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(15, 'cosechas_productos_documentos', 9, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(16, 'cosechas_productos_documentos', 10, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(17, 'cosechas_productos_documentos', 11, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(18, 'cosechas_productos_documentos', 12, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(19, 'cosechas_productos_documentos', 13, 'Creacion de fotos de consecha con id: 3', 1, '2020-07-21 20:18:55'),
+(20, 'cosechas', 3, 'Se crea la cosecha', 1, '2020-07-21 20:18:55'),
+(21, 'cosechas_certificaciones', 2, 'Se crea la cosecha con el certificado', 1, '2020-07-21 20:18:55'),
+(22, 'usuarios', 3, 'Se cambia la contrase del usuario anthourrego@gmail.com', 1, '2020-07-21 21:50:13'),
+(23, 'cosecha_oferta_mensaje', 5, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:18:13'),
+(24, 'cosecha_oferta_mensaje', 6, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:18:25'),
+(25, 'cosecha_oferta_mensaje', 7, 'Se crea mensaje de la oferta 1', 2, '2020-07-22 22:19:23'),
+(26, 'cosecha_oferta_mensaje', 8, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 22:27:51'),
+(27, 'cosecha_oferta_mensaje', 9, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 22:28:24'),
+(28, 'cosecha_oferta_mensaje', 10, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 22:29:43'),
+(29, 'cosecha_oferta_mensaje', 11, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:08:32'),
+(30, 'cosecha_oferta_mensaje', 12, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 23:09:08'),
+(31, 'cosecha_oferta_mensaje', 13, 'Se crea mensaje de la oferta 1', 1, '2020-07-22 23:10:06'),
+(32, 'cosecha_oferta_mensaje', 14, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:10:44'),
+(33, 'cosecha_oferta_mensaje', 15, 'Se crea mensaje de la oferta 5', 1, '2020-07-22 23:16:07'),
+(34, 'cosecha_oferta_mensaje', 16, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:06:34'),
+(35, 'cosecha_oferta_mensaje', 17, 'Se crea mensaje de la oferta 2', 1, '2020-07-23 22:07:25'),
+(36, 'cosecha_oferta_mensaje', 18, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:07:51'),
+(37, 'cosecha_oferta_mensaje', 19, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:16:45'),
+(38, 'cosecha_oferta_mensaje', 20, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:17:03'),
+(39, 'cosecha_oferta_mensaje', 21, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:23:35'),
+(40, 'cosecha_oferta_mensaje', 22, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:28:23'),
+(41, 'cosecha_oferta_mensaje', 23, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:30:06'),
+(42, 'cosecha_oferta_mensaje', 24, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:31:00'),
+(43, 'cosecha_oferta_mensaje', 25, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:33:03'),
+(44, 'cosecha_oferta_mensaje', 26, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:35:34'),
+(45, 'cosecha_oferta_mensaje', 27, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:39:15'),
+(46, 'cosecha_oferta_mensaje', 28, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:40:54'),
+(47, 'cosecha_oferta_mensaje', 29, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:41:03'),
+(48, 'cosecha_oferta_mensaje', 30, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:41:19'),
+(49, 'cosecha_oferta_mensaje', 31, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:41:40'),
+(50, 'cosecha_oferta_mensaje', 32, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:41:43'),
+(51, 'cosecha_oferta_mensaje', 33, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:43:06'),
+(52, 'cosecha_oferta_mensaje', 34, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:43:29'),
+(53, 'cosecha_oferta_mensaje', 35, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:45:55'),
+(54, 'cosecha_oferta_mensaje', 36, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:54:49'),
+(55, 'cosecha_oferta_mensaje', 37, 'Se crea mensaje de la oferta 1', 1, '2020-07-23 22:56:52'),
+(56, 'cosecha_oferta_mensaje', 38, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:20:48'),
+(57, 'cosecha_oferta_mensaje', 39, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:21:16'),
+(58, 'cosecha_oferta_mensaje', 40, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:35:06'),
+(59, 'cosecha_oferta_mensaje', 41, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:35:24'),
+(60, 'cosecha_oferta_mensaje', 42, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:37:00'),
+(61, 'cosecha_oferta_mensaje', 43, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:38:36'),
+(62, 'cosecha_oferta_mensaje', 44, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:41:28'),
+(63, 'cosecha_oferta_mensaje', 45, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:47:49'),
+(64, 'cosecha_oferta_mensaje', 46, 'Se crea mensaje de la oferta 3', 1, '2020-07-23 23:48:38'),
+(65, 'cosecha_oferta_mensaje', 47, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 19:02:55'),
+(66, 'cosecha_oferta_mensaje', 48, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 19:20:35'),
+(67, 'cosecha_oferta_mensaje', 49, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 19:22:15'),
+(68, 'cosecha_oferta_mensaje', 50, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 19:24:22'),
+(69, 'cosecha_oferta_mensaje', 51, 'Se crea mensaje de la oferta 1', 1, '2020-07-24 19:37:10'),
+(70, 'cosecha_oferta_mensaje', 52, 'Se crea mensaje de la oferta 1', 1, '2020-07-24 19:50:07'),
+(71, 'cosecha_oferta_mensaje', 53, 'Se crea mensaje de la oferta 2', 1, '2020-07-24 19:54:51'),
+(72, 'cosecha_oferta_mensaje', 54, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 20:32:17'),
+(73, 'cosecha_oferta_mensaje', 55, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 20:32:42'),
+(74, 'cosecha_oferta_mensaje', 1, 'Se crea mensaje de la oferta 3', 1, '2020-07-24 20:34:29'),
+(75, 'cosecha_oferta', 6, 'Se inicia chat 6', 1, '2020-07-24 21:16:28'),
+(76, 'cosecha_oferta_mensaje', 2, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:16:28'),
+(77, 'cosecha_oferta', 7, 'Se inicia chat 7', 1, '2020-07-24 21:27:29'),
+(78, 'cosecha_oferta_mensaje', 3, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:27:29'),
+(79, 'cosechas', 4, 'Se crea la cosecha', 1, '2020-07-24 21:32:54'),
+(80, 'cosecha_oferta', 8, 'Se inicia chat 8', 1, '2020-07-24 21:38:03'),
+(81, 'cosecha_oferta_mensaje', 4, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:38:03'),
+(82, 'cosecha_oferta', 9, 'Se inicia chat 9', 1, '2020-07-24 21:39:17'),
+(83, 'cosecha_oferta_mensaje', 5, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:39:17'),
+(84, 'cosecha_oferta', 10, 'Se inicia chat 10', 1, '2020-07-24 21:41:02'),
+(85, 'cosecha_oferta_mensaje', 6, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:41:02'),
+(86, 'cosecha_oferta', 11, 'Se inicia chat 11', 1, '2020-07-24 21:42:03'),
+(87, 'cosecha_oferta_mensaje', 7, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:42:03'),
+(88, 'cosecha_oferta', 12, 'Se inicia chat 12', 1, '2020-07-24 21:43:51'),
+(89, 'cosecha_oferta_mensaje', 8, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:43:51'),
+(90, 'cosecha_oferta', 13, 'Se inicia chat 13', 1, '2020-07-24 21:45:27'),
+(91, 'cosecha_oferta_mensaje', 9, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:45:27'),
+(92, 'cosecha_oferta', 14, 'Se inicia chat 14', 1, '2020-07-24 21:47:10'),
+(93, 'cosecha_oferta_mensaje', 10, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:47:10'),
+(94, 'cosecha_oferta', 15, 'Se inicia chat 15', 1, '2020-07-24 21:50:44'),
+(95, 'cosecha_oferta_mensaje', 11, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:50:44'),
+(96, 'cosecha_oferta_mensaje', 12, 'Se crea mensaje de la oferta 15', 1, '2020-07-24 21:51:00'),
+(97, 'cosecha_oferta', 16, 'Se inicia chat 16', 1, '2020-07-24 21:53:51'),
+(98, 'cosecha_oferta_mensaje', 13, 'Se crea mensaje de la oferta ', 1, '2020-07-24 21:53:51'),
+(99, 'cosecha_oferta_mensaje', 14, 'Se crea mensaje de la oferta 16', 1, '2020-07-24 21:54:00'),
+(100, 'cosecha_oferta_mensaje', 15, 'Se crea mensaje de la oferta 16', 1, '2020-07-24 21:54:47'),
+(101, 'cosechas', 5, 'Se crea la cosecha', 1, '2020-07-27 20:43:43'),
+(102, 'cosechas', 6, 'Se crea la cosecha', 1, '2020-07-27 20:59:47'),
+(103, 'cosecha_oferta', 17, 'Se inicia chat 17', 9, '2020-07-27 21:33:06'),
+(104, 'cosecha_oferta_mensaje', 16, 'Se crea mensaje de la oferta ', 9, '2020-07-27 21:33:06'),
+(105, 'cosecha_oferta', 18, 'Se inicia chat 18', 9, '2020-07-27 21:38:43'),
+(106, 'cosecha_oferta_mensaje', 17, 'Se crea mensaje de la oferta ', 9, '2020-07-27 21:38:43'),
+(107, 'cosecha_oferta_mensaje', 18, 'Se crea mensaje de la oferta 17', 9, '2020-07-27 21:38:58'),
+(108, 'cosecha_oferta_mensaje', 19, 'Se crea mensaje de la oferta 17', 9, '2020-07-27 21:46:01'),
+(109, 'fincas', 3, 'Se crea la finca prueba', 9, '2020-07-27 21:58:01'),
+(110, 'cosecha_oferta', 19, 'Se inicia chat 19', 9, '2020-07-29 18:44:09'),
+(111, 'cosecha_oferta_mensaje', 20, 'Se crea mensaje de la oferta ', 9, '2020-07-29 18:44:09'),
+(112, 'cosecha_oferta_mensaje', 21, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 19:28:24'),
+(113, 'cosecha_oferta_mensaje', 22, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 20:03:20'),
+(114, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 20:40:25'),
+(115, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 20:40:36'),
+(116, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 20:40:45'),
+(117, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 20:42:19'),
+(118, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 20:42:24'),
+(119, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 20:43:04'),
+(120, 'cosecha_oferta_mensaje', 23, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 20:43:06'),
+(121, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 20:43:10'),
+(122, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 20:43:45'),
+(123, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 20:43:47'),
+(124, 'cosecha_oferta_mensaje', 24, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 20:44:05'),
+(125, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 20:48:01'),
+(126, 'cosecha_oferta_mensaje', 26, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 20:48:01'),
+(127, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 20:57:15'),
+(128, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:07:25'),
+(129, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:07:27'),
+(130, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:07:31'),
+(131, 'cosecha_oferta_mensaje', 27, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 21:07:31'),
+(132, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:07:38'),
+(133, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:08:03'),
+(134, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:08:05'),
+(135, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:08:09'),
+(136, 'cosecha_oferta_mensaje', 28, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:08:09'),
+(137, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:08:11'),
+(138, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:08:28'),
+(139, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:08:47'),
+(140, 'cosecha_oferta_mensaje', 29, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:08:47'),
+(141, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:08:50'),
+(142, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:09:52'),
+(143, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:09:54'),
+(144, 'cosecha_oferta_mensaje', 30, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:09:54'),
+(145, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:09:57'),
+(146, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:11:35'),
+(147, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:11:40'),
+(148, 'cosecha_oferta_mensaje', 31, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 21:11:40'),
+(149, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:11:42'),
+(150, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:12:24'),
+(151, 'cosecha_oferta_mensaje', 32, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 21:12:24'),
+(152, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:12:27'),
+(153, 'cosecha_oferta', 17, 'Se lee el mensaje', 9, '2020-07-29 21:13:29'),
+(154, 'cosecha_oferta', 17, 'Se lee el mensaje', 9, '2020-07-29 21:13:33'),
+(155, 'cosecha_oferta_mensaje', 33, 'Se crea mensaje de la oferta 17', 9, '2020-07-29 21:13:33'),
+(156, 'cosecha_oferta', 17, 'Se lee el mensaje', 9, '2020-07-29 21:13:35'),
+(157, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:14:33'),
+(158, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:14:34'),
+(159, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:14:34'),
+(160, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:14:35'),
+(161, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:14:39'),
+(162, 'cosecha_oferta_mensaje', 34, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 21:14:39'),
+(163, 'cosecha_oferta_mensaje', 35, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:27:46'),
+(164, 'cosecha_oferta_mensaje', 36, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:28:23'),
+(165, 'cosecha_oferta_mensaje', 37, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:28:54'),
+(166, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:29:50'),
+(167, 'cosecha_oferta_mensaje', 38, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:29:50'),
+(168, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:29:52'),
+(169, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:30:03'),
+(170, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:30:11'),
+(171, 'cosecha_oferta_mensaje', 39, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:30:11'),
+(172, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:30:13'),
+(173, 'cosecha_oferta', 18, 'Se lee el mensaje', 9, '2020-07-29 21:30:51'),
+(174, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:31:02'),
+(175, 'cosecha_oferta_mensaje', 40, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:31:02'),
+(176, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:31:05'),
+(177, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:31:39'),
+(178, 'cosecha_oferta_mensaje', 41, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:31:39'),
+(179, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:31:42'),
+(180, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:34:08'),
+(181, 'cosecha_oferta_mensaje', 42, 'Se crea mensaje de la oferta 16', 1, '2020-07-29 21:34:08'),
+(182, 'cosecha_oferta', 16, 'Se lee el mensaje', 1, '2020-07-29 21:34:11'),
+(183, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:37:05'),
+(184, 'cosecha_oferta_mensaje', 43, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:37:05'),
+(185, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:37:44'),
+(186, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:43:18'),
+(187, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:43:27'),
+(188, 'cosecha_oferta_mensaje', 44, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:43:27'),
+(189, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:43:42'),
+(190, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:44:42'),
+(191, 'cosecha_oferta_mensaje', 45, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:44:43'),
+(192, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:45:32'),
+(193, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:45:37'),
+(194, 'cosecha_oferta_mensaje', 46, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:45:37'),
+(195, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:45:46'),
+(196, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:45:49'),
+(197, 'cosecha_oferta_mensaje', 47, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:45:49'),
+(198, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:46:11'),
+(199, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:46:15'),
+(200, 'cosecha_oferta_mensaje', 48, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:46:15'),
+(201, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:49:55'),
+(202, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:49:58'),
+(203, 'cosecha_oferta_mensaje', 49, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:49:58'),
+(204, 'cosecha_oferta', 19, 'Se lee el mensaje', 1, '2020-07-29 21:51:02'),
+(205, 'cosecha_oferta_mensaje', 50, 'Se crea mensaje de la oferta 19', 1, '2020-07-29 21:51:02'),
+(206, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:51:24'),
+(207, 'cosecha_oferta', 19, 'Se lee el mensaje', 9, '2020-07-29 21:51:27'),
+(208, 'cosecha_oferta_mensaje', 51, 'Se crea mensaje de la oferta 19', 9, '2020-07-29 21:51:27');
 
 -- --------------------------------------------------------
 
@@ -1466,7 +1783,8 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id`, `nombre`, `presentacion`, `descripcion`, `fecha_creacion`, `estado`, `reg_invima`, `fk_finca`, `fk_creador`) VALUES
 (1, 'Bananos', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
-(2, 'Manzana', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1);
+(2, 'Manzana', NULL, NULL, '2020-06-01 23:16:52', 1, NULL, NULL, 1),
+(3, 'Papas ', 'Paquete 35GR', 'Saborea tu papas', '2020-07-21 18:55:27', 1, NULL, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1573,8 +1891,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `fk_tipo_documento`, `nro_documento`, `fk_tipo_persona`, `correo`, `nombres`, `apellidos`, `password`, `fecha_nacimiento`, `telefono`, `fk_perfil`, `estado`, `fecha_creacion`, `confirmado`, `codigo_recuperacion`, `codigo_activacion`, `fk_creador`) VALUES
 (1, 1, '0', 1, 'admin@admin.com', 'admin', 'admin', '$2y$15$WpgfJ0hjPFRZJFqmdsSUP.RVeoMzXJ8/rUXSrt.XE07oE2fOh5Sti', '1998-09-11', '3103587032', 1, 1, '2020-05-08 21:09:51', 1, '', '', 1),
 (2, 1, '1225091213', 1, 'anthourrego@gmail.com', 'Anthony Smidh', 'Urrego Pineda', '$2y$15$03W5y8SmbGvmpjsTMoiG2eDEVODCN/yjpvGud6vGVipIKdSSoYTKu', '1998-09-11', '3103587032', 2, 1, '2020-07-14 23:31:17', 1, '', '$2y$15$GQR1BywwL4Fdhn9219/p9eaEbtgwtgz5wCOnEeukxln4RDMoGr3uu', 0),
-(3, 1, '1088335957', 1, 'juanfa107@gmail.com', 'juan felipe', 'arenas moreno', '$2y$15$FOeRIdWbOtY8F9/3/HDtEOStGEbUrGbDssFTuxxssNlYJVV5j5gJy', '1993-07-19', '3115509915', 2, 1, '2020-07-12 20:39:39', 1, '$2y$15$B2wTwJkWXY1ydyHUhs2VMuPDv7ie5JqLXwu6SJFJ7l7RXxWSsGbYC', '$2y$15$P49V5la9TbEOYhYlyKN9Ae46SJgA7t2AgFZPomGXLGNWPoOAlpkLO', 0),
-(4, 1, '1225091212', 1, 'antho.120@hotmail.com', 'Anthony Smidh', 'Urrego Pineda', '$2y$15$ZLNzkqoLtKS/7oaC1diAseLM7olwcdsKzMkLUUrfnaJwmBwglMag.', '1998-09-11', '3103587032', 2, 1, '2020-07-24 11:31:12', 1, '', '$2y$15$0SR8WN5FLcXSffDBiAzwFuhuYD6Bf0Ew.Luf4Qpx4Y7Xr90chj3ui', 0);
+(9, 1, '1088335957', 1, 'juanfa107@gmail.com', 'juan felipe', 'arenas moreno', '$2y$15$FOeRIdWbOtY8F9/3/HDtEOStGEbUrGbDssFTuxxssNlYJVV5j5gJy', '1993-07-19', '3115509915', 2, 1, '2020-07-12 20:39:39', 1, '$2y$15$B2wTwJkWXY1ydyHUhs2VMuPDv7ie5JqLXwu6SJFJ7l7RXxWSsGbYC', '$2y$15$P49V5la9TbEOYhYlyKN9Ae46SJgA7t2AgFZPomGXLGNWPoOAlpkLO', 0);
 
 -- --------------------------------------------------------
 
@@ -1754,31 +2071,31 @@ ALTER TABLE `certificaciones`
 -- AUTO_INCREMENT de la tabla `cosechas`
 --
 ALTER TABLE `cosechas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_certificaciones`
 --
 ALTER TABLE `cosechas_certificaciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `cosechas_productos_documentos`
 --
 ALTER TABLE `cosechas_productos_documentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `cosecha_oferta`
 --
 ALTER TABLE `cosecha_oferta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `cosecha_oferta_mensajes`
 --
 ALTER TABLE `cosecha_oferta_mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
@@ -1790,7 +2107,7 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT de la tabla `fincas`
 --
 ALTER TABLE `fincas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `fincas_tipos`
@@ -1802,7 +2119,7 @@ ALTER TABLE `fincas_tipos`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -1832,7 +2149,7 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_derivados`
@@ -1856,7 +2173,7 @@ ALTER TABLE `tipo_persona`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios_modulos`

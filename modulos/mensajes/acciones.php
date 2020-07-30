@@ -41,7 +41,9 @@ function listaChats(){
                           pd.nombre AS producto_derivado,
                           fincas.nombre AS finca,
                           (SELECT ruta FROM cosechas_productos_documentos WHERE fk_producto = c.fk_producto ORDER BY id ASC LIMIT 1) AS foto_producto,
-                          (SELECT ruta FROM cosechas_productos_documentos WHERE fk_cosecha = c.id ORDER BY id ASC LIMIT 1) AS foto_cosecha
+                          (SELECT ruta FROM cosechas_productos_documentos WHERE fk_cosecha = c.id ORDER BY id ASC LIMIT 1) AS foto_cosecha,
+                          leido,
+                          ultimo_emisor
                         FROM cosecha_oferta AS co 
                           INNER JOIN cosechas AS c ON c.id = co.fk_cosecha 
                           INNER JOIN productos AS p ON c.fk_producto = p.id
@@ -67,6 +69,7 @@ function listaChats(){
 function traerMensajes(){
   $db = new Bd();
   $db->conectar();
+  global $usuario;
 
   $mensaje = $db->consulta("SELECT
                           com.mensaje,
@@ -86,7 +89,23 @@ function traerMensajes(){
 
   $db->desconectar();
 
+  if($usuario['id'] != @$_REQUEST['ultimo_emisor'] && isset($_REQUEST['ultimo_emisor'])){
+    leerMensaje($_REQUEST["idOferta"],1);
+  }
+
   return json_encode($resp);
+}
+
+function leerMensaje($id_cosecha_oferta, $estado){
+  $db = new Bd();
+  $db->conectar();
+  global $usuario;
+
+
+  $db->sentencia("UPDATE cosecha_oferta SET leido = ".$estado.", ultimo_emisor = ".$usuario["id"]." WHERE id = :id", array(":id" => $id_cosecha_oferta));
+  $db->insertLogs("cosecha_oferta", $id_cosecha_oferta, "Se lee el mensaje", $usuario["id"]);
+
+  $db->desconectar();
 }
 
 function enviarMensaje(){
@@ -108,13 +127,15 @@ function enviarMensaje(){
       ":fk_vendedor" => $_REQUEST["idVendedor"], 
       ":fk_comprador" => $usuario["id"],
       ":estado" => "1",
-      ":fecha_creacion" => date("Y-m-d H:i:s")
+      ":fecha_creacion" => date("Y-m-d H:i:s"),
+      ":leido" => 0
     );
 
-    $id_cosecha = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, fk_vendedor, fk_comprador, estado ,fecha_creacion) VALUES (:fk_cosecha, :fk_vendedor, :fk_comprador, :estado, :fecha_creacion)", $data);
+    $id_cosecha = $db->sentencia("INSERT INTO cosecha_oferta (fk_cosecha, fk_vendedor, fk_comprador, estado ,fecha_creacion, leido) VALUES (:fk_cosecha, :fk_vendedor, :fk_comprador, :estado, :fecha_creacion, :leido)", $data);
     $db->insertLogs("cosecha_oferta", $id_cosecha, "Se inicia chat {$id_cosecha}", $usuario["id"]);
 
   }
+
 
   $datos = array(
     ":fk_cosecha_oferta" => $id_cosecha, 
@@ -124,6 +145,8 @@ function enviarMensaje(){
   );
 
   $id_registro = $db->sentencia("INSERT INTO cosecha_oferta_mensajes (fk_cosecha_oferta, mensaje, fk_creador, fecha_creacion) VALUES (:fk_cosecha_oferta, :mensaje, :fk_creador, :fecha_creacion)", $datos);
+
+  leerMensaje($id_cosecha, 0);
 
   if ($id_registro > 0) {
     $db->insertLogs("cosecha_oferta_mensaje", $id_registro, "Se crea mensaje de la oferta {$_POST['idCosecha']}", $usuario["id"]);
@@ -144,6 +167,8 @@ function enviarMensaje(){
   return json_encode($resp);
 
 }
+
+
 
 // función para enviar correo con pin de recuperación
 function enviarCorrreo($correo, $asunto, $mensaje){
