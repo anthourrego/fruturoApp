@@ -62,6 +62,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="alert alert-warning" role="alert">
+        <h5 class="text-center">Instrucciones</h5>
         <ol class="mb-0">
           <li>Haz click en <b>Crear Predio</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b>, arriba en esta pagina.</li>
@@ -142,11 +143,14 @@
             </div>
 
             <div class="alert alert-warning" role="alert" id="instruccionProcesados">
-              <h5 class="text-center">Agregar Productos Procesados</h5>
+              <h5 class="text-center" >Instrucciones - Agregar Productos Procesados</h5>
+              
               <ol class="mb-0">
                 <li>Crear la <b>Fabrica</b></li>
                 <li>Buscar la fabrica creada en la tabla de predios</li>
                 <li>Seleccionar el botón  <b>Productos</b>.</li>
+                <li>Después de crear un producto procesado debes ir a <b>Inicio</b> y crear una oferta en <b>Ofertar</b>.</li>
+
               </ol>
             </div>
 

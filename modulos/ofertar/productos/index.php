@@ -122,6 +122,16 @@
               <label for="nombre">Registro Invima <span class="text-danger">*</span></label>
               <input type="text" name="registro_invima" class="form-control" placeholder="Escriba el registro invima" disabled required autocomplete="off">
             </div>
+            <div class="alert alert-warning" role="alert">
+              <b>Instructivo foto de tabla nutricional</b>
+              <ol>
+                <li>Favor acerque su cámara a la tabla nutricional de su producto</li>
+                <li>Realice la foto tratando de no dejar espacios, ejemplo: </li>
+              </ol>
+              <div class="text-center">
+                <img style="width: 150px;"  src="<?php echo($ruta_raiz); ?>/assets/img/tabla-nutricional.jpg" alt="tabla nutricional ejemplo">
+              </div>
+            </div>
             <div class="form-group">
               <label for="tabla_nutricional">Tabla nutricional: <span class="text-danger">*</span></label>
               <div class="custom-file">

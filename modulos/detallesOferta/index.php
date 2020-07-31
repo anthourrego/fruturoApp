@@ -162,18 +162,34 @@
         <div class="row">
           <div class="col-6 m-auto">
             <div class="row text-left">
-              <span class="col" id="finca"></span>
+              <div class="col">
+                <div class="row">
+                  <small class="col-4">Predio: </small><span class="col-8 text-right" id="finca"></span>
+                </div>
+              </div>
             </div>
             <div class="row text-left">
-              <span class="col" id="direccion"></span>
+              <div class="col">
+                <div class="row">
+                  <small class="col-4">Dirección: </small><span class="text-right col-8" id="direccion"></span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-6 m-auto">
             <div class="row text-left">
-              <span class="col" id="municipio"></span>
+              <div class="col">
+                <div class="row">
+                  <small class="col-4">Municipio: </small><span class="col-8 text-right" id="municipio"></span>
+                </div>
+              </div>
             </div>
             <div class="row text-left">
-              <span class="col" id="departamento"></span>
+              <div class="col">
+                <div class="row">
+                  <small class="col-4" >Departamento: </small><span class=" col-8 text-right" id="departamento"></span>
+                </div>
+              </div>
             </div>
           </div>      
       
@@ -189,9 +205,27 @@
         </div>
         <hr>
         <div >
-          <button class="btn btn-lg btn-verdeOscuro w-100" data-toggle="modal" data-target="#modalMensajes" id="btnChat">
-            Chatear con el vendedor
-          </button>
+          
+          <p>
+            <button class="btn btn-lg btn-verdeOscuro" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
+              Contactar Con Vendedor
+            </button>
+          </p>
+          <div class="collapse row " id="collapseContact" >
+            <button class="btn btn-lg text-white col-12 col-md-6" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" id="btnChat">
+              <i class="far fa-comments"></i> Chat 
+            </button>
+
+            <button class="btn btn-lg col-12 text-white col-md-6 " style="background-color: #128c7e;" onclick="whatsapp()">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+
+          </div>
+
+
+
+
+          
         </div>
 
 
@@ -238,6 +272,8 @@
     echo $lib->cambioPantalla();
   ?>
   <script>
+
+    telefono = '';
 
     $(function(){
       traerDatosOferta(getUrl('id'));
@@ -373,6 +409,7 @@
           if (data.success) {
             
             const datos = ordenarData(data.msj);
+            telefono = datos.telefono;
             // se reemplaza el volumen total por la capacidad de producción para mostrarse en productos procesados
             if(datos.capacidad_produccion){
               datos.volumen_total = datos.capacidad_produccion;
@@ -530,6 +567,10 @@
     function back(){
       var url = "<?php echo($ruta_raiz); ?>modulos/ofertas";
       location.href = url;
+    }
+
+    function whatsapp(){
+      window.open("https://api.whatsapp.com/send?phone=+57"+telefono,'_blank');
     }
 
   </script>

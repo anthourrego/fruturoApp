@@ -429,7 +429,7 @@
                 <div class="col p-0 text-center mb-0 mb-md-4" id="${'oferta-'+oferta.id}" onclick="verOferta(${oferta.id})">
                   <div class="card">
                     <div class="row no-gutters">
-                      <div class="col-4 col-md-12 m-0 text-left">
+                      <div class="col-4 col-md-12 m-0 text-left m-auto">
                         <img class="card-img-top imagen-oferta" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
                       </div>
                       <div class="col-8 col-md-12 px-2">
