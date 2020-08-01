@@ -108,14 +108,14 @@
       <!-- fotos de oferta -->
       <div class="text-center col-md-7 col-12 ">
 
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div id="carouselControls" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" id="carrousel">
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -126,17 +126,19 @@
       <div class="text-center col-md-5 col-12 mt-md-0 mt-2">
         <!-- product section -->
         
-        <div class="text-left row"><h4>Producto :</h4><span id="tipoProducto" style="margin: auto 0px auto 5px;"></span></div>
+        <h4 class="text-left">Producto: <small id="tipoProducto"></small></h4>
         <div class="row">
           <div class="col-6 ">
             <div class="row text-left">
-              <div class="col-12 " id="producto"></div>
+              <div class="col" id="producto"></div>
             </div>
             <div class="row text-left">
               <div class="col-12 cantidad d-flex">
                 <span id="volumen_total"></span>
                 <p class="ml-1"id="unidad_medida"></p>
               </div>
+            </div>
+            <div class="row text-left" id="frecuencia">
             </div>
           </div>
           <div class="col-6">
@@ -146,6 +148,11 @@
             <div class="row text-left">
               <div class="col-12">$<span id="precio"></span></div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-left">
+            <span id="registro"></span>
           </div>
         </div>
 
@@ -232,7 +239,7 @@
           </p>
           <div class="collapse row " id="collapseContact" >
             
-            <div class="col-12">
+            <div class="col-12 mb-2">
               <div class="row">
                 <small class="col text-left" >
                   <b>
@@ -243,14 +250,18 @@
               </div>
             </div>
              
-            <button class="btn btn-lg text-white col-12 col-md-6" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" >
-              <i class="far fa-comments"></i> Chat 
-            </button>
-
-            <button class="btn btn-lg col-12 text-white col-md-6 " style="background-color: #128c7e;" onclick="whatsapp()">
-              <i class="fab fa-whatsapp"></i> WhatsApp
-            </button>
-
+            <div class="col-12 col-md-6 mb-2 mb-md-0">
+              <button class="btn px-2 btn-lg text-white btn-block" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" >
+                <i class="far fa-comments"></i> Chat 
+              </button>
+            </div>
+            
+            <div class="col-12 col-md-6" >
+              <button class="btn px-2 btn-lg text-white btn-block" style="background-color: #128c7e;" onclick="whatsapp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+              </button>
+            </div>
+            
           </div>          
         </div>
 
@@ -435,9 +446,32 @@
             datos = ordenarData(data.msj);
             // se reemplaza el volumen total por la capacidad de producción para mostrarse en productos procesados
             $("#tipoProducto")[0].innerText = datos.tipoFinca == 1 ? 'Fresco' : 'Procesado ';
+            
+
+            // setear presentacion  de producto
+            datos.producto = datos.presentacion ? (datos.producto+' - '+datos.presentacion) : datos.producto;
+            // setear Unidad de medida
+            datos.unidad_medida = datos.unidad_medida ? ' X '+datos.unidad_medida : ' X Kg';
+            //datos.registro = datos.invima ? ('Registro Invima : '+ datos.invima) : ('Registro ICA : '+ datos.ica);
+
+            // se setean resgistros
+            let registro ;
+
+            if(datos.invima){
+              registro = '<b>Registro Invima: </b>'+ datos.invima;
+            }else if( datos.ica ){
+              registro = '<b>Registro ICA : </b>'+ datos.ica;
+            }else{
+              registro = '';
+            }
+            
+            $("#registro")[0].innerHTML = registro;
+          
+            // se setea capacidad de produccion o volumen total
             if(datos.capacidad_produccion){
               datos.volumen_total = datos.capacidad_produccion;
             }
+
             configMensajes(datos);
             validarUsuario(datos.id_vendedor);
             let id = datos.tipoFinca == 1 ? datos.id_cosecha : datos.id_producto;
@@ -449,6 +483,19 @@
                 $('#'+key)[0].innerText = value;
               }
             })
+
+            // se setea Frecuencia
+
+            if(datos.frecuencia){
+              const obj_frec = {1 : 'Semanal', 2: 'Quincenal', 3: 'Mensual'};
+
+              $("#frecuencia")[0].innerHTML = `
+                <span class="col-12">
+                  <b>Frecuencia:</b> ${obj_frec[datos.frecuencia]}
+                </span>
+              `;
+            }
+
           }else{
             
           } 

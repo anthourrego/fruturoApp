@@ -27,11 +27,11 @@ function traerDatosOferta(){
   $resp["success"] = false;
   global $usuario;
   $datos = $db->consulta("  SELECT cosechas.id AS id_cosecha , cosechas.precio, cosechas.volumen_total, cosechas.unidad_medida, cosechas.capacidad_produccion,
-  cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.id as id_producto, productos.nombre AS producto, fincas.nombre AS finca, 
-  fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
-  usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) as nombre_vendedor, usuarios.telefono, 
-  fincas.fk_finca_tipo as tipoFinca,
-  (SELECT id FROM cosecha_oferta WHERE fk_cosecha = cosechas.id AND fk_comprador = :id_comprador LIMIT 1) as id_cosecha_oferta
+  cosechas.fecha_inicio, cosechas.fecha_final, cosechas.estado, productos.frecuencia AS frecuencia, productos.id AS id_producto, productos.nombre AS producto, productos.presentacion AS presentacion, productos.reg_invima AS invima, fincas.nombre AS finca, 
+  fincas. registro_ica AS ica, fincas.direccion AS direccion, departamentos.nombre AS departamento, municipios.nombre AS municipio, 
+  usuarios.id AS id_vendedor, usuarios.correo AS correo_vendedor, CONCAT(usuarios.nombres,' ',usuarios.apellidos) AS nombre_vendedor, usuarios.telefono, 
+  fincas.fk_finca_tipo AS tipoFinca,
+  (SELECT id FROM cosecha_oferta WHERE fk_cosecha = cosechas.id AND fk_comprador = :id_comprador LIMIT 1) AS id_cosecha_oferta
   FROM   cosechas 
   INNER JOIN productos 
     ON cosechas.fk_producto = productos.id
