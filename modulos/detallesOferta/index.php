@@ -133,6 +133,9 @@
               <div class="col" id="producto"></div>
             </div>
             <div class="row text-left">
+              <div class="col" id="derivado"></div>
+            </div>
+            <div class="row text-left">
               <div class="col-12 cantidad d-flex">
                 <span id="volumen_total"></span>
                 <p class="ml-1"id="unidad_medida"></p>
@@ -444,15 +447,16 @@
           if (data.success) {
             
             datos = ordenarData(data.msj);
+
             // se reemplaza el volumen total por la capacidad de producción para mostrarse en productos procesados
             $("#tipoProducto")[0].innerText = datos.tipoFinca == 1 ? 'Fresco' : 'Procesado ';
-            
 
             // setear presentacion  de producto
             datos.producto = datos.presentacion ? (datos.producto+' - '+datos.presentacion) : datos.producto;
             // setear Unidad de medida
-            datos.unidad_medida = datos.unidad_medida ? ' X '+datos.unidad_medida : ' X Kg';
-            //datos.registro = datos.invima ? ('Registro Invima : '+ datos.invima) : ('Registro ICA : '+ datos.ica);
+            datos.unidad_medida = datos.unidad_medida ? datos.unidad_medida : 'Kg';
+            // setear Unidad de precio
+            datos.precio = datos.precio+' X '+datos.unidad_medida;
 
             // se setean resgistros
             let registro ;
@@ -477,6 +481,7 @@
             let id = datos.tipoFinca == 1 ? datos.id_cosecha : datos.id_producto;
             
             trerFotos(id,datos.tipoFinca);
+
             // se recorren elementos para setear valor correspondiente :)
             $.each(datos, function(key, value){
               if($('#'+key)[0]){
@@ -485,7 +490,6 @@
             })
 
             // se setea Frecuencia
-
             if(datos.frecuencia){
               const obj_frec = {1 : 'Semanal', 2: 'Quincenal', 3: 'Mensual'};
 

@@ -62,6 +62,7 @@ function listaOfertas(){
   CONCAT( usuarios.nombres ,' ', usuarios.apellidos ) AS nombre,
   productos.nombre AS producto,
   productos_derivados.nombre AS producto_derivado,
+  productos.presentacion AS presentacion,
   cosechas.id, 
   cosechas.volumen_total,
   cosechas.unidad_medida,
