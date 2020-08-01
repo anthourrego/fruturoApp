@@ -45,7 +45,11 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <button type="button" class="btn btn-secondary mb-1" onclick="back()">
+        <i class="fas fa-arrow-left"></i>
+        Volver
+      </button>
+      <div class="row mt-3">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="fas fa-box"></i> Productos - <?= @$_GET['nombre'] ?></h1>
         </div><!-- /.col -->
@@ -57,11 +61,7 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <button type="button" class="btn btn-secondary mb-1" onclick="back()">
-        <i class="fas fa-arrow-left"></i>
-        Volver
-      </button>
-      <div class="alert alert-warning mt-3" role="alert">
+      <div class="alert alert-warning" role="alert">
         <h5 class="text-left">Instrucciones:</h5>
         <ol class="mb-0">
           <li>Haz click en <b>Crear Producto</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>

@@ -69,7 +69,7 @@
         <i class="fas fa-arrow-left"></i>
         Volver
       </button>
-      <div class="row mb-2">
+      <div class="row mt-3 mb-2">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="far fa-comments"></i> Mensajes</h1>
         </div><!-- /.col -->
@@ -84,10 +84,10 @@
       <div class="card">
         <!-- /.card-header -->
         <div class="card-body row">
-          <div class="col-12 col-md-4 border-right overflow-auto" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
+          <div class="col-12 col-md-4 border-right overflow-auto" style="height: 70vh; min-height: 70vh; max-height: 70vh;">
             <div class="list-group" id="listaChats"></div>
           </div>
-          <div class="col-12 col-md-8 d-none d-md-flex flex-column" style="height: 80vh; min-height: 80vh; max-height: 80vh;">
+          <div class="col-12 col-md-8 d-none d-md-flex flex-column" style="height: 70vh; min-height: 70vh; max-height: 70vh;">
             <a href="#" id="urlProducto" class="list-group-item list-group-item-action list-group-item-light d-none px-1">
               <img class="rounded-circle" id="fotoProducto" width="50px" height="50px" src="" alt="">
               <div class="ml-2 w-80">

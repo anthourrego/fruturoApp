@@ -51,7 +51,7 @@
         <i class="fas fa-arrow-left"></i>
         Volver
       </button>
-      <div class="row mb-2">
+      <div class="row mt-3">
         <div class="col-12">
           <h1 class="m-0 text-dark"><i class="far fa-lemon"></i> Ofertar</h1>
         </div><!-- /.col -->
