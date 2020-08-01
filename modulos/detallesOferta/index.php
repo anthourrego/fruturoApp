@@ -158,6 +158,11 @@
             <span id="registro"></span>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12 text-left">
+            <span id="desc"></span>
+          </div>
+        </div>
 
         <div class="row mt-2 containerCertificaciones">
           <div class="col text-left">
@@ -476,6 +481,8 @@
               datos.volumen_total = datos.capacidad_produccion;
             }
 
+
+            
             configMensajes(datos);
             validarUsuario(datos.id_vendedor);
             let id = datos.tipoFinca == 1 ? datos.id_cosecha : datos.id_producto;
@@ -498,6 +505,12 @@
                   <b>Frecuencia:</b> ${obj_frec[datos.frecuencia]}
                 </span>
               `;
+            }
+
+            // se setea descripción
+            if(datos.descripcion){
+              const desc ='<b>Descripción: </b>'+ datos.descripcion;
+              $("#desc").append(desc);
             }
 
           }else{
