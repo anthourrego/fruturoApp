@@ -125,7 +125,8 @@
       <!-- informacion de oferta -->
       <div class="text-center col-md-5 col-12 mt-md-0 mt-2">
         <!-- product section -->
-        <h4 class="text-left">Producto: </h4>
+        
+        <div class="text-left row"><h4>Producto :</h4><span id="tipoProducto" style="margin: auto 0px auto 5px;"></span></div>
         <div class="row">
           <div class="col-6 ">
             <div class="row text-left">
@@ -164,14 +165,22 @@
             <div class="row text-left">
               <div class="col">
                 <div class="row">
-                  <small class="col">Predio: <span class=" text-right" id="finca"></span> </small>
+                  <small class="col">
+                    <b>
+                    Predio:
+                    </b>
+                    <span class=" text-right" id="finca"></span> </small>
                 </div>
               </div>
             </div>
             <div class="row text-left">
               <div class="col">
                 <div class="row">
-                  <small class="col-4">Dirección: </small><span class="text-right col-8" id="direccion"></span>
+                  <small class="col">
+                    <b>
+                      Dirección:
+                    </b>
+                  <span class="text-right" id="direccion"></span></small>
                 </div>
               </div>
             </div>
@@ -180,14 +189,22 @@
             <div class="row text-left">
               <div class="col">
                 <div class="row">
-                  <small class="col-4">Municipio: </small><span class="col-8 text-right" id="municipio"></span>
+                  <small class="col">
+                    <b>
+                      Municipio:
+                    </b>
+                    <span class="text-right" id="municipio"></span></small>
                 </div>
               </div>
             </div>
             <div class="row text-left">
               <div class="col">
                 <div class="row">
-                  <small class="col-4" >Departamento: </small><span class=" col-8 text-right" id="departamento"></span>
+                  <small class="col" >
+                    <b>
+                      Departamento:
+                    </b>
+                  <span class="text-right" id="departamento"></span></small>
                 </div>
               </div>
             </div>
@@ -196,22 +213,36 @@
         </div>
         <hr>
         <!-- vendedor  -->
-        <h4 class="text-left">Vendedor: </h4>
+        <h4 class="text-left">
+          <b>
+            Vendedor:
+          </b>
+        </h4>
         <div class="row">
           <div class="col-12 text-left" id="nombre_vendedor">
-          </div>
-          <div class="col-12 text-left" id="telefono">
           </div>
         </div>
         <hr>
         <div >
           
           <p>
-            <button class="btn btn-lg btn-verdeOscuro" id="btnChat" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false">
+            <button class="btn btn-lg btn-verdeOscuro btn-block" id="btnChat" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false">
               Contactar Con Vendedor
             </button>
           </p>
           <div class="collapse row " id="collapseContact" >
+            
+            <div class="col-12">
+              <div class="row">
+                <small class="col text-left" >
+                  <b>
+                    Telefono:
+                  </b>
+                  <span class="text-right" id="telefono"></span>
+                </small>
+              </div>
+            </div>
+             
             <button class="btn btn-lg text-white col-12 col-md-6" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" >
               <i class="far fa-comments"></i> Chat 
             </button>
@@ -267,8 +298,7 @@
   ?>
   <script>
 
-    telefono = '';
-
+    datos = {}         
     $(function(){
       traerDatosOferta(getUrl('id'));
       $('.containerCertificaciones').hide();
@@ -402,9 +432,9 @@
         success: function(data){
           if (data.success) {
             
-            const datos = ordenarData(data.msj);
-            telefono = datos.telefono;
+            datos = ordenarData(data.msj);
             // se reemplaza el volumen total por la capacidad de producción para mostrarse en productos procesados
+            $("#tipoProducto")[0].innerText = datos.tipoFinca == 1 ? 'Fresco' : 'Procesado ';
             if(datos.capacidad_produccion){
               datos.volumen_total = datos.capacidad_produccion;
             }
@@ -564,7 +594,7 @@
     }
 
     function whatsapp(){
-      window.open("https://api.whatsapp.com/send?phone=+57"+telefono,'_blank');
+      window.open("https://api.whatsapp.com/send?phone=+57"+datos.telefono,'_blank');
     }
 
   </script>
