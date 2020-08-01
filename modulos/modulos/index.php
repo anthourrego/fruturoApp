@@ -41,7 +41,7 @@
     echo $lib->proyecto();
   ?>
 </head>
-<body>
+<body class="content-fruturo">
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">

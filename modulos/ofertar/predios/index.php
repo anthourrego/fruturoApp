@@ -40,7 +40,7 @@
     echo $lib->proyecto();
   ?>
 </head>
-<body>
+<body class="content-fruturo">
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
@@ -62,7 +62,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="alert alert-warning" role="alert">
-        <h5 class="text-center">Instrucciones</h5>
+        <h5 class="text-left">Instrucciones:</h5>
         <ol class="mb-0">
           <li>Haz click en <b>Crear Predio</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b>, arriba en esta pagina.</li>

@@ -33,7 +33,7 @@
     echo $lib->proyecto();
   ?>
 </head>
-<body>
+<body class="content-fruturo">
   <section class="content mt-5">
     <div class="container">
       <div class="alert alert-warning" role="alert">
@@ -60,6 +60,8 @@
             </div>
           </a>
         </div>
+      </div>
+      <div class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <!-- small box -->
           <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="predios">
@@ -109,7 +111,7 @@
         <!-- ./col -->
       </div>
     </div>
-  </div>
+  </section>
 </body>
 <?php 
   echo $lib->cambioPantalla();

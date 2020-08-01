@@ -39,7 +39,7 @@
     echo $lib->proyecto();
   ?>
 </head>
-<body>
+<body class="content-fruturo">
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
@@ -60,6 +60,13 @@
         <i class="fas fa-arrow-left"></i>
         Volver
       </button>
+      <div class="alert alert-warning mt-3" role="alert">
+        <h5 class="text-left">Instrucciones:</h5>
+        <ol class="mb-0">
+          <li>Haz click en <b>Crear Producto</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
+          <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b> o en el botón <b>Volver</b>, arriba en esta pagina.</li>
+        </ol>
+      </div>
       <div class="card">
         <div class="card-header d-flex justify-content-end">
           <button class="btn btn-success btnCrear"><i class="fas fa-plus"></i> Crear producto</button>

@@ -104,8 +104,8 @@
     <!-- /.navbar -->
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="<?php if($usuario["perfil"] == 1){ echo('content-wrapper');}?>" style="height: calc(100vh - 57px);">
-      <object type="text/html" id="object-contenido" name="object-contenido" data="" style="height: calc(100vh - 57px);" class="w-100 border-0"></object>
+    <div class="<?php if($usuario["perfil"] == 1){ echo('content-wrapper');}?> overflow-hidden" style="height: calc(100vh - 57px);">
+      <object type="text/html" id="object-contenido" name="object-contenido" data="" style="height: calc(100vh - 57px);" class="w-100 border-0 overflow-hidden"></object>
     </div>
     <!-- /.content-wrapper -->
   </div>

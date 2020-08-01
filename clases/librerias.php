@@ -158,7 +158,7 @@
     public function proyecto(){
       $this->cadena_libreria = '
       <!-- Intranet -->
-      <link rel="stylesheet" href="' . $this->ruta_libreria . 'proyecto/proyecto.css?1"/>
+      <link rel="stylesheet" href="' . $this->ruta_libreria . 'proyecto/proyecto.css?2"/>
       <script type="text/javascript" src="' . $this->ruta_libreria . 'proyecto/proyecto.js"></script>';
       return $this->cadena_libreria;
     }

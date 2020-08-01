@@ -44,7 +44,7 @@
     echo $lib->proyecto();
   ?>
 </head>
-<body>
+<body class="content-fruturo">
 
   <!-- Content Header (Page header) -->
   <div div class="content-header">
@@ -76,11 +76,6 @@
               <label class="input-group-text" for="filtroEstado">Estado</label>
             </div>
           </div>
-
-          
-
-
-
           <div class="input-group w-md-25 w-100 mr-2">
             <select id="filtroTipoDocumento" class="custom-select " name="fk_tipo_documento" required data-live-search="true" data-size="5" title="Seleccione un estado">
             </select>

@@ -89,7 +89,7 @@
 
     </style>
   </head>
-  <body class="container">
+  <body class="container content-fruturo">
     
     <div  class="content-header col-12 text-left">
       <div class="container">
