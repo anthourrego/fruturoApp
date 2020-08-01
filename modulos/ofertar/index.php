@@ -89,7 +89,7 @@
           <!-- small box -->
           <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #6c757d;" href="<?= $ruta_raiz ?>modulos/mensajes">
             <div class="inner">
-            <h4><i class="far fa-comments d-block d-md-none"></i> Mensajes</h4>
+              <h4 id="mensajes"><i class="far fa-comments d-block d-md-none"></i> Mensajes</h4>
             </div>
             <div class="icon">
               <i class="far fa-comments"></i>
@@ -133,6 +133,32 @@
           contFinca = 1
         }else{
           contFinca = 0
+        }
+      },
+      error: function(){
+        Swal.fire({
+          icon: 'error',
+          html: 'No se han enviado los datos'
+        })
+      },
+      complete: function(){
+        cerrarCargando();
+      }
+    });
+
+    //Se cargan los mensajes
+    $.ajax({
+      url: '<?php echo($ruta_raiz) ?>modulos/mensajes/acciones',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        accion: "contador_mensajes"
+      },
+      success: function(data){
+        if (data.success) {
+          if (data.msj[0].mensajes_pendientes > 0) {
+            $("#mensajes").append(`<span class="ml-3 badge badge-pill badge-light">${data.msj[0].mensajes_pendientes}</span>`);
+          }
         }
       },
       error: function(){

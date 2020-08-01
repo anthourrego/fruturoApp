@@ -66,6 +66,26 @@ function listaChats(){
   return json_encode($resp);
 }
 
+function contador_mensajes(){
+  global $usuario;
+  $db = new Bd();
+  $db->conectar();
+  $resp["success"] = false;
+
+  $mensaje = $db->consulta("SELECT COUNT(*) AS mensajes_pendientes FROM cosecha_oferta AS co WHERE co.leido = 0 AND co.ultimo_emisor != :idUsuario", array("idUsuario" => $usuario["id"]));
+
+  if ($mensaje["cantidad_registros"] > 0) {
+    $resp["success"] = true;
+    $resp["msj"] = $mensaje;
+  }else{
+    $resp["msj"] = "No hay mensajes";
+  }
+
+  $db->desconectar();
+
+  return json_encode($resp);
+}
+
 function traerMensajes(){
   $db = new Bd();
   $db->conectar();
