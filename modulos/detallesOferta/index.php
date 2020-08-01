@@ -164,7 +164,7 @@
             <div class="row text-left">
               <div class="col">
                 <div class="row">
-                  <small class="col-4">Predio: </small><span class="col-8 text-right" id="finca"></span>
+                  <small class="col">Predio: <span class=" text-right" id="finca"></span> </small>
                 </div>
               </div>
             </div>
@@ -207,12 +207,12 @@
         <div >
           
           <p>
-            <button class="btn btn-lg btn-verdeOscuro" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-lg btn-verdeOscuro" id="btnChat" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false">
               Contactar Con Vendedor
             </button>
           </p>
           <div class="collapse row " id="collapseContact" >
-            <button class="btn btn-lg text-white col-12 col-md-6" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" id="btnChat">
+            <button class="btn btn-lg text-white col-12 col-md-6" style="background-color: #6c757d;" data-toggle="modal" data-target="#modalMensajes" >
               <i class="far fa-comments"></i> Chat 
             </button>
 
@@ -220,14 +220,8 @@
               <i class="fab fa-whatsapp"></i> WhatsApp
             </button>
 
-          </div>
-
-
-
-
-          
+          </div>          
         </div>
-
 
         <!-- Modal Mensaje -->
         <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
