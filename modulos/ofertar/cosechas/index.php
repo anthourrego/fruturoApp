@@ -64,7 +64,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="alert alert-warning" role="alert">
-        <h5 class="text-center">Instrucciones</h5>
+        <h5 class="text-left">Instrucciones:</h5>
         <ol class="mb-0">
           <li>Haz click en <b>Crear Oferta</b> e ingresa la Información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste de ingresar tus productos haz click en <b>Inicio</b>, arriba en esta pagina.</li>
@@ -156,7 +156,7 @@
                 <label for="fotos">Fotos de la cosecha: <span class="text-danger">*</span></label>
                 <div class="custom-file">
                   <input required type="file" class="custom-file-input" id="fotos" name="fotos[]" accept="image/png, image/jpg, image/jpeg" multiple>
-                  <label class="custom-file-label" for="fotos" data-browse="Elegir">Seleccionar Archivo</label>
+                  <label class="custom-file-label d-inline-block text-truncate" for="fotos" data-browse="Elegir">Seleccionar Archivo</label>
                   <small id="archivosExtensionesSmall" class="form-text text-muted">
                     Puedes seleccionar una o más fotos
                   </small>

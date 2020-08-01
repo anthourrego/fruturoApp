@@ -36,6 +36,7 @@
     echo $lib->jqueryValidate();
     echo $lib->datatables();
     echo $lib->lightbox();
+    echo $lib->bsCustomFileInput();
     echo $lib->proyecto();
   ?>
 </head>
@@ -78,6 +79,7 @@
               <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Presentación</th>
+                <th scope="col">Frecuencia</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Fecha creación</th>
                 <th scope="col">Acciones</th>
@@ -106,9 +108,17 @@
               <label for="nombre">Nombre <span class="text-danger">*</span></label>
               <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre del producto" required autocomplete="off">
             </div>
-            <div class="form-group" id="hectareas">
-              <label for="hectareas">Presentación <span class="text-danger">*</span></label>
+            <div class="form-group">
+              <label for="presentacion">Presentación <span class="text-danger">*</span></label>
               <input type="text" name="presentacion" required class="form-control" placeholder="Ejemplo: Paquete por 50 gramos, Botella por 350 ml" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="frecuencia">Frecuencia <span class="text-danger">*</span></label>
+              <select class="custom-select" name="frecuencia">
+                <option value="1">Semanal</option>
+                <option value="2">Quincenal</option>
+                <option value="3">Mensual</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="descripcion">Descripción</label>
@@ -143,7 +153,7 @@
               <label for="tabla_nutricional">Tabla nutricional: <span class="text-danger">*</span></label>
               <div class="custom-file">
                 <input required type="file" required class="custom-file-input" id="tabla_nutricional" name="tabla_nutricional" accept="image/png, image/jpg, image/jpeg">
-                <label class="custom-file-label" for="tabla_nutricional" data-browse="Elegir">Seleccionar Archivo</label>
+                <label class="custom-file-label d-inline-block text-truncate" for="tabla_nutricional" data-browse="Elegir">Seleccionar Archivo</label>
                 <small id="archivosExtensionesSmall" class="form-text text-muted">
                   Archivos tipo png, jpg, máximo de 3MB
                 </small>
@@ -161,7 +171,7 @@
               <label for="foto_frente">Foto frente: <span class="text-danger">*</span></label>
               <div class="custom-file">
                 <input required type="file" required class="custom-file-input" id="foto_frente" name="foto_frente" accept="image/png, image/jpg, image/jpeg">
-                <label class="custom-file-label" for="foto_frente" data-browse="Elegir">Seleccionar Archivo</label>
+                <label class="custom-file-label d-inline-block text-truncate" for="foto_frente" data-browse="Elegir">Seleccionar Archivo</label>
                 <small id="archivosExtensionesSmall" class="form-text text-muted">
                   Archivos tipo png, jpg, máximo de 3MB
                 </small>
@@ -171,7 +181,7 @@
               <label for="foto_reves">Foto revés: <span class="text-danger">*</span></label>
               <div class="custom-file">
                 <input required type="file" required class="custom-file-input" id="foto_reves" name="foto_reves" accept="image/png, image/jpg, image/jpeg">
-                <label class="custom-file-label" for="foto_reves" data-browse="Elegir">Seleccionar Archivo</label>
+                <label class="custom-file-label d-inline-block text-truncate" for="foto_reves" data-browse="Elegir">Seleccionar Archivo</label>
                 <small id="archivosExtensionesSmall" class="form-text text-muted">
                   Archivos tipo png, jpg, máximo de 3MB
                 </small>
@@ -211,9 +221,17 @@
                   <label for="nombre">Nombre <span class="text-danger">*</span></label>
                   <input type="text" name="nombre" class="form-control" placeholder="Escriba el nombre del producto" required autocomplete="off">
                 </div>
-                <div class="form-group" id="hectareas">
-                  <label for="hectareas">Presentación <span class="text-danger">*</span></label>
-                  <input type="text" name="presentacion" required class="form-control" placeholder="Ejemplo: Paquete por 50 gramos, Botella por 350 ml" required autocomplete="off">
+                <div class="form-group">
+                  <label for="presentacion">Presentación <span class="text-danger">*</span></label>
+                  <input type="text" name="presentacion" class="form-control" placeholder="Ejemplo: Paquete por 50 gramos, Botella por 350 ml" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label for="frecuencia">Frecuencia <span class="text-danger">*</span></label>
+                  <select name="frecuencia" class="custom-select">
+                    <option value="1">Semanal</option>
+                    <option value="2">Quincenal</option>
+                    <option value="3">Mensual</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label for="descripcion">Descripción</label>
@@ -398,6 +416,24 @@
       columns: [
         { data: "nombre" },
         { data: "presentacion"},
+        {  
+          "render": function (nTd, sData, oData, iRow, iCol) {
+            switch (oData.frecuencia) {
+              case '1':
+                return "Semanal";
+                break;
+              case '2':
+                return "Quincenal";
+                break;
+              case '3':
+                return "Mensual";
+                break;
+              default:
+                return "N/A"
+                break;
+            }
+          }
+        },
         { data: "descripcion" },
         { data: "fecha_creacion" },
         {
@@ -477,6 +513,7 @@
     $("#formVer :input[name='presentacion']").val(datos.presentacion);
     $("#formVer :input[name='descripcion']").val(datos.descripcion);
     $("#formVer :input[name='registro_invima']").val(datos.reg_invima);
+    $("#formVer :input[name='frecuencia']").val(datos.frecuencia);
     if (datos.reg_invima == null) {
       $("#ver_tiene_invima2").click();
       $("#ver_registro_invima").addClass("d-none");

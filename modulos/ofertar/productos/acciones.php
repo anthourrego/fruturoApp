@@ -35,7 +35,8 @@ function lista(){
               array( 'db' => 'p.fecha_creacion',        'dt' => 'fecha_creacion',      'field' => 'fecha_creacion'),
               array( 'db' => 'p.reg_invima',            'dt' => 'reg_invima',          'field' => 'reg_invima' ),
               array( 'db' => 'p.fk_finca',              'dt' => 'fk_finca',            'field' => 'fk_finca' ),
-              array( 'db' => 'p.fk_creador',            'dt' => 'fk_creador',          'field' => 'fk_creador' )
+              array( 'db' => 'p.fk_creador',            'dt' => 'fk_creador',          'field' => 'fk_creador' ),
+              array( 'db' => 'p.frecuencia',            'dt' => 'frecuencia',          'field' => 'frecuencia' )
             );
     
   $sql_details = array(
@@ -59,12 +60,13 @@ function crear(){
   global $usuario;
   $resp['success'] = false;
 
-  if (isset($_POST["nombre"]) && isset($_POST['presentacion']) && isset($_FILES['tabla_nutricional']) && isset($_FILES['foto_frente']) && isset($_FILES['foto_reves'])) {
+  if (isset($_POST["frecuencia"]) && isset($_POST["nombre"]) && isset($_POST['presentacion']) && isset($_FILES['tabla_nutricional']) && isset($_FILES['foto_frente']) && isset($_FILES['foto_reves'])) {
     if (validarNombre($_POST["nombre"], $_REQUEST["fk_finca"]) == 0) {
       $datos = array(
         ":nombre" => $_POST["nombre"], 
         ":presentacion" => $_POST["presentacion"], 
         ":descripcion" => @$_POST["descripcion"], 
+        ":frecuencia" => @$_POST["frecuencia"], 
         ":fecha_creacion" => date("Y-m-d H:i:s"), 
         ":estado" => 1, 
         ":reg_invima" => @$_REQUEST["registro_invima"], 
@@ -72,7 +74,7 @@ function crear(){
         ":fk_creador" => $usuario["id"]
       );
   
-      $id_registro = $db->sentencia("INSERT INTO productos (nombre, presentacion, descripcion, fecha_creacion, estado, reg_invima, fk_finca, fk_creador) VALUES (:nombre, :presentacion, :descripcion, :fecha_creacion, :estado, :reg_invima, :fk_finca, :fk_creador)", $datos);
+      $id_registro = $db->sentencia("INSERT INTO productos (nombre, presentacion, frecuencia, descripcion, fecha_creacion, estado, reg_invima, fk_finca, fk_creador) VALUES (:nombre, :presentacion, :frecuencia, :descripcion, :fecha_creacion, :estado, :reg_invima, :fk_finca, :fk_creador)", $datos);
   
       if ($id_registro > 0) {
 
