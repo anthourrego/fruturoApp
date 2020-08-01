@@ -444,7 +444,9 @@
                               ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
                               <span>$${oferta.precio}</span>
                             </div>
-
+                            <div class="col-12 text-left">
+                              <span>${oferta.presentacion ? oferta.presentacion : '' }</span>
+                            </div>
                             <div class="col-12 punticos">
                               <small>${oferta.nombre}</small>
                             </div>                            
