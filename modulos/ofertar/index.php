@@ -37,14 +37,29 @@
   <section class="content mt-5">
     <div class="container">
       <div class="alert alert-warning" role="alert">
+        <h5 class="text-ledt">Instrucciones:</h5>
         <ol class="mb-0">
           <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu predio, haz click en <b>Registrar Predio</b>.</li>
-          <li>Si ya está registrada tu predio, haz click en <b>Ofertar Cosecha</b> para empezar a ofrecer tus productos.</li>
+          <li>Si ya está registrada tu predio, haz click en <b>Ofertar</b> para empezar a ofrecer tus productos.</li>
+          <li>Verificar su oferta en <b>Ver Ofertas</b> para revisar que la información sea correcta.</li>
           <li>En el momento en que hayas terminado de ingresar tus predios y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
         </ol>
       </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">
+        
+        <!-- ./col -->
+        <div class=" col-12 col-md-6 col-lg-4">
+          <!-- small box -->
+          <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="<?= $ruta_raiz ?>modulos/ofertas">
+            <div class="inner">
+              <h4><i class="fas fa-shopping-cart d-block d-md-none"></i> Ver Ofertas</h4>
+            </div>
+            <div class="icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+          </a>
+        </div>
         <div class="col-12 col-md-6 col-lg-4">
           <!-- small box -->
           <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="predios">
@@ -65,18 +80,6 @@
             </div>
             <div class="icon">
               <i class="far fa-lemon"></i>
-            </div>
-          </a>
-        </div>
-        <!-- ./col -->
-        <div class=" col-12 col-md-6 col-lg-4">
-          <!-- small box -->
-          <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="<?= $ruta_raiz ?>modulos/ofertas">
-            <div class="inner">
-              <h4><i class="fas fa-shopping-cart d-block d-md-none"></i> Ver Ofertas</h4>
-            </div>
-            <div class="icon">
-              <i class="fas fa-shopping-cart"></i>
             </div>
           </a>
         </div>

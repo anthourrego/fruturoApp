@@ -226,7 +226,7 @@
                     <div class="col-12 col-xl-6">
                       <div class="form-label-group">
                         <input type="tel" minlength="7" id="tel" name="tel" class="form-control" placeholder="Teléfono" autocomplete="off" required onKeyPress="return soloNumeros(event)">
-                        <label for="tel">Teléfono<span class="text-danger">*</span></label>
+                        <label for="tel">Teléfono Whatsapp<span class="text-danger">*</span></label>
                       </div>
                     </div>
 

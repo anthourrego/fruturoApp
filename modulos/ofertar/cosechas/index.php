@@ -64,6 +64,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="alert alert-warning" role="alert">
+        <h5 class="text-center">Instrucciones</h5>
         <ol class="mb-0">
           <li>Haz click en <b>Crear Oferta</b> e ingresa la Información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste de ingresar tus productos haz click en <b>Inicio</b>, arriba en esta pagina.</li>
