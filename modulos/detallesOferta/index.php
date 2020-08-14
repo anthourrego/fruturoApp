@@ -99,7 +99,7 @@
         </button>
         <div class="row mb-2">
           <div class="col-12">
-            <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles De Oferta</h1>
+            <h1 class="m-0 text-dark"><i class="fas fa-award"></i> Detalles de oferta</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -242,7 +242,7 @@
           
           <p>
             <button class="btn btn-lg btn-verdeOscuro btn-block" id="btnChat" type="button" data-toggle="collapse" data-target="#collapseContact" aria-expanded="false">
-              Contactar Con Vendedor
+              Contactar con vendedor
             </button>
           </p>
           <div class="collapse row " id="collapseContact" >

@@ -39,7 +39,7 @@
       <div class="alert alert-warning" role="alert">
         <h5 class="text-ledt">Instrucciones:</h5>
         <ol class="mb-0">
-          <li>Hola, Si quieres empezar a ofrecer tus productos primero debes registrar tu predio, haz click en <b>Registrar Predio</b>.</li>
+          <li>Hola, si quieres empezar a ofrecer tus productos primero debes registrar tu predio, haz click en <b>Registrar Predio</b>.</li>
           <li>Si ya está registrada tu predio, haz click en <b>Ofertar</b> para empezar a ofrecer tus productos.</li>
           <li>Verificar su oferta en <b>Ver Ofertas</b> para revisar que la información sea correcta.</li>
           <li>En el momento en que hayas terminado de ingresar tus predios y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
