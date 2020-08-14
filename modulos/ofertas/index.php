@@ -437,13 +437,13 @@
                           <div class="row">
                             <div class=" col-12 d-flex justify-content-between">
                               <span>${oferta.producto}</span>
-                              <span>${oferta.volumen_total ? oferta.volumen_total+' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
+                              <span>${oferta.volumen_total ? oferta.volumen_total +' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
                             </div>
 
                             <div class="col-12 d-flex justify-content-between">
                               ${oferta.presentacion ? oferta.presentacion : '' }
                               ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
-                              <span>$ ${oferta.precio}</span>
+                              <span>$ ${oferta.precio} COP/${oferta.unidad_medida ? oferta.unidad_medida : 'Kg'}</span>
                             </div>
                             <div class="col-12 punticos">
                               <small>${oferta.nombre}</small>
