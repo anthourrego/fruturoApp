@@ -169,8 +169,9 @@
 }
 
 .imagen-oferta{
-  height: 120px !important;
-  width: 120px !important;
+  min-height: 132px !important;
+  height: 132px !important;
+  width: 100% !important;
   margin: 0px !important;
 }
 

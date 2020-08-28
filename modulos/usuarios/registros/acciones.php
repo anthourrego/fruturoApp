@@ -190,10 +190,11 @@ function editarUsuario(){
         ":fecha_nacimiento" => date("Y-m-d", strtotime($_POST["fecha_nacimiento"])),
         ":telefono" => $_POST['telefono'],
         ":fk_perfil" => $_POST['perfil'],
+        ":correo" => $_POST['correo'],
         ":id" => $_POST["id"]
       );
 
-      $db->sentencia("UPDATE usuarios SET fk_tipo_documento = :fk_tipo_documento, nro_documento = :nro_documento, fk_tipo_persona = :fk_tipo_persona, nombres = :nombres, apellidos = :apellidos, fecha_nacimiento = :fecha_nacimiento, telefono = :telefono, fk_perfil = :fk_perfil WHERE id = :id", $datosSQL);
+      $db->sentencia("UPDATE usuarios SET fk_tipo_documento = :fk_tipo_documento, nro_documento = :nro_documento, fk_tipo_persona = :fk_tipo_persona, nombres = :nombres, apellidos = :apellidos, fecha_nacimiento = :fecha_nacimiento, telefono = :telefono, fk_perfil = :fk_perfil, correo = :correo WHERE id = :id", $datosSQL);
   
       $db->insertLogs("usuarios", $_POST["id"], "Se edita el usuario {$_POST['correo']}", $usuario["id"]);
   

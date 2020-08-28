@@ -40,24 +40,24 @@ function iniciarSesion(){
 
   if ($usuario['cantidad_registros'] > 0) {
     if(password_verify($pass, $usuario[0]['password'])){
-      if ($usuario[0]['confirmado'] == 1) {
-        $session = new Session();
-  
-        $array_session_usuario = array();
-        $array_session_usuario["id"] = $usuario[0]['id'];
-        $array_session_usuario["nombre"] = $usuario[0]['nombres'] . ' ' . $usuario[0]['apellidos'];
-        $array_session_usuario["fecha_nacimiento"] = $usuario[0]['fecha_nacimiento'];
-        $array_session_usuario["telefono"] = $usuario[0]['telefono'];
-        $array_session_usuario["perfil"] = $usuario[0]['fk_perfil'];
-  
-        $session->set('usuario', $array_session_usuario);
-  
-        $resp['success'] = true;
-        $resp['msj'] = 'Iniciar sesión'; 
-      }else{
+      $session = new Session();
+
+      $array_session_usuario = array();
+      $array_session_usuario["id"] = $usuario[0]['id'];
+      $array_session_usuario["nombre"] = $usuario[0]['nombres'] . ' ' . $usuario[0]['apellidos'];
+      $array_session_usuario["fecha_nacimiento"] = $usuario[0]['fecha_nacimiento'];
+      $array_session_usuario["telefono"] = $usuario[0]['telefono'];
+      $array_session_usuario["perfil"] = $usuario[0]['fk_perfil'];
+
+      $session->set('usuario', $array_session_usuario);
+
+      $resp['success'] = true;
+      $resp['msj'] = 'Iniciar sesión'; 
+      /*if ($usuario[0]['confirmado'] == 1) {
+       }else{
         $resp['success'] = false;
         $resp['msj'] = 'Por favor activa tu usuario'; 
-      }
+      } */
     }else{
       $resp['success'] = false;
       $resp['msj'] = 'Correo y/o Contraseña son incorrectos';
@@ -105,9 +105,9 @@ function registrarse(){
         $id_registro = $db->sentencia("INSERT INTO usuarios (fk_tipo_documento, nro_documento, fk_tipo_persona, correo, nombres, apellidos, password, fecha_nacimiento, telefono, fk_perfil, estado, fecha_creacion, confirmado, fk_creador) VALUES (:fk_tipo_documento, :nro_documento, :fk_tipo_persona, :correo, :nombres, :apellidos, :password, :fecha_nacimiento, :telefono, :fk_perfil, :estado, :fecha_creacion, :confirmado, :fk_creador)", $datos);
   
         if ($id_registro > 0) {
-          $pin = encriptarPass(generarPin());
+          /* $pin = encriptarPass(generarPin());
           setearPinActivacion($_POST["reCorreo"], $pin);
-          enviarCorrreo($_POST["reCorreo"], $pin, 'activar');
+          enviarCorrreo($_POST["reCorreo"], $pin, 'activar'); */
           $resp['success'] = true;
           $resp['msj'] = 'Se ha registrado correctamente.';
         } else {

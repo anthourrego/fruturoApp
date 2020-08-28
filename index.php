@@ -512,7 +512,7 @@
             if(data.statusText == 'OK'){
               Swal.fire({
                 icon: 'success',
-                html: 'Enlace de activación enviado correo',
+                html: 'Se ha registrado correctamente',
                 preConfirm: () => {
                   location.href = '?reg=0'
                 }

@@ -430,25 +430,36 @@
                   <div class="card">
                     <div class="row no-gutters">
                       <div class="col-4 col-md-12 m-0 text-left m-auto">
-                        <img class="card-img-top imagen-oferta" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
+                        <img class="card-img-top imagen-oferta w-100" src="<?= $ruta_raiz ?>${oferta.foto_cosecha ?  oferta.foto_cosecha : oferta.foto_producto }" alt="Card image cap">
                       </div>
                       <div class="col-8 col-md-12 px-2">
                         <div class="py-2 oferta">
                           <div class="row">
-                            <div class=" col-12 d-flex justify-content-between">
-                              <span>${oferta.producto}</span>
-                              <span>${oferta.volumen_total ? oferta.volumen_total +' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
+                            <div class="col-12">
+                              <div class="row no-gutters">
+                                <div class="col-12 col-md-6 text-left">
+                                  <span>${oferta.producto}</span>
+                                </div>
+                                <div class="col-12 col-md-6 text-left d-block d-md-none">
+                                  <span>${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}</span>
+                                </div>
+                                <div class="col-12 col-md-6 text-left text-md-right">
+                                  <span>${oferta.volumen_total ? oferta.volumen_total +' Kg' : (oferta.capacidad_produccion+' '+oferta.unidad_medida) }</span>
+                                </div>
+                              </div>
                             </div>
-
-                            <div class="col-12 d-flex justify-content-between">
-                              ${oferta.presentacion ? oferta.presentacion : '' }
-                              ${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}
-                              <span>$ ${oferta.precio} COP/${oferta.unidad_medida ? oferta.unidad_medida : 'Kg'}</span>
+                            <div class="col-12 row no-gutters">
+                              <div class="col-12 col-md-6 text-left">
+                                <span>${oferta.presentacion ? oferta.presentacion : '' }</span>
+                                <span class="d-none d-md-block">${oferta.producto_derivado ? '<small>' + oferta.producto_derivado + '</small>' : ''}</span>
+                              </div>
+                              <div class="col-12 col-md-6 text-left text-md-right">
+                                <span>$ ${oferta.precio} COP/${oferta.unidad_medida ? oferta.unidad_medida : 'Kg'}</span>
+                              </div>
                             </div>
                             <div class="col-12 punticos">
                               <small>${oferta.nombre}</small>
                             </div>                            
-
                           </div>
                         </div>
                         <div class="text-muted p-1">
