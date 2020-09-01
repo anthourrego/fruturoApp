@@ -3,6 +3,47 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.navbar-fruturo {
+  background-color: #026839 !important;
+}
+
+.btn-verdeClaro {
+  color: #fff;
+  background-color: #89c23d;
+  border-color: #89c23d;
+}
+
+.btn-verdeClaro:hover {
+  color: #fff;
+  background-color: #6b9c29;
+  border-color: #5d8825;
+}
+
+.btn-verdeClaro:focus, .btn-verdeClaro.focus {
+  color: #fff;
+  background-color: #6b9c29;
+  border-color: #5d8825;
+  box-shadow: 0 0 0 0.2rem rgba(137, 194, 61, 0.5);
+}
+
+.btn-verdeClaro.disabled, .btn- morado:disabled {
+  color: #fff;
+  background-color: #89c23d;
+  border-color: #89c23d;
+}
+
+.btn-verdeClaro:not(:disabled):not(.disabled):active, .btn- morado:not(:disabled):not(.disabled).active,
+.show > .btn-verdeClaro.dropdown-toggle {
+  color: #fff;
+  background-color: #6b9c29;
+  border-color: #5d8825;
+}
+
+.btn-verdeClaro:not(:disabled):not(.disabled):active:focus, .btn- morado:not(:disabled):not(.disabled).active:focus,
+.show > .btn-verdeClaro.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(137, 194, 61, 0.5);
+}
+
 .btn-verdeOscuro {
   color: #fff;
   background-color: #31663A;
@@ -356,4 +397,43 @@
 
 .content-fruturo{
   padding-bottom: 3rem !important;
+}
+
+
+/* Efecto Imagenes */
+    
+.expandir img{
+  -ms-transform: scale(1);
+  /*Internet Explorer */
+  -webkit-transform: scale(1);
+  /* Safari */
+  -moz-transform: scale(1);
+  /* Mozilla */
+  -o-transform: scale(1);
+  /* Opera */
+  transform: scale(1);
+  /* Estandar */
+  -ms-transition: 0.5s transform;
+  -webkit-transition: 0.5s transform;
+  -moz-transition: 0.5s transform;
+  -o-transition: 0.5s transform;
+  transition: 0.5s transform;
+}
+
+.expandir:hover img {
+  -ms-transform: scale(1.1);
+  /*Internet Explorer */
+  -webkit-transform: scale(1.1);
+  /* Safari */
+  -moz-transform: scale(1.1);
+  /* Mozilla */
+  -o-transform: scale(1.1);
+  /* Opera */
+  transform: scale(1.1);
+  /* Estandar */
+  -ms-transition: 0.5s transform;
+  -webkit-transition: 0.5s transform;
+  -moz-transition: 0.5s transform;
+  -o-transition: 0.5s transform;
+  transition: 0.5s transform;
 }

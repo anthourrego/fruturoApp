@@ -34,59 +34,44 @@
   ?>
 </head>
 <body class="content-fruturo">
-  <section class="content mt-5">
+  <section class="content mt-2">
     <div class="container">
+      <img class="w-100 mb-4" src="<?php echo($ruta_raiz) ?>assets/img/inicio.png" alt="">
       <div class="alert alert-warning" role="alert">
         <h5 class="text-ledt">Instrucciones:</h5>
         <ol class="mb-0">
           <li>Hola, si quieres empezar a ofrecer tus productos primero debes registrar tu predio, haz click en <b>Registrar Predio</b>.</li>
           <li>Si ya está registrada tu predio, haz click en <b>Ofertar</b> para empezar a ofrecer tus productos.</li>
-          <li>Verificar su oferta en <b>Ver Ofertas</b> para revisar que la información sea correcta.</li>
+          <li>Verificar su oferta en <b>Ofertas</b> para revisar que la información sea correcta.</li>
           <li>En el momento en que hayas terminado de ingresar tus predios y cosechas puedes hacer click en <b>Cerrar Sesión</b>.</li>
         </ol>
       </div>
       <!-- Small boxes (Stat box) -->
       <div class="row">
-        
-        <!-- ./col -->
-        <div class=" col-12 col-md-6 col-lg-4">
-          <!-- small box -->
-          <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #efa90c;" href="<?= $ruta_raiz ?>modulos/ofertas">
-            <div class="inner">
-              <h4><i class="fas fa-shopping-cart d-block d-md-none"></i> Ver Ofertas</h4>
-            </div>
-            <div class="icon">
-              <i class="fas fa-shopping-cart"></i>
-            </div>
+        <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0">
+          <a class="expandir" href="<?= $ruta_raiz ?>modulos/ofertas">
+            <img class="w-90" src="<?php echo($ruta_raiz) ?>assets/img/ofertas.png" alt="">
           </a>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12 col-md-6 col-lg-4">
-          <!-- small box -->
-          <a class="small-box bg-info d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="predios">
-            <div class="inner">
-              <h4><i class="fas fa-home d-block d-md-none"></i>Registrar Predio</h4>
-            </div>
-            <div class="icon">
-              <i class="fas fa-home"></i>
-            </div>
+        <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0">
+          <a class="text-decoration-none expandir" href="<?= $ruta_raiz ?>modulos/ofertar/predios">
+            <img class="w-90" src="<?php echo($ruta_raiz) ?>assets/img/registrar_predio.png" alt="">
           </a>
         </div>
-        <!-- ./col -->
-        <div class=" col-12 col-md-6 col-lg-4">
-          <!-- small box -->
-          <a id="cosecha" class="small-box bg-success d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="#">
-            <div class="inner">
-              <h4><i class="far fa-lemon d-block d-md-none"></i> Ofertar</h4>
-            </div>
-            <div class="icon">
-              <i class="far fa-lemon"></i>
-            </div>
+        <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0">
+          <a id="cosecha" class="text-decoration-none expandir" href="#">
+            <img class="w-90" src="<?php echo($ruta_raiz) ?>assets/img/ofertar.png" alt="">
           </a>
         </div>
-        <div class=" col-12 col-md-6 col-lg-4">
-          <!-- small box -->
+        <div class="col-12 col-md-6 col-lg-3 text-center mb-5 mb-lg-0">
+          <a class="text-decoration-none expandir" href="<?= $ruta_raiz ?>modulos/mensajes">
+            <img class="w-90" src="<?php echo($ruta_raiz) ?>assets/img/mensajes.png" alt="">
+          </a>
+        </div>
+        <div class="col-12 text-center">
+          <img class="w-100 w-md-75 w-lg-50 mb-5" src="<?php echo($ruta_raiz) ?>assets/img/secretaria.png" alt="">
+        </div>
+        <!-- <div class=" col-12 col-md-6 col-lg-2">
           <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #6c757d;" href="<?= $ruta_raiz ?>modulos/mensajes">
             <div class="inner">
               <h4 id="mensajes"><i class="far fa-comments d-block d-md-none"></i> Mensajes</h4>
@@ -95,20 +80,7 @@
               <i class="far fa-comments"></i>
             </div>
           </a>
-        </div>
-        <!-- ./col -->
-        <div class=" col-12 col-md-6 col-lg-4">
-          <!-- small box -->
-          <a class="small-box bg-danger d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px" href="javascript:top.cerrarSesion();">
-            <div class="inner">
-              <h4><i class="fas fa-sign-in-alt d-block d-md-none"></i> Cerrar Sesión</h4>
-            </div>
-            <div class="icon">
-            <i class="fas fa-sign-in-alt"></i>
-            </div>
-          </a>
-        </div>
-        <!-- ./col -->
+        </div> -->
       </div>
     </div>
   </section>

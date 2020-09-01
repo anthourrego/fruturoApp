@@ -45,6 +45,7 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container-fluid">
+      <img class="w-100 mb-4" src="<?php echo($ruta_raiz) ?>assets/img/predios.png" alt="">
       <button type="button" class="btn btn-secondary mb-1" onclick="back()">
         <i class="fas fa-arrow-left"></i>
         Volver

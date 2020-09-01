@@ -54,7 +54,7 @@
 
   <div class="wrapper">
     <!-- Navbar -->
-    <nav class="<?php if($usuario["perfil"] == 1){ echo('main-header');}?> navbar navbar-expand navbar-white navbar-light elevation-1"> 
+    <nav class="<?php if($usuario["perfil"] == 1){ echo('main-header');}?> navbar navbar-expand navbar-dark navbar-fruturo elevation-1"> 
       <?php 
         if($usuario["perfil"] != 1){
       ?>
@@ -64,7 +64,7 @@
         </a>
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a target="object-contenido" href="<?php echo RUTA_RAIZ ?>modulos/ofertar" class="nav-link">Inicio</a>
+            <a target="object-contenido" href="<?php echo RUTA_RAIZ ?>modulos/ofertar" class="btn btn-verdeClaro">Inicio</a>
           </li>
         </ul>
       <?php
@@ -81,6 +81,9 @@
       ?>
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a target="object-contenido" href="javascript:cerrarSesion();" class="btn btn-verdeClaro">Cerrar Sesión</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img class="rounded-circle" width="30px" src="<?php echo(RUTA_ALMACENAMIENTO . "usuarios/0.png"); ?>">

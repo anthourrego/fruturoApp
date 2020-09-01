@@ -162,6 +162,7 @@
                     </div>
                   </form>
                   <p class="mt-5 mb-3 text-muted text-center">2020 &copy; Fruturo</p>
+                  <img class="w-100 mb-4" src="<?php echo($ruta_raiz) ?>assets/img/secretaria.png" alt="">
                 </div>
 
                 <!-- Formulario de registro -->

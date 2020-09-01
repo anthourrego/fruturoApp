@@ -45,6 +45,7 @@
   <!-- Content Header (Page header) -->
   <div div class="content-header">
     <div class="container-fluid">
+      <img class="w-100 mb-4" src="<?php echo($ruta_raiz) ?>assets/img/predios.png" alt="">
       <button type="button" class="btn btn-secondary mb-1" onclick="back()">
         <i class="fas fa-arrow-left"></i>
         Volver
@@ -67,6 +68,14 @@
           <li>Haz click en <b>Crear Predio</b> e ingresa la información que allí solicitamos y cuando la hayas completado haz click en <b>Enviar</b>.</li>
           <li>Si necesitas regresar o ya terminaste haz click en <b>Inicio</b>, arriba en esta pagina.</li>
         </ol>
+        <hr>
+        <h5 class="text-left" >Instrucciones - Agregar Productos Procesados</h5>
+          <ol class="mb-0">
+            <li>Crear la <b>Fabrica</b></li>
+            <li>Buscar la fabrica creada en la tabla de predios</li>
+            <li>Seleccionar el botón  <b>Productos</b>.</li>
+            <li>Después de crear un producto procesado debes ir a <b>Inicio</b> y crear una oferta en <b>Ofertar</b>.</li>
+          </ol>
       </div>
       <div class="card">
         <div class="card-header d-flex justify-content-end">
@@ -465,7 +474,7 @@
           "render": function (nTd, sData, oData, iRow, iCol) {
             let productos = "";
             if (oData.fk_finca_tipo == 2) {
-              productos = `<a type="button" class="btn btn-info btn-sm mx-1" href="<?= $ruta_raiz ?>modulos/ofertar/productos?fk_finca=${oData.id}&nombre=${oData.nombre}"><i class="fas fa-box"></i> Productos</a>`
+              productos = `<a type="button" class="btn btn-secondary btn-sm mx-1" href="<?= $ruta_raiz ?>modulos/ofertar/productos?fk_finca=${oData.id}&nombre=${oData.nombre}"><i class="fas fa-box"></i> Productos</a>`
             }
 
             return `<div class="d-flex justify-content-center">
