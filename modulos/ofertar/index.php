@@ -69,7 +69,7 @@
           </a>
         </div>
         <div class="col-12 text-center">
-          <img class="w-100 w-md-75 w-lg-50 mb-5" src="<?php echo($ruta_raiz) ?>assets/img/secretaria.png" alt="">
+          <img class="w-100 w-md-80 mb-5" src="<?php echo($ruta_raiz) ?>assets/img/secretaria.png" alt="">
         </div>
         <!-- <div class=" col-12 col-md-6 col-lg-2">
           <a class="small-box text-white d-flex align-items-center justify-content-center justify-content-md-start" style="min-height: 110px; background-color: #6c757d;" href="<?= $ruta_raiz ?>modulos/mensajes">
