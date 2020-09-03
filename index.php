@@ -372,6 +372,7 @@
       $(".datepicker").datepicker({ 
         dateFormat: "yy-mm-dd", 
         maxDate: "-18Y",
+        yearRange: "-100:-18",
         changeMonth: true,
         changeYear: true
       });
